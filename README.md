@@ -1,4 +1,4 @@
-# Dwnload WordPress Settings Api [![Build Status](https://travis-ci.com/dwnload/wp-settings-api.svg?token=ZyJNJ43qqz4HuaN1qNby&branch=master)](https://travis-ci.com/dwnload/wp-settings-api)
+# Dwnload WordPress Settings Api [![Build Status](https://travis-ci.org/dwnload/wp-settings-api.svg?token=ZyJNJ43qqz4HuaN1qNby&branch=master)](https://travis-ci.org/dwnload/wp-settings-api)
 It's a PHP class wrapper for handling WordPress [Settings API](http://codex.wordpress.org/Settings_API).
 
 ## Package Installation (via Composer)
