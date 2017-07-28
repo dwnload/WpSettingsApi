@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.0.3 - 2017-07-28
 ### Updated
 - Removed BaseModel in favor of class existing in thefrosty/wp-utilites.
+- Cleaned up view/setting-html. Use registered admin page title and add correct link to github package. 
 ### Fixed
 - Incorrect call to method in WPSettingsApi to App class..
 
