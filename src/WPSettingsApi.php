@@ -298,7 +298,7 @@ class WPSettingsApi implements WpHooksInterface {
 			if ( ! wp_script_is( $script->getHandle(), 'registered' ) ) {
 				wp_register_script(
 					$script->getHandle(),
-					App::getPluginsUrl( $script->getSrc() ),
+					$this->app->getPluginsUrl( $script->getSrc() ),
 					$script->getDependencies(),
 					$script->getVersion(),
 					$script->getInFooter()
@@ -324,7 +324,7 @@ class WPSettingsApi implements WpHooksInterface {
 			if ( ! wp_style_is( $style->getHandle(), 'registered' ) ) {
 				wp_register_style(
 					$style->getHandle(),
-					App::getPluginsUrl( $style->getSrc() ),
+                    $this->app->getPluginsUrl( $style->getSrc() ),
 					$style->getDependencies(),
 					$style->getVersion(),
 					$style->getMedia()
