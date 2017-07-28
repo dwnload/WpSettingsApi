@@ -3,6 +3,7 @@
 namespace Dwnload\WPSettingsApi\Api;
 
 use Dwnload\WPSettingsApi\App;
+use TheFrosty\WP\Utils\Models\BaseModel;
 
 /**
  * Class PluginInfo
