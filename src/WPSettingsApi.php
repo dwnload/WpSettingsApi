@@ -51,10 +51,10 @@ class WPSettingsApi implements WpHooksInterface {
 	 */
 	public function addAdminMenu() {
 		$hook = add_options_page(
-			esc_html__( 'Beachbody WordPress Settings API', 'dwnload-wpwp-settings-api' ),
-			esc_html__( 'Beachbody Settings', 'dwnload-wpwp-settings-api' ),
+			esc_html( $this->app->getPage() ),
+            esc_html( $this->app->getMenuTitle() ),
 			$this->app->getAppCap(),
-			apply_filters( App::FILTER_PREFIX . 'options_page_slug', 'dwnload-wpwp-settings-api' ),
+			apply_filters( App::FILTER_PREFIX . 'options_page_slug', $this->app->getMenuSlug() ),
 			[ $this, 'settingsHtml' ]
 		);
 		add_action( 'load-' . $hook, [ $this, 'load' ], 19 );
@@ -224,7 +224,7 @@ class WPSettingsApi implements WpHooksInterface {
 		/**
 		 * Hook loads before options are sanitized. Manipulate options array here.
 		 *
-		 * @var array $options The options array before sanitization
+		 * @var array $options The options array before getting sanitized
 		 */
 		do_action( App::ACTION_PREFIX . 'before_sanitize_options', $options );
 
@@ -247,7 +247,7 @@ class WPSettingsApi implements WpHooksInterface {
 		/**
 		 * Hook loads after options are sanitized.
 		 *
-		 * @var array $options The options array after sanitization
+		 * @var array $options The options array after getting sanitized
 		 */
 		do_action( App::ACTION_PREFIX . 'after_sanitize_options', $options );
 
