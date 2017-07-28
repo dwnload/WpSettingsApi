@@ -12,12 +12,12 @@ if ( ! ( $this instanceof WPSettingsApi ) ) {
     <div class="Dwnload_WP_Settings_Api__container">
 
         <div class="Dwnload_WP_Settings_Api__header">
-            <h3><?php echo esc_html__( 'WordPress Settings API', $this->getApp()->getDomain() ); ?></h3>
+            <h3><?php echo get_admin_page_title(); ?></h3>
             <span><?php echo esc_html( $this->getApp()->getVersion() ); ?></span>
             <div>
 				<?php printf(
-					esc_html__( 'A %s plugin', $this->getApp()->getDomain() ),
-					'<strong><a href="https://github.com/dwnload" target="_blank">dwnload</a></strong>'
+					esc_html__( 'A %s package.', $this->getApp()->getDomain() ),
+					'<strong><a href="https://github.com/dwnload/WpSettingsApi" target="_blank">dwnload</a></strong>'
 				); ?>
             </div>
         </div><!-- .Dwnload_WP_Settings_Api__header -->
