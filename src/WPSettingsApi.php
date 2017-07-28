@@ -51,7 +51,7 @@ class WPSettingsApi implements WpHooksInterface {
 	 */
 	public function addAdminMenu() {
 		$hook = add_options_page(
-			esc_html( $this->app->getPage() ),
+			esc_html( $this->app->getPageTitle() ),
             esc_html( $this->app->getMenuTitle() ),
 			$this->app->getAppCap(),
 			apply_filters( App::FILTER_PREFIX . 'options_page_slug', $this->app->getMenuSlug() ),

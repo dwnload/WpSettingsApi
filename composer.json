@@ -1,7 +1,7 @@
 {
   "name": "dwnload/wp-settings-api",
   "description": "A PHP class abstraction that removes all the headaches of the WordPress settings API under the hood and builds a nice options panel on the fly.",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "authors": [
     {
       "name": "Austin Passy",

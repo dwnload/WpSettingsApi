@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.2 - 2017-07-28
+### Fixed
+- Incorrect call to method in WPSettingsApi to App class..
+
 ## 2.0.1 - 2017-07-28
 ### Added
 - menu slug, menu title and page title to App attributes array.
