@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.0.2 - 2017-07-28
+## 2.0.3 - 2017-07-28
+### Updated
+- Removed BaseModel in favor of class existing in thefrosty/wp-utilites.
 ### Fixed
 - Incorrect call to method in WPSettingsApi to App class..
 
