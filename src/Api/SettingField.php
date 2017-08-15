@@ -5,7 +5,7 @@ namespace Dwnload\WPSettingsApi\Api;
 use Dwnload\WPSettingsApi\Settings\FieldTypes;
 
 /**
- * Class FieldBuilder
+ * Class SettingField
  *
  * @package Dwnload\WPSettingsApi\Api
  */
@@ -222,12 +222,12 @@ class SettingField {
     private $sanitize_callback;
 
     /**
-     * Set the Fields sanitization callback.
+     * Set the Fields sanitize callback.
      * - optional
      *
-     * @param $sanitize
+     * @param callable $sanitize
      */
-    public function setSanitizeCallback( $sanitize ) {
+    public function setSanitizeCallback( callable $sanitize ) {
         $this->sanitize_callback = $sanitize;
     }
 
@@ -297,7 +297,7 @@ class SettingField {
      *
      * @var string $type
      */
-    private $type;
+    private $type = 'text';
 
     /**
      * Set the Fields input type (defaults to 'text').
@@ -315,5 +315,28 @@ class SettingField {
      */
     public function getType() : string {
         return $this->type;
+    }
+
+    /**
+     * The Fields name.
+     *
+     * @var bool $obfuscated
+     */
+    private $obfuscated = false;
+
+    /**
+     * Set the Fields input type (defaults to 'text').
+     *
+     * @param bool $obfuscated
+     */
+    public function setObfuscate( bool $obfuscated = true ) {
+        $this->obfuscated = $obfuscated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isObfuscated(): bool {
+        return $this->obfuscated;
     }
 }

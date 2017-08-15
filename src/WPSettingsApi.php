@@ -233,7 +233,14 @@ class WPSettingsApi implements WpHooksInterface {
 
 			// If callback is set, call it
 			if ( ! empty( $sanitize_callback ) ) {
-				$options[ $option_slug ] = call_user_func( $sanitize_callback, $option_value );
+                /**
+                 * Sanitize Callback accepted args.
+                 *
+                 * @param mixed $option_value
+                 * @param array $options
+                 * @param string $option_slug
+                 */
+				$options[ $option_slug ] = call_user_func( $sanitize_callback, [ $option_value, $options, $option_slug ] );
 				continue;
 			}
 

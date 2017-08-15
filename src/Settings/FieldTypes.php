@@ -295,7 +295,11 @@ class FieldTypes {
 	 */
 	protected function getInputField( array $args ): string {
 		$field = $this->getSettingFieldObject( $args );
-		$value = Options::getOption( $field->getId(), $field->getSectionId(), $field->getDefault() );
+		if ( ! $field->isObfuscated() ) {
+            $value = Options::getOption( $field->getId(), $field->getSectionId(), $field->getDefault() );
+        } else {
+            $value = Options::getObfuscatedOption( $field->getId(), $field->getSectionId(), $field->getDefault() );
+        }
 
 		return sprintf(
 			'<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s></div>',
