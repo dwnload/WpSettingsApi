@@ -52,7 +52,7 @@ class FieldTypes {
 	 * @param array $args Array of Field object parameters
 	 */
 	public function number( array $args ) {
-		$args['type'] = 'number';
+		$args[ SettingField::TYPE ] = 'number';
 		if ( ! isset( $args['attributes']['step'] ) ) {
 			$args['attributes']['step'] = 'any';
 		}
@@ -65,7 +65,7 @@ class FieldTypes {
 	 * @param array $args Array of Field object parameters
 	 */
 	public function password( array $args ) {
-		$args['type'] = 'password';
+		$args[ SettingField::TYPE ] = 'password';
 		$this->text( $args );
 	}
 
@@ -320,8 +320,8 @@ class FieldTypes {
 	 * @return string
 	 */
 	protected function getFieldDescription( array $args ): string {
-		if ( ! empty( $args['desc'] ) ) {
-			return sprintf( '<p class="description">%s</p>', esc_html( $args['desc'] ) );
+		if ( ! empty( $args[ SettingField::DESC ] ) ) {
+			return sprintf( '<p class="description">%s</p>', esc_html( $args[ SettingField::DESC ] ) );
 		}
 
 		return '';
