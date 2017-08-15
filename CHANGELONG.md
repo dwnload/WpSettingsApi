@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.0 - 2017-08-15
+### Updated
+- Both Api\Style & Api\Script were not using the fully qualified BaseModel class.
+-
+### Added
+- New obfuscated setting type to the FieldTypes object and Options class.
+- Add second & third parameter to sanitize callback function in WPSettingsApi.
+- New Sanitize class.
+
 ## 2.0.3 - 2017-07-28
 ### Updated
 - Removed BaseModel in favor of class existing in thefrosty/wp-utilites.
