@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.1.0 - 2017-08-15
+## 2.1.1 - 2017-08-15
 ### Updated
 - Both Api\Style & Api\Script were not using the fully qualified BaseModel class.
--
+
+## 2.1.0 - 2017-08-15
 ### Added
 - New obfuscated setting type to the FieldTypes object and Options class.
 - Add second & third parameter to sanitize callback function in WPSettingsApi.
