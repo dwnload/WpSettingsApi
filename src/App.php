@@ -54,6 +54,6 @@ class App extends PluginInfo implements WpHooksInterface {
 	 * @return string
 	 */
 	public function getPluginsUrl( string $src ): string {
-		return plugins_url( $src, $this->getFile() );
+		return plugins_url( $src, __DIR__ );
 	}
 }
