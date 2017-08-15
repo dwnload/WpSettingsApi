@@ -2,6 +2,8 @@
 
 namespace Dwnload\WPSettingsApi\Api;
 
+use TheFrosty\WP\Utils\Models\BaseModel;
+
 /**
  * Class Script
  *
