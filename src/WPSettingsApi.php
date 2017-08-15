@@ -2,6 +2,7 @@
 
 namespace Dwnload\WPSettingsApi;
 
+use Dwnload\WPSettingsApi\Api\Sanitize;
 use Dwnload\WPSettingsApi\Api\SettingField;
 use Dwnload\WPSettingsApi\Api\LocalizeScripts;
 use Dwnload\WPSettingsApi\Api\Script;
@@ -280,6 +281,13 @@ class WPSettingsApi implements WpHooksInterface {
 				if ( $field->getName() !== $option_slug ) {
 					continue;
 				}
+
+				// Call our obfuscated setting sanitizer so stars (****) don't get saved.
+                if ( $field->isObfuscated() &&
+                    method_exists( Sanitize::class, 'sanitizeObfuscated' )
+                ) {
+                    return Sanitize::class . '::sanitizeObfuscated';
+                }
 
 				// Return the callback name
 				return ! empty( $field->getSanitizeCallback() ) &&
