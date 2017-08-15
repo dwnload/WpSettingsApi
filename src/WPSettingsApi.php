@@ -240,7 +240,7 @@ class WPSettingsApi implements WpHooksInterface {
                  * @param array $options
                  * @param string $option_slug
                  */
-				$options[ $option_slug ] = call_user_func( $sanitize_callback, [ $option_value, $options, $option_slug ] );
+				$options[ $option_slug ] = call_user_func( $sanitize_callback, $option_value, $options, $option_slug );
 				continue;
 			}
 
