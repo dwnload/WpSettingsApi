@@ -75,7 +75,7 @@ class SettingField {
      * @return string
      */
     public function getDescription() : string {
-        return $this->description;
+        return $this->description ?? '';
     }
 
     /**
