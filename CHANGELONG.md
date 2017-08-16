@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.3 - 2017-08-16
+### Updated
+- Class name follows folder structure with lowercase 'p'.
+- Autoloading of files has been updated to reflect the filename and class change.
+- Make sure str_repeat's second parameter is always a non-negative integer.
+- PHPdocs updates to the FieldManager object.
+
 ## 2.1.2 - 2017-08-15
 ### Updated
 - Both Api\Style & Api\Script were not using the fully qualified BaseModel class.
