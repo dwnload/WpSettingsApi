@@ -1,8 +1,8 @@
 <?php
 
-use Dwnload\WPSettingsApi\App;
-use Dwnload\WPSettingsApi\Api\SettingSection;
-use Dwnload\WPSettingsApi\Settings\SectionManager;
+use Dwnload\WpSettingsApi\App;
+use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 
 $scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
 $action = admin_url( 'options.php', $scheme );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
 use TheFrosty\WP\Utils\Models\BaseModel;
 
@@ -8,7 +8,7 @@ use TheFrosty\WP\Utils\Models\BaseModel;
  * Class Style
  *
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class Style extends BaseModel {
 

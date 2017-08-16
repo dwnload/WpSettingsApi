@@ -1,6 +1,6 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
 use TheFrosty\WP\Utils\Models\BaseModel;
 
@@ -8,7 +8,7 @@ use TheFrosty\WP\Utils\Models\BaseModel;
  * Class Script
  *
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class Script extends BaseModel {
 

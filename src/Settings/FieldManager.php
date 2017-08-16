@@ -1,13 +1,13 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Settings;
+namespace Dwnload\WpSettingsApi\Settings;
 
-use Dwnload\WPSettingsApi\Api\SettingField;
+use Dwnload\WpSettingsApi\Api\SettingField;
 
 /**
  * Class FieldManager
  *
- * @package Dwnload\WPSettingsApi\Settings
+ * @package Dwnload\WpSettingsApi\Settings
  */
 class FieldManager {
 

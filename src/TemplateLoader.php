@@ -1,11 +1,11 @@
 <?php
 
-namespace Dwnload\WPSettingsApi;
+namespace Dwnload\WpSettingsApi;
 
 /**
  * Class TemplateLoader
  *
- * @package Dwnload\WPSettingsApi
+ * @package Dwnload\WpSettingsApi
  */
 class TemplateLoader {
 

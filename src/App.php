@@ -1,16 +1,16 @@
 <?php
 
-namespace Dwnload\WPSettingsApi;
+namespace Dwnload\WpSettingsApi;
 
-use Dwnload\WPSettingsApi\Api\PluginInfo;
-use Dwnload\WPSettingsApi\Settings\FieldManager;
-use Dwnload\WPSettingsApi\Settings\SectionManager;
+use Dwnload\WpSettingsApi\Api\PluginInfo;
+use Dwnload\WpSettingsApi\Settings\FieldManager;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 use TheFrosty\WP\Utils\WpHooksInterface;
 
 /**
  * Class Bootstrap
  *
- * @package Dwnload\WPSettingsApi
+ * @package Dwnload\WpSettingsApi
  */
 class App extends PluginInfo implements WpHooksInterface {
 

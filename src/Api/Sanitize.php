@@ -1,13 +1,13 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
-use Dwnload\WPSettingsApi\Settings\FieldManager;
+use Dwnload\WpSettingsApi\Settings\FieldManager;
 
 /**
  * Class Sanitize
  *
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class Sanitize {
 

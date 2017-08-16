@@ -1,15 +1,15 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Tests;
+namespace Dwnload\WpSettingsApi\Tests;
 
-use Dwnload\WPSettingsApi\Api\Options;
-use Dwnload\WPSettingsApi\Api\PluginInfo;
-use Dwnload\WPSettingsApi\App;
+use Dwnload\WpSettingsApi\Api\Options;
+use Dwnload\WpSettingsApi\Api\PluginInfo;
+use Dwnload\WpSettingsApi\App;
 
 /**
  * Class AppTest
  *
- * @package Dwnload\WPSettingsApi\Tests
+ * @package Dwnload\WpSettingsApi\Tests
  */
 class AppTest extends \PHPUnit_Framework_TestCase {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
 /**
  * Class LocalizeScripts
  * This class helps localize settings variables passed from PHP to JS.
  *
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class LocalizeScripts {
 

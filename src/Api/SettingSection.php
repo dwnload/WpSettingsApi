@@ -1,11 +1,11 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
 /**
  * Class SectionBuilder
  *
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class SettingSection {
 

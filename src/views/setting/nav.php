@@ -1,7 +1,7 @@
 <?php
 
-use Dwnload\WPSettingsApi\Api\SettingSection;
-use Dwnload\WPSettingsApi\Settings\SectionManager;
+use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 
 $sections = SectionManager::getSections();
 

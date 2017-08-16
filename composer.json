@@ -22,8 +22,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Dwnload\\WPSettingsApi\\": "src",
-      "Dwnload\\WPSettingsApi\\Tests\\": "tests"
+      "Dwnload\\WpSettingsApi\\": "src",
+      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
     }
   }
 }

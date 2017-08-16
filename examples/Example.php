@@ -2,12 +2,12 @@
 
 namespace Vendor\Package;
 
-use Dwnload\WPSettingsApi\Api\SettingField;
-use Dwnload\WPSettingsApi\Api\SettingSection;
-use Dwnload\WPSettingsApi\App;
-use Dwnload\WPSettingsApi\Settings\FieldManager;
-use Dwnload\WPSettingsApi\Settings\SectionManager;
-use Dwnload\WPSettingsApi\WPSettingsApi;
+use Dwnload\WpSettingsApi\Api\SettingField;
+use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\App;
+use Dwnload\WpSettingsApi\Settings\FieldManager;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
+use Dwnload\WpSettingsApi\WPSettingsApi;
 use TheFrosty\WP\Utils\Init;
 use TheFrosty\WP\Utils\WpHooksInterface;
 

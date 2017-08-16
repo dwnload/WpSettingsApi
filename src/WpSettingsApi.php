@@ -1,24 +1,24 @@
 <?php
 
-namespace Dwnload\WPSettingsApi;
+namespace Dwnload\WpSettingsApi;
 
-use Dwnload\WPSettingsApi\Api\Sanitize;
-use Dwnload\WPSettingsApi\Api\SettingField;
-use Dwnload\WPSettingsApi\Api\LocalizeScripts;
-use Dwnload\WPSettingsApi\Api\Script;
-use Dwnload\WPSettingsApi\Api\SettingSection;
-use Dwnload\WPSettingsApi\Api\Style;
-use Dwnload\WPSettingsApi\Settings\FieldManager;
-use Dwnload\WPSettingsApi\Settings\FieldTypes;
-use Dwnload\WPSettingsApi\Settings\SectionManager;
+use Dwnload\WpSettingsApi\Api\Sanitize;
+use Dwnload\WpSettingsApi\Api\SettingField;
+use Dwnload\WpSettingsApi\Api\LocalizeScripts;
+use Dwnload\WpSettingsApi\Api\Script;
+use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\Api\Style;
+use Dwnload\WpSettingsApi\Settings\FieldManager;
+use Dwnload\WpSettingsApi\Settings\FieldTypes;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 use TheFrosty\WP\Utils\WpHooksInterface;
 
 /**
  * Class WPSettingsApi
  *
- * @package Dwnload\WPSettingsApi
+ * @package Dwnload\WpSettingsApi
  */
-class WPSettingsApi implements WpHooksInterface {
+class WpSettingsApi implements WpHooksInterface {
 
 	/** @var App $app */
 	protected $app;

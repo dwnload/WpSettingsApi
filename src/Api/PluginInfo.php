@@ -1,14 +1,14 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
-use Dwnload\WPSettingsApi\App;
+use Dwnload\WpSettingsApi\App;
 use TheFrosty\WP\Utils\Models\BaseModel;
 
 /**
  * Class PluginInfo
  *
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 abstract class PluginInfo extends BaseModel {
 

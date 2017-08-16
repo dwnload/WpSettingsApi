@@ -1,13 +1,13 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Api;
+namespace Dwnload\WpSettingsApi\Api;
 
-use Dwnload\WPSettingsApi\Settings\FieldTypes;
+use Dwnload\WpSettingsApi\Settings\FieldTypes;
 
 /**
  * Class SettingField
  *
- * @package Dwnload\WPSettingsApi\Api
+ * @package Dwnload\WpSettingsApi\Api
  */
 class SettingField {
 

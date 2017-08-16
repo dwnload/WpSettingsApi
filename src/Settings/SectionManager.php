@@ -1,13 +1,13 @@
 <?php
 
-namespace Dwnload\WPSettingsApi\Settings;
+namespace Dwnload\WpSettingsApi\Settings;
 
-use Dwnload\WPSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\Api\SettingSection;
 
 /**
  * Class SectionManager
  *
- * @package Dwnload\WPSettingsApi\Settings
+ * @package Dwnload\WpSettingsApi\Settings
  */
 class SectionManager {
 
