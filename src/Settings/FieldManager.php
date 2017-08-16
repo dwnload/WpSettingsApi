@@ -12,7 +12,7 @@ use Dwnload\WpSettingsApi\Api\SettingField;
 class FieldManager {
 
     /**
-     * Array of SettingField objects.
+     * Array of `SettingField` objects.
      *
      * @var SettingField[]
      */
@@ -21,7 +21,7 @@ class FieldManager {
     /**
      * Set an array of new SettingField objects.
      *
-     * @param array $fields An array of Field objects.
+     * @param SettingField[] $fields An array of `SettingField` objects.
      */
     public function setFields( array $fields ) {
         array_push( self::$settings_fields, ...$fields );
@@ -30,7 +30,7 @@ class FieldManager {
     /**
      * Add a new SettingField object.
      *
-     * @param SettingField $field The SettingField object.
+     * @param SettingField $field The `SettingField` object.
      */
     public function addField( SettingField $field ) {
         self::$settings_fields[ $field->getSectionId() ][] = $field;
@@ -39,7 +39,7 @@ class FieldManager {
     /**
      * Get all SettingField objects as an array.
      *
-     * @return SettingField[] Array of SettingField objects.
+     * @return SettingField[] An array of `SettingField` objects.
      */
     public static function getFields() : array {
         return self::$settings_fields;
