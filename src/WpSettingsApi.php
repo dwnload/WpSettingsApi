@@ -79,15 +79,15 @@ class WpSettingsApi implements WpHooksInterface {
 		// Register settings sections
 		foreach ( SectionManager::getSections() as $section ) {
 			/** @var SettingSection $section */
-			if ( get_option( $this->getSettingId(), false ) === false ) {
-				add_option( $this->getSettingId(), [] );
+			if ( get_option( $section->getId(), false ) === false ) {
+				add_option( $section->getId(), [] );
 			}
 
 			add_settings_section(
-                $this->getSettingId(),
+				$section->getId(),
 				$section->getTitle(),
 				'__return_false',
-                $this->getSettingId()
+				$section->getId()
 			);
 		}
 
@@ -119,11 +119,11 @@ class WpSettingsApi implements WpHooksInterface {
 				// @todo double check `$callback_array` fallback is callable.
 
 				add_settings_field(
-                    $this->getSettingId() . '[' . $section_id . '][' . $field->getName() . ']',
+					$section_id . '[' . $field->getName() . ']',
 					$field->getLabel(),
 					$callback_array,
-                    $this->getSettingId(),
-                    $this->getSettingId(),
+					$section_id,
+					$section_id,
 					$args
 				);
 			}
@@ -132,8 +132,8 @@ class WpSettingsApi implements WpHooksInterface {
 		// Register settings setting
 		foreach ( SectionManager::getSections() as $section ) {
 			register_setting(
-                $this->getSettingId(),
-                $this->getSettingId(),
+				$section->getId(),
+				$section->getId(),
 				[ $this, 'sanitizeOptionsArray' ]
 			);
 		}
@@ -350,8 +350,4 @@ class WpSettingsApi implements WpHooksInterface {
 			}
 		}
 	}
-
-	private function getSettingId():string {
-	    return sprintf( '%s_settings', $this->app->getPrefix() );
-    }
 }
