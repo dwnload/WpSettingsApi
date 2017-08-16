@@ -14,7 +14,7 @@ class FieldManager {
     /**
      * Array of SettingField objects.
      *
-     * @var array
+     * @var SettingField[]
      */
     protected static $settings_fields = [];
 
@@ -39,7 +39,7 @@ class FieldManager {
     /**
      * Get all SettingField objects as an array.
      *
-     * @return array Array of SettingField objects.
+     * @return SettingField[] Array of SettingField objects.
      */
     public static function getFields() : array {
         return self::$settings_fields;
