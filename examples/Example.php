@@ -7,7 +7,7 @@ use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\App;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use Dwnload\WpSettingsApi\WPSettingsApi;
+use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WP\Utils\Init;
 use TheFrosty\WP\Utils\WpHooksInterface;
 
@@ -87,7 +87,7 @@ class ExampleSettings implements WpHooksInterface {
 
 $app = new App( [
     'domain' => 'vendor-domain',
-    'file' => __FILE__, // Path to WPSettingsApi file.
+    'file' => __FILE__, // Path to WpSettingsApi file.
     'menu-slug' => 'vendor-domain-settings',
     'menu-title' => 'Vendor Settings', // Title found in menu
     'page-title' => 'Vendor Settings Api', // Title output at top of settings page
@@ -96,6 +96,6 @@ $app = new App( [
 ] );
 ( new Init() )
     ->add( $app )
-    ->add( new WPSettingsApi( $app ) )
+    ->add( new WpSettingsApi( $app ) )
     ->add( new ExampleSettings() )
     ->initialize();
