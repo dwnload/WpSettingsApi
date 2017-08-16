@@ -49,7 +49,7 @@ class Options {
         $value = self::getOption( $option_key, $section_id, $default );
 
         if ( ! empty( $value ) ) {
-            return str_repeat( '*', strlen( $value ) - $len ) . substr( $value, - $len, $len );
+            return str_repeat( '*', absint( strlen( $value ) - $len ) ) . substr( $value, - $len, $len );
         }
 
         return $value;
