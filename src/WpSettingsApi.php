@@ -14,7 +14,7 @@ use Dwnload\WpSettingsApi\Settings\SectionManager;
 use TheFrosty\WP\Utils\WpHooksInterface;
 
 /**
- * Class WPSettingsApi
+ * Class WpSettingsApi
  *
  * @package Dwnload\WpSettingsApi
  */
@@ -24,7 +24,7 @@ class WpSettingsApi implements WpHooksInterface {
 	protected $app;
 
 	/**
-	 * WPSettingsApi constructor.
+	 * WpSettingsApi constructor.
 	 *
 	 * @param App $app
 	 */

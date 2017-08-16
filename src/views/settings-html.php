@@ -1,10 +1,10 @@
 <?php
 
 use Dwnload\WpSettingsApi\App;
-use Dwnload\WpSettingsApi\WPSettingsApi;
+use Dwnload\WpSettingsApi\WpSettingsApi;
 
-if ( ! ( $this instanceof WPSettingsApi ) ) {
-	wp_die( 'Please don\'t load this file outside the WPSettingsApi object.' );
+if ( ! ( $this instanceof WpSettingsApi ) ) {
+	wp_die( 'Please don\'t load this file outside the WpSettingsApi object.' );
 }
 
 ?>
