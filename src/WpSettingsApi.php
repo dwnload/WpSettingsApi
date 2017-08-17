@@ -143,6 +143,7 @@ class WpSettingsApi implements WpHooksInterface {
 	 * Fire hooks needed on the Settings Page (only).
 	 */
 	public function load() {
+        do_action( App::ACTION_PREFIX . 'settings_page_loaded' );
 		add_action( 'admin_enqueue_scripts', [ $this, 'adminEnqueueScripts' ], 99 );
 		add_action( 'admin_footer', [ $this, 'localizeScripts' ], 99 );
 	}
