@@ -30,9 +30,9 @@ class Options {
      *
      * @param string $section_id The Section object ID the option belongs too.
      *
-     * @return array
+     * @return mixed Value set for the option. Defaults to an empty array.
      */
-    public static function getOptions( string $section_id ) : array {
+    public static function getOptions( string $section_id ) {
         return get_option( $section_id, [] );
     }
 
