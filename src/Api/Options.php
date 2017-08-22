@@ -2,6 +2,8 @@
 
 namespace Dwnload\WpSettingsApi\Api;
 
+use Dwnload\WpSettingsApi\Settings\SectionManager;
+
 /**
  * Class Options
  *
@@ -20,6 +22,9 @@ class Options {
      * @return mixed
      */
     public static function getOption( string $option_key, string $section_id, $default = '' ) {
+        if ( empty( $section_id ) ) {
+            $section_id = self::getSectionId( $option_key );
+        }
         $options = Options::getOptions( $section_id );
 
         return $options[ $option_key ] ?? $default;
@@ -64,5 +69,21 @@ class Options {
      */
     public static function isObfuscated( string $value ): bool {
         return strpos( $value, '****' ) !== false;
+    }
+
+    /**
+     * @param string $option_key
+     *
+     * @return string
+     */
+    protected static function getSectionId( string $option_key ): string {
+        foreach ( SectionManager::getSections() as $section ) {
+            $options = self::getOptions( $section->getId() );
+            if ( array_key_exists( $option_key, $options ) ) {
+                return $section->getId();
+            }
+        }
+
+        return '';
     }
 }
