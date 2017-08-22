@@ -21,7 +21,7 @@ class Options {
      *
      * @return mixed
      */
-    public static function getOption( string $option_key, string $section_id, $default = '' ) {
+    public static function getOption( string $option_key, string $section_id = null, $default = '' ) {
         if ( empty( $section_id ) ) {
             $section_id = self::getSectionId( $option_key );
         }
