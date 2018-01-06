@@ -4,8 +4,8 @@
         colors="true"
 >
     <testsuites>
-        <testsuite>
-            <directory suffix="Test.php">./tests/</directory>
+        <testsuite name="unit">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

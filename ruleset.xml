@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="BB-WP-SETTINGS-API">
-    <description>Coding Standards for BBWPSA development.</description>
+<ruleset name="WP-SETTINGS-API">
+    <description>Coding Standards for WpSettingsApi package.</description>
 
     <file>dwnload-wpwp-settings-api</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
-    <exclude-pattern>*/bower_components/*</exclude-pattern>
     <file>tests</file>
     <arg name="extensions" value="php"/>
     <arg name="tab-width" value="4"/>
