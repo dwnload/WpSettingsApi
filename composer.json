@@ -18,11 +18,25 @@
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
-    "wp-coding-standards/wpcs": "^0.9.0"
+    "phpunit/phpunit": "5.7.*",
+    "wp-coding-standards/wpcs": "^0.13.1"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@phpcs"
+    ],
+    "post-update-cmd": [
+      "@phpcs"
+    ],
+    "phpcs": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
   },
   "autoload": {
     "psr-4": {
       "Dwnload\\WpSettingsApi\\": "src",
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Dwnload\\WpSettingsApi\\Tests\\": "tests"
     }
   }

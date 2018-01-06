@@ -1,4 +1,11 @@
-# Dwnload WordPress Settings Api [![Build Status](https://travis-ci.org/dwnload/WpSettingsApi.svg?branch=master)](https://travis-ci.org/dwnload/WpSettingsApi)
+# Dwnload WordPress Settings Api
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
+[![Total Downloads](https://img.shields.io/packagist/dt/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
+[![Latest Unstable Version](https://img.shields.io/packagist/vpre/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
+[![License](https://img.shields.io/packagist/l/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
+[![Build Status](https://travis-ci.org/dwnload/WpSettingsApi.svg?branch=master)](https://travis-ci.org/dwnload/WpSettingsApi)
+
 It's a PHP class wrapper for handling WordPress [Settings API](http://codex.wordpress.org/Settings_API).
 
 ## Package Installation (via Composer)

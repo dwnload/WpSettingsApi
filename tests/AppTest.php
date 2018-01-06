@@ -13,23 +13,23 @@ use Dwnload\WpSettingsApi\App;
  */
 class AppTest extends \PHPUnit_Framework_TestCase {
 
-	/** @var  App $app */
-	protected $app;
+    /** @var  App $app */
+    protected $app;
 
-	/** @var array $atts */
-	protected $atts = [
-		'domain'  => 'vendor-domain',
-		'file'    => __FILE__,
-		'prefix'  => 'vendor_',
-		'version' => '0.7.8',
-	];
+    /** @var array $atts */
+    protected $atts = [
+        'domain' => 'vendor-domain',
+        'file' => __FILE__,
+        'prefix' => 'vendor_',
+        'version' => '0.7.8',
+    ];
 
     /**
      * Set up with WP_Mock
      */
     public function setUp() {
         \WP_Mock::setUp();
-	    $this->app = new App( $this->atts );
+        $this->app = new App( $this->atts );
     }
 
     /**
@@ -44,14 +44,15 @@ class AppTest extends \PHPUnit_Framework_TestCase {
      * Test addHooks method
      */
     public function testAddHooks() {
-    	$function = function() {};
+        $function = function() {
+        };
         \WP_Mock::expectActionAdded(
             'init',
-	        $function,
+            $function,
             App::HOOK_PRIORITY
         );
 
-	    $this->app->addHooks();
+        $this->app->addHooks();
     }
 
     /**
@@ -71,13 +72,13 @@ class AppTest extends \PHPUnit_Framework_TestCase {
      * Test getPluginsUrl method
      */
     public function testGetPluginsUrl() {
-        $src  = 'foo/assets/css/admin.css';
+        $src = 'foo/assets/css/admin.css';
         $file = constant( PluginInfo::class . '_FILE' );
-        \WP_Mock::userFunction( 'plugins_url', array(
-            'args'   => [ $src, $file ],
-            'times'  => 1,
+        \WP_Mock::userFunction( 'plugins_url', [
+            'args' => [ $src, $file ],
+            'times' => 1,
             'return' => 'http://example.com/foo/assets/css/admin.css',
-        ) );
+        ] );
 
         $plugins_url = $this->app->getPluginsUrl( $src );
 
