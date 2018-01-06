@@ -21,6 +21,7 @@ branches:
         - develop
 
 before_script:
+  - composer install --no-progress --prefer-source
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
