@@ -32,7 +32,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Dwnload\\WpSettingsApi\\": "src",
+      "Dwnload\\WpSettingsApi\\": "src"
     }
   },
   "autoload-dev": {
