@@ -1,6 +1,6 @@
 # Dwnload WordPress Settings Api
 
-![PHP 7.0+][php-image]
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/dwnload/wp-settings-api.svg)]()
 [![Latest Stable Version](https://img.shields.io/packagist/v/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
 [![Total Downloads](https://img.shields.io/packagist/dt/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
 [![License](https://img.shields.io/packagist/l/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
