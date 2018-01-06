@@ -8,44 +8,42 @@ cache:
 
 language: php
 
+env:
+  global:
+    - WP_FOLDER="/tmp/wordpress"
+    - WP_URL="http://wp.localhost"
+    - WP_DOMAIN="wp.localhost"
+
+  matrix:
+    - WP_VERSION=latest
+
 matrix:
+  fast_finish: true
   include:
     - php: 7.1
-      env: WP_VERSION=latest
     - php: 7.0
-      env: WP_VERSION=latest
 
 branches:
     only:
         - master
         - develop
 
-before_script:
-  - composer install --no-progress --prefer-source
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-      phpenv config-rm xdebug.ini
-    else
-      echo "xdebug.ini does not exist"
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global require wp-coding-standards/wpcs
-      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
-    fi
+before_install:
+  - composer self-update
+  # set up folders
+  - mkdir -p $WP_FOLDER
+  - mkdir tools
+  # install wp-cli in the `tools` folder
+  - wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P $(pwd)/tools/
+  - chmod +x tools/wp-cli.phar && mv tools/wp-cli.phar tools/wp
+  # append the `tools` folder to the PATH
+  - export PATH=$PATH:$(pwd)/tools
+  # prepend the `vendor/bin` folder the PATH
+  - export PATH=vendor/bin:$PATH
+
+install:
+  - composer install --no-interaction
+
 script:
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs
-    fi
+  - find src tests \( -name '*.php' \) -exec php -l {} \;
+  - vendor/bin/phpunit

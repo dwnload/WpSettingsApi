@@ -5,6 +5,7 @@ namespace Vendor\Package;
 use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\App;
+use Dwnload\WpSettingsApi\AppFactory;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
@@ -14,7 +15,7 @@ use TheFrosty\WP\Utils\WpHooksInterface;
 class ExampleSettings implements WpHooksInterface {
 
     /**
-     * Register our callback to the BB WP Settings API action hook
+     * Register our callback to the WP Settings API action hook
      * `App::ACTION_PREFIX . 'init'`. This custom action passes two parameters
      * so you have to register a priority and the parameter count.
      */
@@ -85,7 +86,7 @@ class ExampleSettings implements WpHooksInterface {
     }
 }
 
-$app = new App( [
+$app = AppFactory::createApp( [
     'domain' => 'vendor-domain',
     'file' => __FILE__, // Path to WpSettingsApi file.
     'menu-slug' => 'vendor-domain-settings',
@@ -95,7 +96,6 @@ $app = new App( [
     'version' => '0.7.9',
 ] );
 ( new Init() )
-    ->add( $app )
     ->add( new WpSettingsApi( $app ) )
     ->add( new ExampleSettings() )
     ->initialize();
