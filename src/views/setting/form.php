@@ -7,8 +7,9 @@ use Dwnload\WpSettingsApi\Settings\SectionManager;
 $scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
 $action = admin_url( 'options.php', $scheme );
 
+/** @var $this \Dwnload\WpSettingsApi\WpSettingsApi */
 /** @var SettingSection $section */
-foreach ( SectionManager::getSections() as $section ) {
+foreach ( SectionManager::getSections( $this->getMenuSlug() ) as $section ) {
 	?>
     <div id="Dwnload_WP_Settings_Api__<?php echo esc_attr( $section->getId() ); ?>"
          class="Dwnload_WP_Settings_Api__group">

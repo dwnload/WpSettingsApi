@@ -26,13 +26,17 @@ class App extends PluginInfo implements WpHooksInterface {
 		 * "Out of the frying pan, and into the fire!"
 		 */
 		add_action( 'init', function() {
+		    if ( did_action( self::ACTION_PREFIX . 'init' ) ) {
+		        return;
+            }
+
 			/**
 			 * Fires when this plugin is loaded!
 			 *
 			 * @var SectionManager Instance of the SectionManager object.
-			 * @var FieldManager Instance of the FieldManager object.
+             * @var FieldManager Instance of the FieldManager object.
 			 */
-			do_action( self::ACTION_PREFIX . 'init', ( new SectionManager() ), ( new FieldManager() ) );
+			do_action( self::ACTION_PREFIX . 'init', ( new SectionManager( $this ) ), ( new FieldManager() ) );
 		}, self::HOOK_PRIORITY );
 	}
 

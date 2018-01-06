@@ -3,7 +3,8 @@
 use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 
-$sections = SectionManager::getSections();
+/** @var $this \Dwnload\WpSettingsApi\WpSettingsApi */
+$sections = SectionManager::getSections( $this->getMenuSlug() );
 
 if ( count( $sections ) <= 1 ) {
 	return;

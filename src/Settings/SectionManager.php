@@ -2,6 +2,7 @@
 
 namespace Dwnload\WpSettingsApi\Settings;
 
+use Dwnload\WpSettingsApi\AbstractApp;
 use Dwnload\WpSettingsApi\Api\SettingSection;
 
 /**
@@ -9,12 +10,12 @@ use Dwnload\WpSettingsApi\Api\SettingSection;
  *
  * @package Dwnload\WpSettingsApi\Settings
  */
-class SectionManager {
+class SectionManager extends AbstractApp {
 
     /**
      * Array of SettingSection objects.
      *
-     * @var SettingSection[]
+     * @var array SettingSection[]
      */
     protected static $settings_sections = [];
 
@@ -24,7 +25,7 @@ class SectionManager {
      * @param SettingSection[] $sections An array of SettingSection objects.
      */
     public function setSections( array $sections ) {
-        array_push( self::$settings_sections, ...$sections );
+        self::$settings_sections[ $this->getApp()->getMenuSlug() ] = $sections;
     }
 
     /**
@@ -34,8 +35,8 @@ class SectionManager {
      *
      * @return string The registered section ID
      */
-    public function addSection( SettingSection $section ) : string {
-        self::$settings_sections[] = $section;
+    public function addSection( SettingSection $section ): string {
+        self::$settings_sections[ $this->getApp()->getMenuSlug() ][] = $section;
 
         return $section->getId();
     }
@@ -43,9 +44,11 @@ class SectionManager {
     /**
      * Get all settings SettingSection objects as an array.
      *
+     * @param string $menu_slug The App->getMenuSlug() instance id.
+     *
      * @return SettingSection[] Array of SettingSection objects.
      */
-    public static function getSections() : array {
-        return self::$settings_sections;
+    public static function getSections( string $menu_slug = null ): array {
+        return self::$settings_sections[ $menu_slug ] ?? self::$settings_sections;
     }
 }

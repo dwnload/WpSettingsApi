@@ -3,6 +3,7 @@
 use Dwnload\WpSettingsApi\App;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 
+/** @var $this \Dwnload\WpSettingsApi\WpSettingsApi */
 if ( ! ( $this instanceof WpSettingsApi ) ) {
 	wp_die( 'Please don\'t load this file outside the WpSettingsApi object.' );
 }

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.0 - 2018-01-06
+- Added: `AppFactory` class.
+- Updated: Added `SectionManager` DI of the `App` instance. Allows for multiple instances to be
+created by multiple plugins. Please update your instantiation using the new `AppFactory` and remove
+the `$app` from `( new Init() )->add( $app )` as it's bootstrapped from `WpSettingsApi` now. See
+[Example.php](https://github.com/dwnload/WpSettingsApi/tree/master/examples/Example.php#89)
+
 ## 2.1.5 - 2017-08-23
 ### Updated
 - Set Options::getOptions `$section_id` default to `null`.
