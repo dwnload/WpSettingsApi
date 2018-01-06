@@ -20,7 +20,7 @@ class ExampleSettings implements WpHooksInterface {
      * so you have to register a priority and the parameter count.
      */
     public function addHooks() {
-        add_action( App::ACTION_PREFIX . 'init', [ $this, 'init' ], 10, 3 );
+        add_action( App::ACTION_PREFIX . 'init', [ $this, 'init' ], 10, 2 );
     }
 
     /**
