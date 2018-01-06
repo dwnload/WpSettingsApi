@@ -18,7 +18,7 @@
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
-    "phpunit/phpunit": "5.7.*",
+    "phpunit/phpunit": "6.*",
     "wp-coding-standards/wpcs": "^0.13.1"
   },
   "scripts": {
@@ -32,12 +32,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Dwnload\\WpSettingsApi\\": "src"
+      "Dwnload\\WpSettingsApi\\": "src",
+      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
     }
   }
 }
