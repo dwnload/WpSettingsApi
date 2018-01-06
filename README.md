@@ -2,7 +2,6 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
 [![Total Downloads](https://img.shields.io/packagist/dt/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
-[![Latest Unstable Version](https://img.shields.io/packagist/vpre/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
 [![License](https://img.shields.io/packagist/l/dwnload/wp-settings-api.svg)](https://packagist.org/packages/dwnload/wp-settings-api)
 [![Build Status](https://travis-ci.org/dwnload/WpSettingsApi.svg?branch=master)](https://travis-ci.org/dwnload/WpSettingsApi)
 
@@ -15,7 +14,7 @@ To install this package, edit your `composer.json` file:
 ```js
 {
     "require": {
-        "dwnload/wp-settings-api": "dev-master"
+        "dwnload/wp-settings-api": "^2.*"
     }
 }
 ```
