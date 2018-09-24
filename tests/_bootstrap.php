@@ -5,5 +5,5 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-define( \Dwnload\WpSettingsApi\Api\PluginInfo::class . '_FILE', __FILE__ );
-define( \Dwnload\WpSettingsApi\Api\PluginInfo::class . '_VERSION', '1' );
+define(\Dwnload\WpSettingsApi\Api\PluginInfo::class . '_FILE', __FILE__);
+define(\Dwnload\WpSettingsApi\Api\PluginInfo::class . '_VERSION', '1');

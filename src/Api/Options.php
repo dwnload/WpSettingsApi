@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -10,7 +10,8 @@ use Dwnload\WpSettingsApi\Settings\SectionManager;
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-class Options {
+class Options
+{
 
     /**
      * Get the value of a settings field
@@ -22,13 +23,14 @@ class Options {
      *
      * @return mixed
      */
-    public static function getOption( string $option_key, string $section_id = null, $default = '' ) {
-        if ( empty( $section_id ) ) {
-            $section_id = self::getSectionId( $option_key );
+    public static function getOption(string $option_key, string $section_id = null, $default = '')
+    {
+        if (empty($section_id)) {
+            $section_id = self::getSectionId($option_key);
         }
-        $options = Options::getOptions( $section_id );
+        $options = Options::getOptions($section_id);
 
-        return $options[ $option_key ] ?? $default;
+        return $options[$option_key] ?? $default;
     }
 
     /**
@@ -38,8 +40,9 @@ class Options {
      *
      * @return mixed Value set for the option. Defaults to an empty array.
      */
-    public static function getOptions( string $section_id ) {
-        return get_option( $section_id, [] );
+    public static function getOptions(string $section_id)
+    {
+        return \get_option($section_id, []);
     }
 
     /**
@@ -51,11 +54,12 @@ class Options {
      *
      * @return mixed|string
      */
-    public static function getObfuscatedOption( string $option_key, string $section_id, $default = '', int $len = 6 ) {
-        $value = self::getOption( $option_key, $section_id, $default );
+    public static function getObfuscatedOption(string $option_key, string $section_id, $default = '', int $len = 6)
+    {
+        $value = self::getOption($option_key, $section_id, $default);
 
-        if ( ! empty( $value ) ) {
-            return str_repeat( '*', absint( strlen( $value ) - $len ) ) . substr( $value, - $len, $len );
+        if (!empty($value)) {
+            return \str_repeat('*', \absint(\strlen($value) - $len)) . \substr($value, -$len, $len);
         }
 
         return $value;
@@ -68,8 +72,9 @@ class Options {
      *
      * @return bool
      */
-    public static function isObfuscated( string $value ): bool {
-        return strpos( $value, '****' ) !== false;
+    public static function isObfuscated(string $value): bool
+    {
+        return \strpos($value, '****') !== false;
     }
 
     /**
@@ -77,10 +82,11 @@ class Options {
      *
      * @return string
      */
-    protected static function getSectionId( string $option_key ): string {
-        foreach ( SectionManager::getSections( AppFactory::getApp()->getMenuSlug() ) as $section ) {
-            $options = self::getOptions( $section->getId() );
-            if ( array_key_exists( $option_key, $options ) ) {
+    protected static function getSectionId(string $option_key): string
+    {
+        foreach (SectionManager::getSections(AppFactory::getApp()->getMenuSlug()) as $section) {
+            $options = self::getOptions($section->getId());
+            if (\array_key_exists($option_key, $options)) {
                 return $section->getId();
             }
         }

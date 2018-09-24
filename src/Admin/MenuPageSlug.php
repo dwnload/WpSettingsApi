@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Admin;
 
@@ -12,12 +12,12 @@ namespace Dwnload\WpSettingsApi\Admin;
  *
  * @package Dwnload\WpSettingsApi\Admi
  */
-interface MenuPageSlug {
+interface MenuPageSlug
+{
 
     /**
      * Slugs to use as parents for the built-in WordPress menu pages.
      */
-
     const DASHBOARD = 'index.php';
     const POSTS = 'edit.php';
     const MEDIA = 'upload.php';

@@ -12,15 +12,17 @@ use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WP\Utils\Init;
 use TheFrosty\WP\Utils\WpHooksInterface;
 
-class ExampleSettings implements WpHooksInterface {
+class ExampleSettings implements WpHooksInterface
+{
 
     /**
      * Register our callback to the WP Settings API action hook
      * `App::ACTION_PREFIX . 'init'`. This custom action passes two parameters
      * so you have to register a priority and the parameter count.
      */
-    public function addHooks() {
-        add_action( App::ACTION_PREFIX . 'init', [ $this, 'init' ], 10, 2 );
+    public function addHooks()
+    {
+        \add_action(App::ACTION_PREFIX . 'init', [$this, 'init'], 10, 2);
     }
 
     /**
@@ -40,53 +42,54 @@ class ExampleSettings implements WpHooksInterface {
      * @param SectionManager $section_manager
      * @param FieldManager $field_manager
      */
-    public function init( SectionManager $section_manager, FieldManager $field_manager ) {
+    public function init(SectionManager $section_manager, FieldManager $field_manager)
+    {
         /**
          * Checkout Settings Section
          * `$section_manager->addSection` returns the ID of the new section to pass
          * to any fields that are registered to this section.
          */
         $section_id = $section_manager->addSection(
-            new SettingSection( [
+            new SettingSection([
                 SettingSection::SECTION_ID => 'plugin_checkout', // Unique section ID
                 SettingSection::SECTION_TITLE => 'Checkout Settings',
-            ] )
+            ])
         );
 
         // Passing Field settings as an Array
         $field_manager->addField(
-            new SettingField( [
+            new SettingField([
                 SettingField::NAME => 'text1',
-                SettingField::LABEL => esc_html__( 'I\'m a label, bro!', 'text-domain' ),
-                SettingField::DESC => esc_html__( 'An example text field', 'text-domain' ),
+                SettingField::LABEL => \esc_html__('I\'m a label, bro!', 'text-domain'),
+                SettingField::DESC => \esc_html__('An example text field', 'text-domain'),
                 SettingField::TYPE => 'text',
                 SettingField::SECTION_ID => $section_id,
-            ] )
+            ])
         );
 
         /**
          * Random Settings Section
          */
         $section_id = $section_manager->addSection(
-            new SettingSection( [
+            new SettingSection([
                 SettingSection::SECTION_ID => 'plugin_random',
                 SettingSection::SECTION_TITLE => 'Random Settings',
-            ] )
+            ])
         );
 
         // Passing Field settings as setters to the field object
         $field = new SettingField();
-        $field->setName( 'text1' );
-        $field->setLabel( esc_html__( 'I\'m a label, bro!', 'text-domain' ) );
-        $field->setDescription( esc_html__( 'An example text field', 'text-domain' ) );
-        $field->setType( 'text' ); // @see \Settings\FieldTypes for default types
-        $field->setSectionId( $section_id );
+        $field->setName('text1');
+        $field->setLabel(\esc_html__('I\'m a label, bro!', 'text-domain'));
+        $field->setDescription(\esc_html__('An example text field', 'text-domain'));
+        $field->setType('text'); // @see \Settings\FieldTypes for default types
+        $field->setSectionId($section_id);
 
-        $field_manager->addField( $field );
+        $field_manager->addField($field);
     }
 }
 
-$app = AppFactory::createApp( [
+$app = AppFactory::createApp([
     'domain' => 'vendor-domain',
     'file' => __FILE__, // Path to WpSettingsApi file.
     'menu-slug' => 'vendor-domain-settings',
@@ -94,8 +97,8 @@ $app = AppFactory::createApp( [
     'page-title' => 'Vendor Settings Api', // Title output at top of settings page
     'prefix' => 'vendor_',
     'version' => '0.7.9',
-] );
-( new Init() )
-    ->add( new WpSettingsApi( $app ) )
-    ->add( new ExampleSettings() )
+]);
+(new Init())
+    ->add(new WpSettingsApi($app))
+    ->add(new ExampleSettings())
     ->initialize();

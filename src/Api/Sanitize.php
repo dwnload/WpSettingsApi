@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -9,7 +9,8 @@ use Dwnload\WpSettingsApi\Settings\FieldManager;
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-class Sanitize {
+class Sanitize
+{
 
     /**
      * Sanitize method for possible obfuscated values.
@@ -23,14 +24,15 @@ class Sanitize {
      *
      * @return mixed
      */
-    public static function sanitizeObfuscated( $value, array $options, string $option_slug ) {
-        $section_id = self::getSectionId( $option_slug );
+    public static function sanitizeObfuscated($value, array $options, string $option_slug)
+    {
+        $section_id = self::getSectionId($option_slug);
 
-        if ( ! empty( $section_id ) && Options::isObfuscated( $value ) ) {
-            return Options::getOption( $option_slug, $section_id, $value );
+        if (!empty($section_id) && Options::isObfuscated($value)) {
+            return Options::getOption($option_slug, $section_id, $value);
         }
 
-        return sanitize_text_field( $value );
+        return \sanitize_text_field($value);
     }
 
     /**
@@ -40,12 +42,13 @@ class Sanitize {
      *
      * @return string
      */
-    private static function getSectionId( string $option_slug ): string {
+    private static function getSectionId(string $option_slug): string
+    {
         // Iterate over registered fields and see if we can find proper callback
-        foreach ( FieldManager::getFields() as $fields ) {
+        foreach (FieldManager::getFields() as $fields) {
             /** @var SettingField $field */
-            foreach ( $fields as $field ) {
-                if ( $field->getName() === $option_slug ) {
+            foreach ($fields as $field) {
+                if ($field->getName() === $option_slug) {
                     return $field->getSectionId();
                 }
             }

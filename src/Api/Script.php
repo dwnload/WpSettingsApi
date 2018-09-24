@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
-use TheFrosty\WP\Utils\Models\BaseModel;
+use TheFrosty\WpUtilities\Models\BaseModel;
 
 /**
  * Class Script
@@ -10,7 +10,8 @@ use TheFrosty\WP\Utils\Models\BaseModel;
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
  * @package Dwnload\WpSettingsApi\Api
  */
-class Script extends BaseModel {
+class Script extends BaseModel
+{
 
     const OBJECT_NAME = 'dwnload_wp_settings_api';
 
@@ -32,7 +33,8 @@ class Script extends BaseModel {
      *
      * @param string $handle
      */
-    public function setHandle( string $handle ) {
+    public function setHandle(string $handle)
+    {
         $this->handle = $handle;
     }
 
@@ -41,7 +43,8 @@ class Script extends BaseModel {
      *
      * @return string
      */
-    public function getHandle() : string {
+    public function getHandle(): string
+    {
         return $this->handle;
     }
 
@@ -57,7 +60,8 @@ class Script extends BaseModel {
      *
      * @param string $src
      */
-    public function setSrc( string $src ) {
+    public function setSrc(string $src)
+    {
         $this->src = $src;
     }
 
@@ -66,7 +70,8 @@ class Script extends BaseModel {
      *
      * @return string
      */
-    public function getSrc() : string {
+    public function getSrc(): string
+    {
         return $this->src;
     }
 
@@ -82,7 +87,8 @@ class Script extends BaseModel {
      *
      * @param array $dependencies
      */
-    public function setDependencies( array $dependencies ) {
+    public function setDependencies(array $dependencies)
+    {
         $this->dependencies = $dependencies;
     }
 
@@ -91,7 +97,8 @@ class Script extends BaseModel {
      *
      * @return array
      */
-    public function getDependencies() : array {
+    public function getDependencies(): array
+    {
         return $this->dependencies;
     }
 
@@ -107,7 +114,8 @@ class Script extends BaseModel {
      *
      * @param string|bool|null $version
      */
-    public function setVersion( $version ) {
+    public function setVersion($version)
+    {
         $this->version = $version;
     }
 
@@ -116,7 +124,8 @@ class Script extends BaseModel {
      *
      * @return string|bool|null
      */
-    public function getVersion() {
+    public function getVersion()
+    {
         return $this->version;
     }
 
@@ -133,7 +142,8 @@ class Script extends BaseModel {
      *
      * @param bool $in_footer
      */
-    public function setInFooter( bool $in_footer ) {
+    public function setInFooter(bool $in_footer)
+    {
         $this->in_footer = $in_footer;
     }
 
@@ -142,7 +152,8 @@ class Script extends BaseModel {
      *
      * @return bool
      */
-    public function getInFooter() : bool {
+    public function getInFooter(): bool
+    {
         return $this->in_footer;
     }
 }

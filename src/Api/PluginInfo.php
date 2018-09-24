@@ -1,143 +1,159 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\App;
-use TheFrosty\WP\Utils\Models\BaseModel;
+use TheFrosty\WpUtilities\Models\BaseModel;
 
 /**
  * Class PluginInfo
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-abstract class PluginInfo extends BaseModel {
+abstract class PluginInfo extends BaseModel
+{
 
     /** @var string $nonce_s */
     protected $nonce_s = App::FILTER_PREFIX . '%s';
 
-    /** @var string $_domain */
-    private $_domain;
+    /** @var string $domain */
+    private $domain;
 
-    /** @var string $_file */
-    private $_file;
+    /** @var string $file */
+    private $file;
 
-    /** @var string $_menu_slug */
-    private $_menu_slug;
+    /** @var string $menu_slug */
+    private $menu_slug;
 
-    /** @var string $_menu_title */
-    private $_menu_title;
+    /** @var string $menu_title */
+    private $menu_title;
 
-    /** @var string $_page_title */
-    private $_page_title;
+    /** @var string $page_title */
+    private $page_title;
 
-    /** @var string $_prefix */
-    private $_prefix;
+    /** @var string $prefix */
+    private $prefix;
 
-    /** @var string $_version */
-    private $_version;
+    /** @var string $version */
+    private $version;
 
     /**
      * @param string $domain
      */
-    public function setDomain( string $domain ) {
-        $this->_domain = $domain;
+    public function setDomain(string $domain)
+    {
+        $this->domain = $domain;
     }
 
     /**
      * @return string
      */
-    public function getDomain(): string {
-        return $this->_domain;
+    public function getDomain(): string
+    {
+        return $this->domain;
     }
 
     /**
      * @param string $file
      */
-    public function setFile( string $file ) {
-        $this->_file = $file;
+    public function setFile(string $file)
+    {
+        $this->file = $file;
     }
 
     /**
      * @return string
      */
-    public function getFile(): string {
-        return $this->_file;
+    public function getFile(): string
+    {
+        return $this->file;
     }
 
     /**
      * @return string
      */
-    public function getNonce(): string {
-        return sprintf( $this->nonce_s, plugin_basename( $this->getFile() ) );
+    public function getNonce(): string
+    {
+        return \sprintf($this->nonce_s, \plugin_basename($this->getFile()));
     }
 
     /**
      * @param string $slug
      */
-    public function setMenuSlug( string $slug ) {
-        $this->_menu_slug = $slug;
+    public function setMenuSlug(string $slug)
+    {
+        $this->menu_slug = $slug;
     }
 
     /**
      * @return string
      */
-    public function getMenuSlug(): string {
-        return $this->_menu_slug ?? $this->_domain;
+    public function getMenuSlug(): string
+    {
+        return $this->menu_slug ?? $this->domain;
     }
 
     /**
      * @param string $title
      */
-    public function setMenuTitle( string $title ) {
-        $this->_menu_title = $title;
+    public function setMenuTitle(string $title)
+    {
+        $this->menu_title = $title;
     }
 
     /**
      * @return string
      */
-    public function getMenuTitle(): string {
-        return $this->_menu_title;
+    public function getMenuTitle(): string
+    {
+        return $this->menu_title;
     }
 
     /**
      * @param string $title
      */
-    public function setPageTitle( string $title ) {
-        $this->_page_title = $title;
+    public function setPageTitle(string $title)
+    {
+        $this->page_title = $title;
     }
 
     /**
      * @return string
      */
-    public function getPageTitle(): string {
-        return $this->_page_title;
+    public function getPageTitle(): string
+    {
+        return $this->page_title;
     }
 
     /**
      * @param string $prefix
      */
-    public function setPrefix( string $prefix ) {
-        $this->_prefix = $prefix;
+    public function setPrefix(string $prefix)
+    {
+        $this->prefix = $prefix;
     }
 
     /**
      * @return string
      */
-    public function getPrefix(): string {
-        return $this->_prefix;
+    public function getPrefix(): string
+    {
+        return $this->prefix;
     }
 
     /**
      * @param string $version
      */
-    public function setVersion( string $version ) {
-        $this->_version = $version;
+    public function setVersion(string $version)
+    {
+        $this->version = $version;
     }
 
     /**
      * @return string
      */
-    public function getVersion(): string {
-        return $this->_version;
+    public function getVersion(): string
+    {
+        return $this->version;
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi;
 
@@ -7,7 +7,8 @@ namespace Dwnload\WpSettingsApi;
  *
  * @package Dwnload\WpSettingsApi
  */
-class AppFactory {
+class AppFactory
+{
 
     /**
      * PluginInfo field settings array.
@@ -17,7 +18,7 @@ class AppFactory {
     public static $fields = [];
 
     /**
-     * @var App $app;
+     * @var App $app ;
      */
     private static $app;
 
@@ -28,10 +29,11 @@ class AppFactory {
      *
      * @return App
      */
-    public static function createApp( array $fields ): App {
-        if ( ! ( self::$app instanceof App ) ) {
+    public static function createApp(array $fields): App
+    {
+        if (!(self::$app instanceof App)) {
             self::$fields = $fields;
-            self::$app = new App( $fields );
+            self::$app = new App($fields);
         }
 
         return self::$app;
@@ -42,7 +44,8 @@ class AppFactory {
      *
      * @return App
      */
-    public static function getApp(): App {
+    public static function getApp(): App
+    {
         return self::$app;
     }
 
@@ -51,7 +54,8 @@ class AppFactory {
      *
      * @return array
      */
-    public static function getFields(): array {
+    public static function getFields(): array
+    {
         return self::$fields;
     }
 }

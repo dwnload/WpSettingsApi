@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
-use TheFrosty\WP\Utils\Models\BaseModel;
+use TheFrosty\WpUtilities\Models\BaseModel;
 
 /**
  * Class Style
@@ -10,7 +10,8 @@ use TheFrosty\WP\Utils\Models\BaseModel;
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
  * @package Dwnload\WpSettingsApi\Api
  */
-class Style extends BaseModel {
+class Style extends BaseModel
+{
 
     const HANDLE = 'handle';
     const SRC = 'src';
@@ -30,7 +31,8 @@ class Style extends BaseModel {
      *
      * @param string $handle
      */
-    public function setHandle( string $handle ) {
+    public function setHandle(string $handle)
+    {
         $this->handle = $handle;
     }
 
@@ -39,7 +41,8 @@ class Style extends BaseModel {
      *
      * @return string
      */
-    public function getHandle() : string {
+    public function getHandle(): string
+    {
         return $this->handle;
     }
 
@@ -55,7 +58,8 @@ class Style extends BaseModel {
      *
      * @param string $src
      */
-    public function setSrc( string $src ) {
+    public function setSrc(string $src)
+    {
         $this->src = $src;
     }
 
@@ -64,7 +68,8 @@ class Style extends BaseModel {
      *
      * @return string
      */
-    public function getSrc() : string {
+    public function getSrc(): string
+    {
         return $this->src;
     }
 
@@ -80,7 +85,8 @@ class Style extends BaseModel {
      *
      * @param array $dependencies
      */
-    public function setDependencies( array $dependencies ) {
+    public function setDependencies(array $dependencies)
+    {
         $this->dependencies = $dependencies;
     }
 
@@ -89,7 +95,8 @@ class Style extends BaseModel {
      *
      * @return array
      */
-    public function getDependencies() : array {
+    public function getDependencies(): array
+    {
         return $this->dependencies;
     }
 
@@ -105,7 +112,8 @@ class Style extends BaseModel {
      *
      * @param string|bool|null $version
      */
-    public function setVersion( $version ) {
+    public function setVersion($version)
+    {
         $this->version = $version;
     }
 
@@ -114,7 +122,8 @@ class Style extends BaseModel {
      *
      * @return string|bool|null
      */
-    public function getVersion() {
+    public function getVersion()
+    {
         return $this->version;
     }
 
@@ -131,7 +140,8 @@ class Style extends BaseModel {
      *
      * @param string $media
      */
-    public function setMedia( string $media ) {
+    public function setMedia(string $media)
+    {
         $this->media = $media;
     }
 
@@ -140,7 +150,8 @@ class Style extends BaseModel {
      *
      * @return string
      */
-    public function getMedia() : string {
+    public function getMedia(): string
+    {
         return $this->media;
     }
 }

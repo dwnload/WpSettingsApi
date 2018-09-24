@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -7,7 +7,8 @@ namespace Dwnload\WpSettingsApi\Api;
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-class SettingSection {
+class SettingSection
+{
 
     const SECTION_ID = 'id';
     const SECTION_TITLE = 'title';
@@ -17,10 +18,11 @@ class SettingSection {
      *
      * @param array $properties
      */
-    public function __construct( array $properties = [] ) {
-        if ( ! empty( $properties ) ) {
-            foreach ( $properties as $key => $value ) {
-                $this->__set( $key, $value );
+    public function __construct(array $properties = [])
+    {
+        if (!empty($properties)) {
+            foreach ($properties as $key => $value) {
+                $this->__set($key, $value);
             }
         }
     }
@@ -31,8 +33,9 @@ class SettingSection {
      * @param string $key The property
      * @param mixed $value The value of the property
      */
-    public function __set( string $key, $value ) {
-        if ( property_exists( $this, $key ) ) {
+    public function __set(string $key, $value)
+    {
+        if (\property_exists($this, $key)) {
             $this->$key = $value;
         }
     }
@@ -49,7 +52,8 @@ class SettingSection {
      *
      * @param string $id
      */
-    public function setId( string $id ) {
+    public function setId(string $id)
+    {
         $this->id = $id;
     }
 
@@ -58,7 +62,8 @@ class SettingSection {
      *
      * @return string
      */
-    public function getId() : string {
+    public function getId(): string
+    {
         return $this->id;
     }
 
@@ -74,7 +79,8 @@ class SettingSection {
      *
      * @param string $title
      */
-    public function setTitle( string $title ) {
+    public function setTitle(string $title)
+    {
         $this->title = $title;
     }
 
@@ -83,7 +89,8 @@ class SettingSection {
      *
      * @return string
      */
-    public function getTitle() : string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 }

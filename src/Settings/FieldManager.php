@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Settings;
 
@@ -9,7 +9,8 @@ use Dwnload\WpSettingsApi\Api\SettingField;
  *
  * @package Dwnload\WpSettingsApi\Settings
  */
-class FieldManager {
+class FieldManager
+{
 
     /**
      * Array of `SettingField` objects.
@@ -23,8 +24,9 @@ class FieldManager {
      *
      * @param SettingField[] $fields An array of `SettingField` objects.
      */
-    public function setFields( array $fields ) {
-        array_push( self::$settings_fields, ...$fields );
+    public function setFields(array $fields)
+    {
+        \array_push(self::$settings_fields, ...$fields);
     }
 
     /**
@@ -32,8 +34,9 @@ class FieldManager {
      *
      * @param SettingField $field The `SettingField` object.
      */
-    public function addField( SettingField $field ) {
-        self::$settings_fields[ $field->getSectionId() ][] = $field;
+    public function addField(SettingField $field)
+    {
+        self::$settings_fields[$field->getSectionId()][] = $field;
     }
 
     /**
@@ -41,7 +44,8 @@ class FieldManager {
      *
      * @return SettingField[] An array of `SettingField` objects.
      */
-    public static function getFields() : array {
+    public static function getFields(): array
+    {
         return self::$settings_fields;
     }
 }
