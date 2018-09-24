@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -9,12 +9,11 @@ use Dwnload\WpSettingsApi\Settings\FieldTypes;
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-class SettingField {
-
+class SettingField
+{
     /**
      * Array key values.
      */
-
     const ID = 'id';
     const CLASS_OBJECT = 'class_object';
     const DEFAULT = 'default';
@@ -33,10 +32,11 @@ class SettingField {
      *
      * @param array $properties
      */
-    public function __construct( array $properties = [] ) {
-        if ( ! empty( $properties ) ) {
-            foreach ( $properties as $key => $value ) {
-                $this->__set( $key, $value );
+    public function __construct(array $properties = [])
+    {
+        if (!empty($properties)) {
+            foreach ($properties as $key => $value) {
+                $this->__set($key, $value);
             }
         }
     }
@@ -47,8 +47,9 @@ class SettingField {
      * @param string $key The property
      * @param mixed $value The value of the property
      */
-    public function __set( string $key, $value ) {
-        if ( property_exists( $this, $key ) ) {
+    public function __set(string $key, $value)
+    {
+        if (\property_exists($this, $key)) {
             $this->$key = $value;
         }
     }
@@ -65,7 +66,8 @@ class SettingField {
      *
      * @param string $description
      */
-    public function setDescription( string $description ) {
+    public function setDescription(string $description)
+    {
         $this->description = $description;
     }
 
@@ -74,7 +76,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getDescription() : string {
+    public function getDescription(): string
+    {
         return $this->description ?? '';
     }
 
@@ -90,7 +93,8 @@ class SettingField {
      *
      * @param string $default
      */
-    public function setDefault( $default ) {
+    public function setDefault($default)
+    {
         $this->default = $default;
     }
 
@@ -99,7 +103,8 @@ class SettingField {
      *
      * @return mixed
      */
-    public function getDefault() {
+    public function getDefault()
+    {
         return $this->default;
     }
 
@@ -115,7 +120,8 @@ class SettingField {
      *
      * @var string $label
      */
-    public function setLabel( string $label ) {
+    public function setLabel(string $label)
+    {
         $this->label = $label;
     }
 
@@ -124,7 +130,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getLabel() : string {
+    public function getLabel(): string
+    {
         return $this->label;
     }
 
@@ -141,7 +148,8 @@ class SettingField {
      *
      * @param string $name
      */
-    public function setName( string $name ) {
+    public function setName(string $name)
+    {
         $this->name = $name;
     }
 
@@ -150,7 +158,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getName() : string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
@@ -159,7 +168,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getId() : string {
+    public function getId(): string
+    {
         return $this->name;
     }
 
@@ -176,14 +186,16 @@ class SettingField {
      *
      * @param $class_object
      */
-    public function setClassObject( $class_object ) {
+    public function setClassObject($class_object)
+    {
         $this->class_object = $class_object;
     }
 
     /**
      * Get the Fields output object.
      */
-    public function getClassObject() {
+    public function getClassObject()
+    {
         return $this->class_object;
     }
 
@@ -201,7 +213,8 @@ class SettingField {
      *
      * @param array $options
      */
-    public function setOptions( array $options ) {
+    public function setOptions(array $options)
+    {
         $this->options = $options;
     }
 
@@ -210,7 +223,8 @@ class SettingField {
      *
      * @return array
      */
-    public function getOptions() : array {
+    public function getOptions(): array
+    {
         return $this->options;
     }
 
@@ -227,7 +241,8 @@ class SettingField {
      *
      * @param callable $sanitize
      */
-    public function setSanitizeCallback( callable $sanitize ) {
+    public function setSanitizeCallback(callable $sanitize)
+    {
         $this->sanitize_callback = $sanitize;
     }
 
@@ -236,7 +251,8 @@ class SettingField {
      *
      * @return null|callable
      */
-    public function getSanitizeCallback() {
+    public function getSanitizeCallback()
+    {
         return $this->sanitize_callback;
     }
 
@@ -253,7 +269,8 @@ class SettingField {
      *
      * @param string $section_id
      */
-    public function setSectionId( string $section_id ) {
+    public function setSectionId(string $section_id)
+    {
         $this->section_id = $section_id;
     }
 
@@ -262,7 +279,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getSectionId() : string {
+    public function getSectionId(): string
+    {
         return $this->section_id;
     }
 
@@ -278,7 +296,8 @@ class SettingField {
      *
      * @param string $size
      */
-    public function setSize( string $size ) {
+    public function setSize(string $size)
+    {
         $this->size = $size;
     }
 
@@ -287,7 +306,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getSize() : string {
+    public function getSize(): string
+    {
         return $this->size ?? FieldTypes::DEFAULT_SIZE;
     }
 
@@ -304,7 +324,8 @@ class SettingField {
      *
      * @param string $type
      */
-    public function setType( string $type ) {
+    public function setType(string $type)
+    {
         $this->type = $type;
     }
 
@@ -313,7 +334,8 @@ class SettingField {
      *
      * @return string
      */
-    public function getType() : string {
+    public function getType(): string
+    {
         return $this->type;
     }
 
@@ -329,14 +351,16 @@ class SettingField {
      *
      * @param bool $obfuscated
      */
-    public function setObfuscate( bool $obfuscated = true ) {
+    public function setObfuscate(bool $obfuscated = true)
+    {
         $this->obfuscated = $obfuscated;
     }
 
     /**
      * @return bool
      */
-    public function isObfuscated(): bool {
+    public function isObfuscated(): bool
+    {
         return $this->obfuscated;
     }
 }

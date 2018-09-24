@@ -47,3 +47,4 @@ install:
 script:
   - find src tests \( -name '*.php' \) -exec php -l {} \;
   - vendor/bin/phpunit
+  - vendor/bin/phpcs --standard=PSR2 --extensions=php --tab-width=4 -sp --colors src/

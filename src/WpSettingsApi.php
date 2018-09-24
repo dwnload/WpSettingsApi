@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi;
 
@@ -11,44 +11,47 @@ use Dwnload\WpSettingsApi\Api\Style;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use TheFrosty\WP\Utils\WpHooksInterface;
+use TheFrosty\WpUtilities\Plugin\WpHooksInterface;
 
 /**
  * Class WpSettingsApi
  *
  * @package Dwnload\WpSettingsApi
  */
-class WpSettingsApi extends AbstractApp implements WpHooksInterface {
-
+class WpSettingsApi extends AbstractApp implements WpHooksInterface
+{
     /**
      * Fire away captain!
      */
-    public function addHooks() {
+    public function addHooks()
+    {
         $this->getApp()->addHooks();
-        add_action( 'admin_menu', [ $this, 'addAdminMenu' ] );
-        add_action( 'admin_init', [ $this, 'adminInit' ] );
+        $this->addAction('admin_menu', [$this, 'addAdminMenu']);
+        $this->addAction('admin_init', [$this, 'adminInit']);
     }
 
     /**
      * Create admin menu and sub-menu items.
      */
-    public function addAdminMenu() {
-        $hook = add_options_page(
-            esc_html( $this->getApp()->getPageTitle() ),
-            esc_html( $this->getApp()->getMenuTitle() ),
+    protected function addAdminMenu()
+    {
+        $hook = \add_options_page(
+            \esc_html($this->getApp()->getPageTitle()),
+            \esc_html($this->getApp()->getMenuTitle()),
             $this->getApp()->getAppCap(),
-            apply_filters( App::FILTER_PREFIX . 'options_page_slug', $this->getApp()->getMenuSlug() ),
-            [ $this, 'settingsHtml' ]
+            \apply_filters(App::FILTER_PREFIX . 'options_page_slug', $this->getApp()->getMenuSlug()),
+            [$this, 'settingsHtml']
         );
-        add_action( 'load-' . $hook, [ $this, 'load' ], 19 );
+        $this->addAction('load-' . $hook, [$this, 'load'], 19);
     }
 
     /**
      * Render the settings html.
      */
-    public function settingsHtml() {
-        if ( ! current_user_can( $this->getApp()->getAppCap() ) ) {
-            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+    public function settingsHtml()
+    {
+        if (!\current_user_can($this->getApp()->getAppCap())) {
+            \wp_die(\esc_html__('You do not have sufficient permissions to access this page.'));
         }
 
         include __DIR__ . '/views/settings-html.php';
@@ -57,15 +60,16 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
     /**
      * Initialize and registers the settings sections and fields to WordPress.
      */
-    public function adminInit() {
+    protected function adminInit()
+    {
         // Register settings sections
-        foreach ( SectionManager::getSections( $this->getApp()->getMenuSlug() ) as $section ) {
+        foreach (SectionManager::getSections($this->getApp()->getMenuSlug()) as $section) {
             /** @var SettingSection $section */
-            if ( get_option( $section->getId(), false ) === false ) {
-                add_option( $section->getId(), [] );
+            if (\get_option($section->getId(), false) === false) {
+                \add_option($section->getId(), []);
             }
 
-            add_settings_section(
+            \add_settings_section(
                 $section->getId(),
                 $section->getTitle(),
                 '__return_false',
@@ -74,8 +78,8 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
         }
 
         // Register settings fields
-        foreach ( FieldManager::getFields() as $section_id => $fields ) {
-            foreach ( $fields as $field ) {
+        foreach (FieldManager::getFields() as $section_id => $fields) {
+            foreach ($fields as $field) {
                 /** @var SettingField $field */
                 $args = [
                     SettingField::ID => $field->getId(),
@@ -89,18 +93,18 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
                     SettingField::FIELD_OBJECT => $field,
                 ];
 
-                $callback_array = [ $field->getClassObject(), $field->getType() ];
+                $callback_array = [$field->getClassObject(), $field->getType()];
 
-                if ( ! class_exists( get_class( $field->getClassObject() ) ) ||
-                     ! method_exists( $field->getClassObject(), $field->getType() ) ||
-                     ! is_callable( $callback_array )
+                if (!\class_exists(\get_class($field->getClassObject())) ||
+                    !\method_exists($field->getClassObject(), $field->getType()) ||
+                    !\is_callable($callback_array)
                 ) {
-                    $callback_array = [ ( new FieldTypes() ), $field->getType() ];
+                    $callback_array = [(new FieldTypes()), $field->getType()];
                 }
 
                 // @todo double check `$callback_array` fallback is callable.
 
-                add_settings_field(
+                \add_settings_field(
                     $section_id . '[' . $field->getName() . ']',
                     $field->getLabel(),
                     $callback_array,
@@ -112,11 +116,11 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
         }
 
         // Register settings setting
-        foreach ( SectionManager::getSections( $this->getApp()->getMenuSlug() ) as $section ) {
-            register_setting(
+        foreach (SectionManager::getSections($this->getApp()->getMenuSlug()) as $section) {
+            \register_setting(
                 $section->getId(),
                 $section->getId(),
-                [ $this, 'sanitizeOptionsArray' ]
+                [$this, 'sanitizeOptionsArray']
             );
         }
     }
@@ -124,62 +128,65 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
     /**
      * Fire hooks needed on the Settings Page (only).
      */
-    public function load() {
-        do_action( App::ACTION_PREFIX . 'settings_page_loaded' );
-        add_action( 'admin_enqueue_scripts', [ $this, 'adminEnqueueScripts' ], 99 );
-        add_action( 'admin_footer', [ $this, 'localizeScripts' ], 99 );
+    protected function load()
+    {
+        \do_action(App::ACTION_PREFIX . 'settings_page_loaded');
+        $this->addAction('admin_enqueue_scripts', [$this, 'adminEnqueueScripts'], 99);
+        $this->addAction('admin_footer', [$this, 'localizeScripts'], 99);
     }
 
     /**
      * Enqueue scripts and styles for the Settings page.
      */
-    public function adminEnqueueScripts() {
+    protected function adminEnqueueScripts()
+    {
         /** WordPress Core */
-        wp_enqueue_media();
-        wp_enqueue_script( 'wp-color-picker' );
-        wp_enqueue_style( 'wp-color-picker' );
+        \wp_enqueue_media();
+        \wp_enqueue_script('wp-color-picker');
+        \wp_enqueue_style('wp-color-picker');
 
         /**
          * Scripts
          */
         $default_scripts = [
-            new Script( [
+            new Script([
                 Script::HANDLE => 'dwnload-wp-settings-api',
                 Script::SRC => 'src/assets/js/admin.js',
-                Script::DEPENDENCIES => [ 'jquery' ],
+                Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->getApp()->getVersion(),
                 Script::IN_FOOTER => true,
-            ] ),
+            ]),
         ];
 
-        $scripts = apply_filters( App::FILTER_PREFIX . 'admin_scripts', $default_scripts );
-        $this->enqueueScripts( $scripts );
+        $scripts = \apply_filters(App::FILTER_PREFIX . 'admin_scripts', $default_scripts);
+        $this->enqueueScripts($scripts);
 
         /**
          * Styles
          */
         $default_styles = [
-            new Style( [
+            new Style([
                 Style::HANDLE => 'dwnload-wp-settings-api',
                 Style::SRC => 'src/assets/css/admin.css',
                 Style::DEPENDENCIES => [],
                 Style::VERSION => $this->getApp()->getVersion(),
                 Style::MEDIA => 'screen',
-            ] ),
+            ]),
         ];
 
-        $styles = apply_filters( App::FILTER_PREFIX . 'admin_styles', $default_styles );
-        $this->enqueueStyles( $styles );
+        $styles = \apply_filters(App::FILTER_PREFIX . 'admin_styles', $default_styles);
+        $this->enqueueStyles($styles);
     }
 
     /**
      * Localize PHP objects to pass to any page JS.
      */
-    public function localizeScripts() {
+    protected function localizeScripts()
+    {
         $localize = new LocalizeScripts();
 
-        $localize->add( 'prefix', $this->getApp()->getPrefix() );
-        $localize->add( 'nonce', wp_create_nonce( $this->getApp()->getNonce() ) );
+        $localize->add('prefix', $this->getApp()->getPrefix());
+        $localize->add('nonce', \wp_create_nonce($this->getApp()->getNonce()));
 
         /**
          * Use this action hook to pass new objects into the script output.
@@ -187,10 +194,10 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
          * @var string Empty string value.
          * @var LocalizeScripts $localize Use this object to add new localized values to the registered output.
          */
-        do_action( App::ACTION_PREFIX . 'localize_script', '', $localize );
+        \do_action(App::ACTION_PREFIX . 'localize_script', '', $localize);
 
         // The $handle needs to match the enqueued handle.
-        wp_localize_script( 'dwnload-wp-settings-api', Script::OBJECT_NAME, $localize->getAllVars() );
+        \wp_localize_script('dwnload-wp-settings-api', Script::OBJECT_NAME, $localize->getAllVars());
     }
 
     /**
@@ -200,8 +207,9 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
      *
      * @return array
      */
-    public function sanitizeOptionsArray( array $options ): array {
-        if ( empty( $options ) ) {
+    public function sanitizeOptionsArray(array $options): array
+    {
+        if (empty($options)) {
             return $options;
         }
 
@@ -210,13 +218,13 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
          *
          * @var array $options The options array before getting sanitized
          */
-        do_action( App::ACTION_PREFIX . 'before_sanitize_options', $options );
+        \do_action(App::ACTION_PREFIX . 'before_sanitize_options', $options);
 
-        foreach ( $options as $option_slug => $option_value ) {
-            $sanitize_callback = $this->getSanitizeCallback( $option_slug );
+        foreach ($options as $option_slug => $option_value) {
+            $sanitize_callback = $this->getSanitizeCallback($option_slug);
 
             // If callback is set, call it
-            if ( ! empty( $sanitize_callback ) ) {
+            if (!empty($sanitize_callback)) {
                 /**
                  * Sanitize Callback accepted args.
                  *
@@ -224,13 +232,13 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
                  * @param array $options
                  * @param string $option_slug
                  */
-                $options[ $option_slug ] = call_user_func( $sanitize_callback, $option_value, $options, $option_slug );
+                $options[$option_slug] = \call_user_func($sanitize_callback, $option_value, $options, $option_slug);
                 continue;
             }
 
             // Treat everything that's not an array as a string
-            if ( ! is_array( $option_value ) ) {
-                $options[ $option_slug ] = sanitize_text_field( $option_value );
+            if (!\is_array($option_value)) {
+                $options[$option_slug] = \sanitize_text_field($option_value);
                 continue;
             }
         }
@@ -240,7 +248,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
          *
          * @var array $options The options array after getting sanitized
          */
-        do_action( App::ACTION_PREFIX . 'after_sanitize_options', $options );
+        \do_action(App::ACTION_PREFIX . 'after_sanitize_options', $options);
 
         return $options;
     }
@@ -252,29 +260,30 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
      *
      * @return bool|callable Boolean if no callback exists or Callable method
      */
-    protected function getSanitizeCallback( string $option_slug = '' ) {
-        if ( empty( $option_slug ) ) {
+    protected function getSanitizeCallback(string $option_slug = '')
+    {
+        if (empty($option_slug)) {
             return false;
         }
 
         // Iterate over registered fields and see if we can find proper callback
-        foreach ( FieldManager::getFields() as $section_id => $fields ) {
+        foreach (FieldManager::getFields() as $section_id => $fields) {
             /** @var SettingField $field */
-            foreach ( $fields as $field ) {
-                if ( $field->getName() !== $option_slug ) {
+            foreach ($fields as $field) {
+                if ($field->getName() !== $option_slug) {
                     continue;
                 }
 
                 // Call our obfuscated setting sanitizer so stars (****) don't get saved.
-                if ( $field->isObfuscated() &&
-                     method_exists( Sanitize::class, 'sanitizeObfuscated' )
+                if ($field->isObfuscated() &&
+                    \method_exists(Sanitize::class, 'sanitizeObfuscated')
                 ) {
                     return Sanitize::class . '::sanitizeObfuscated';
                 }
 
                 // Return the callback name
-                return ! empty( $field->getSanitizeCallback() ) &&
-                       is_callable( $field->getSanitizeCallback() ) ?
+                return !empty($field->getSanitizeCallback()) &&
+                \is_callable($field->getSanitizeCallback()) ?
                     $field->getSanitizeCallback() : false;
             }
         }
@@ -290,20 +299,21 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
      *
      * @param Script[] $scripts An array af Script objects.
      */
-    protected function enqueueScripts( array $scripts ) {
+    protected function enqueueScripts(array $scripts)
+    {
         /** @var Script $script */
-        foreach ( $scripts as $script ) {
-            if ( ! wp_script_is( $script->getHandle(), 'registered' ) ) {
-                wp_register_script(
+        foreach ($scripts as $script) {
+            if (!\wp_script_is($script->getHandle(), 'registered')) {
+                \wp_register_script(
                     $script->getHandle(),
-                    $this->getApp()->getPluginsUrl( $script->getSrc() ),
+                    $this->getApp()->getPluginsUrl($script->getSrc()),
                     $script->getDependencies(),
                     $script->getVersion(),
                     $script->getInFooter()
                 );
-                wp_enqueue_script( $script->getHandle() );
+                \wp_enqueue_script($script->getHandle());
             } else {
-                wp_enqueue_script( $script->getHandle() );
+                \wp_enqueue_script($script->getHandle());
             }
         }
     }
@@ -316,20 +326,21 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface {
      *
      * @param Style[] $styles An array af Style objects.
      */
-    protected function enqueueStyles( array $styles ) {
+    protected function enqueueStyles(array $styles)
+    {
         /** @var Style $style */
-        foreach ( $styles as $style ) {
-            if ( ! wp_style_is( $style->getHandle(), 'registered' ) ) {
-                wp_register_style(
+        foreach ($styles as $style) {
+            if (!\wp_style_is($style->getHandle(), 'registered')) {
+                \wp_register_style(
                     $style->getHandle(),
-                    $this->getApp()->getPluginsUrl( $style->getSrc() ),
+                    $this->getApp()->getPluginsUrl($style->getSrc()),
                     $style->getDependencies(),
                     $style->getVersion(),
                     $style->getMedia()
                 );
-                wp_enqueue_style( $style->getHandle() );
+                \wp_enqueue_style($style->getHandle());
             } else {
-                wp_enqueue_style( $style->getHandle() );
+                \wp_enqueue_style($style->getHandle());
             }
         }
     }

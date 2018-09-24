@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+# UNRELEASED
+
+## 3.0.0
+- Complete rewrite.
+
+## 2.3.0 - 2018-09-24
+- Updated the thefrosty/wp-utilites to version ~1.2.
+- Refactor code to new wp-utilities standards.
+- Update to PSR2 code.
+
 ## 2.2.0 - 2018-01-06
 - Added: `AppFactory` class.
 - Updated: Added `SectionManager` DI of the `App` instance. Allows for multiple instances to be

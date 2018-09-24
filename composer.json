@@ -1,7 +1,7 @@
 {
   "name": "dwnload/wp-settings-api",
   "description": "A PHP class abstraction that removes all the headaches of the WordPress settings API under the hood and builds a nice options panel on the fly.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "license": "MIT",
   "authors": [
     {
@@ -13,13 +13,15 @@
   ],
   "require": {
     "composer/installers": "~1.0",
-    "thefrosty/wp-utilities": "^0.2.2",
+    "thefrosty/wp-utilities": "^1.2",
     "php": ">=7.0.4"
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
     "phpunit/phpunit": "6.*",
-    "wp-coding-standards/wpcs": "^0.13.1"
+    "wp-coding-standards/wpcs": "^0.13.1",
+    "wp-phpunit/wp-phpunit": "4.9.*",
+    "phpmd/phpmd": "^2.6"
   },
   "scripts": {
     "post-install-cmd": [
@@ -28,7 +30,7 @@
     "post-update-cmd": [
       "@phpcs"
     ],
-    "phpcs": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    "phpcs": "./vendor/bin/phpcs --standard=PSR2 --extensions=php --tab-width=4 -sp --colors src/"
   },
   "autoload": {
     "psr-4": {

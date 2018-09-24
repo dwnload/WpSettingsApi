@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -8,14 +8,15 @@ namespace Dwnload\WpSettingsApi\Api;
  *
  * @package Dwnload\WpSettingsApi\Api
  */
-class LocalizeScripts {
+class LocalizeScripts
+{
 
     /**
      * Localized array to pass from PHP to JS.
      *
-     * @var array $_vars
+     * @var array $vars
      */
-    protected static $_vars = [];
+    protected static $vars = [];
 
     /**
      * Add a key/value to the Array.
@@ -23,8 +24,9 @@ class LocalizeScripts {
      * @param string $key
      * @param string $value
      */
-    public function add( string $key, string $value ) {
-        self::$_vars[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
+    public function add(string $key, string $value)
+    {
+        self::$vars[$key] = \html_entity_decode((string)$value, ENT_QUOTES, 'UTF-8');
     }
 
     /**
@@ -32,7 +34,8 @@ class LocalizeScripts {
      *
      * @return array
      */
-    public function getAllVars() : array {
-        return self::$_vars;
+    public function getAllVars(): array
+    {
+        return self::$vars;
     }
 }

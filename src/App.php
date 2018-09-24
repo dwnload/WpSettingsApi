@@ -1,18 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi;
 
 use Dwnload\WpSettingsApi\Api\PluginInfo;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use TheFrosty\WP\Utils\WpHooksInterface;
+use TheFrosty\WpUtilities\Plugin\HooksTrait;
+use TheFrosty\WpUtilities\Plugin\WpHooksInterface;
 
 /**
  * Class Bootstrap
  *
  * @package Dwnload\WpSettingsApi
  */
-class App extends PluginInfo implements WpHooksInterface {
+class App extends PluginInfo implements WpHooksInterface
+{
+    use HooksTrait;
 
     const FILTER_PREFIX = 'dwnload/wp_settings_api/';
     const ACTION_PREFIX = self::FILTER_PREFIX;
@@ -21,12 +24,13 @@ class App extends PluginInfo implements WpHooksInterface {
     /**
      * Add class hooks.
      */
-    public function addHooks() {
+    public function addHooks()
+    {
         /**
          * "Out of the frying pan, and into the fire!"
          */
-        add_action( 'init', function() {
-            if ( did_action( self::ACTION_PREFIX . 'init' ) ) {
+        $this->addAction('init', function () {
+            if (\did_action(self::ACTION_PREFIX . 'init')) {
                 return;
             }
 
@@ -36,8 +40,8 @@ class App extends PluginInfo implements WpHooksInterface {
              * @var SectionManager Instance of the SectionManager object.
              * @var FieldManager Instance of the FieldManager object.
              */
-            do_action( self::ACTION_PREFIX . 'init', ( new SectionManager( $this ) ), ( new FieldManager() ) );
-        }, self::HOOK_PRIORITY );
+            \do_action(self::ACTION_PREFIX . 'init', (new SectionManager($this)), (new FieldManager()));
+        }, self::HOOK_PRIORITY);
     }
 
     /**
@@ -46,8 +50,9 @@ class App extends PluginInfo implements WpHooksInterface {
      * @link https://codex.wordpress.org/Roles_and_Capabilities
      * @return string
      */
-    public function getAppCap(): string {
-        return apply_filters( self::FILTER_PREFIX . 'capability', 'manage_options' );
+    public function getAppCap(): string
+    {
+        return (string)\apply_filters(self::FILTER_PREFIX . 'capability', 'manage_options');
     }
 
     /**
@@ -57,7 +62,8 @@ class App extends PluginInfo implements WpHooksInterface {
      *
      * @return string
      */
-    public function getPluginsUrl( string $src ): string {
-        return plugins_url( $src, __DIR__ );
+    public function getPluginsUrl(string $src): string
+    {
+        return \plugins_url($src, __DIR__);
     }
 }
