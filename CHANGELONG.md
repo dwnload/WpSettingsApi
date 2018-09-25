@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
+## 2.4.0 - 2018-09-25
+* Cleaned up composer.json to optimize autoloader and sort packages.
+* Removed extra ruleset.xml file.
+* Updated: FieldTypes with constants for the respected types.
+* PHPCS code standards updates.
+
 ## 2.3.0 - 2018-09-24
 - Updated the thefrosty/wp-utilites to version ~1.2.
 - Refactor code to new wp-utilities standards.

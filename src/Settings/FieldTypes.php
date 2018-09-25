@@ -2,8 +2,8 @@
 
 namespace Dwnload\WpSettingsApi\Settings;
 
-use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\Options;
+use Dwnload\WpSettingsApi\Api\SettingField;
 
 /**
  * Class FieldTypes
