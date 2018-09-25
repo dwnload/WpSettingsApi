@@ -203,11 +203,12 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
     /**
      * Sanitize callback for Settings API
      *
-     * @param array $options
+     * @param mixed $options
      *
      * @return array
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function sanitizeOptionsArray(array $options): array
+    public function sanitizeOptionsArray($options): array
     {
         if (empty($options)) {
             return $options;
