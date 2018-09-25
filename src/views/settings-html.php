@@ -13,11 +13,12 @@ if (!($this instanceof WpSettingsApi)) {
     <div class="Dwnload_WP_Settings_Api__container">
 
         <div class="Dwnload_WP_Settings_Api__header">
-            <h3><?php echo get_admin_page_title(); ?></h3>
+            <h3><?php echo esc_html(get_admin_page_title()); ?></h3>
             <span><?php echo esc_html($this->getApp()->getVersion()); ?></span>
             <div>
-                <?php printf(
-                    esc_html__('A %s package.', $this->getApp()->getDomain()),
+                <?php
+                printf(
+                    esc_html__('A %s package.', 'wp-settings-api'),
                     '<strong><a href="https://github.com/dwnload/WpSettingsApi" target="_blank">dwnload</a></strong>'
                 ); ?>
             </div>
@@ -35,7 +36,7 @@ if (!($this instanceof WpSettingsApi)) {
                 <div class="alignright">
                     <?php do_action(App::ACTION_PREFIX . 'before_submit_button'); ?>
                     <?php submit_button(
-                        __('Save All Changes', $this->getApp()->getDomain()),
+                        __('Save All Changes', 'wp-settings-api'),
                         'primary',
                         'Dwnload_WP_Settings_Api__save_all',
                         false,

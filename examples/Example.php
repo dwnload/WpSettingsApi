@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Package;
+namespace Vendor\Package; // CHANGE ME
 
 use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\SettingSection;
@@ -9,9 +9,13 @@ use Dwnload\WpSettingsApi\AppFactory;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
-use TheFrosty\WP\Utils\Init;
-use TheFrosty\WP\Utils\WpHooksInterface;
+use TheFrosty\WpUtilities\Plugin\PluginFactory;
+use TheFrosty\WpUtilities\Plugin\WpHooksInterface;
 
+/**
+ * Class ExampleSettings
+ * @package Vendor\Package
+ */
 class ExampleSettings implements WpHooksInterface
 {
 
@@ -98,7 +102,11 @@ $app = AppFactory::createApp([
     'prefix' => 'vendor_',
     'version' => '0.7.9',
 ]);
-(new Init())
+$plugin = PluginFactory::create('vendor-domain')
     ->add(new WpSettingsApi($app))
-    ->add(new ExampleSettings())
-    ->initialize();
+    ->add(new ExampleSettings());
+
+\add_action('plugins_loaded', function () use ($plugin) {
+    $plugin->initialize();
+    unset($plugin);
+});

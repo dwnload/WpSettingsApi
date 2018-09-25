@@ -9,13 +9,12 @@ namespace Dwnload\WpSettingsApi;
  */
 class AppFactory
 {
-
     /**
      * PluginInfo field settings array.
      *
      * @var array $fields
      */
-    public static $fields = [];
+    private static $fields = [];
 
     /**
      * @var App $app ;

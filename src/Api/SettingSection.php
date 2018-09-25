@@ -32,6 +32,7 @@ class SettingSection
      *
      * @param string $key The property
      * @param mixed $value The value of the property
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public function __set(string $key, $value)
     {

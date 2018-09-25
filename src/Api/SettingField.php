@@ -8,6 +8,7 @@ use Dwnload\WpSettingsApi\Settings\FieldTypes;
  * Class SettingField
  *
  * @package Dwnload\WpSettingsApi\Api
+ * phpcs:disable Inpsyde.CodeQuality.PropertyPerClassLimit.TooMuchProperties
  */
 class SettingField
 {
@@ -46,6 +47,7 @@ class SettingField
      *
      * @param string $key The property
      * @param mixed $value The value of the property
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public function __set(string $key, $value)
     {
@@ -91,7 +93,8 @@ class SettingField
     /**
      * Sets the Fields default value.
      *
-     * @param string $default
+     * @param mixed $default
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public function setDefault($default)
     {
@@ -102,6 +105,7 @@ class SettingField
      * Gets the Fields default value.
      *
      * @return mixed
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public function getDefault()
     {
@@ -185,6 +189,7 @@ class SettingField
      * Set the Fields output object.
      *
      * @param $class_object
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public function setClassObject($class_object)
     {
@@ -193,6 +198,8 @@ class SettingField
 
     /**
      * Get the Fields output object.
+     * @return object
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public function getClassObject()
     {

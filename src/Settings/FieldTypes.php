@@ -2,8 +2,8 @@
 
 namespace Dwnload\WpSettingsApi\Settings;
 
-use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\Options;
+use Dwnload\WpSettingsApi\Api\SettingField;
 
 /**
  * Class FieldTypes
@@ -15,6 +15,21 @@ class FieldTypes
 
     const DEFAULT_SIZE = 'regular';
     const DEFAULT_TYPE = 'text';
+
+    const FIELD_TYPE_TEXT = 'text';
+    const FIELD_TYPE_URL = 'url';
+    const FIELD_TYPE_NUMBER = 'number';
+    const FIELD_TYPE_CHECKBOX = 'checkbox';
+    const FIELD_TYPE_MULTICHECK = 'multicheck';
+    const FIELD_TYPE_RADIO = 'radio';
+    const FIELD_TYPE_SELECT = 'select';
+    const FIELD_TYPE_TEXTAREA = 'textarea';
+    const FIELD_TYPE_HTML = 'html';
+    const FIELD_TYPE_WYSIWYG = 'wysiwyg';
+    const FIELD_TYPE_FILE = 'file';
+    const FIELD_TYPE_IMAGE = 'image';
+    const FIELD_TYPE_PASSWORD = 'password';
+    const FIELD_TYPE_COLOR = 'color';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -46,7 +61,7 @@ class FieldTypes
         $output = $this->getInputField($args);
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok.
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -87,7 +102,7 @@ class FieldTypes
 
         $output = $this->getInputField($args);
         $output .= $this->getFieldDescription($args);
-        // @ImageStart
+
         if (!empty($value)) {
             $output .= '<div id="' . $_id . '_preview" class="FieldType__file_preview">';
             $check_image = \preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', $value);
@@ -99,9 +114,8 @@ class FieldTypes
             }
             $output .= '</div>';
         }
-        // @ImageEnd
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -128,7 +142,7 @@ class FieldTypes
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -168,7 +182,7 @@ value="%3$s"%4$s>',
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -205,7 +219,7 @@ value="%3$s"%4$s>',
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -241,7 +255,7 @@ value="%3$s"%4$s>',
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -266,7 +280,7 @@ value="%3$s"%4$s>',
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -295,7 +309,7 @@ value="%3$s"%4$s>',
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
-        echo $output; // WPCS: XSS ok
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
@@ -308,11 +322,9 @@ value="%3$s"%4$s>',
     protected function getInputField(array $args): string
     {
         $field = $this->getSettingFieldObject($args);
-        if (!$field->isObfuscated()) {
-            $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        } else {
-            $value = Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        }
+        $value = !$field->isObfuscated() ?
+            Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault()) :
+            Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         return \sprintf(
             '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]"
