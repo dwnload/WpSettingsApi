@@ -46,4 +46,3 @@ install:
 
 script:
   - composer phpcs
-  - composer phpmd

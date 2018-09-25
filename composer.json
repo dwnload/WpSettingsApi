@@ -37,9 +37,6 @@
     ],
     "phpcs": [
       "./vendor/bin/phpcs --standard=phpcs.ruleset.xml"
-    ],
-    "phpmd": [
-      "./vendor/bin/phpmd src text --exclude vendor --suffixes php"
     ]
   },
   "autoload": {
