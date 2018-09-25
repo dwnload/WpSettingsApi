@@ -211,7 +211,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
     public function sanitizeOptionsArray($options): array
     {
         if (empty($options)) {
-            return $options;
+            return (array)$options;
         }
 
         /**
