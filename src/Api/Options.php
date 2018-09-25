@@ -22,6 +22,8 @@ class Options
      *                          Defaults to an empty string.
      *
      * @return mixed
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public static function getOption(string $option_key, string $section_id = null, $default = '')
     {
@@ -39,6 +41,7 @@ class Options
      * @param string $section_id The Section object ID the option belongs too.
      *
      * @return mixed Value set for the option. Defaults to an empty array.
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public static function getOptions(string $section_id)
     {
@@ -53,13 +56,15 @@ class Options
      * @param int $len (Optional) The Length of the un-obfuscated string. Defaults to `6`.
      *
      * @return mixed|string
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     public static function getObfuscatedOption(string $option_key, string $section_id, $default = '', int $len = 6)
     {
         $value = self::getOption($option_key, $section_id, $default);
 
         if (!empty($value)) {
-            return \str_repeat('*', \absint(\strlen($value) - $len)) . \substr($value, -$len, $len);
+            return \str_repeat('*', \absint(\strlen($value) - $len)) .
+                \substr($value, -$len, $len);
         }
 
         return $value;

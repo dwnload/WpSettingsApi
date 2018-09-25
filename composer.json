@@ -1,7 +1,7 @@
 {
   "name": "dwnload/wp-settings-api",
   "description": "A PHP class abstraction that removes all the headaches of the WordPress settings API under the hood and builds a nice options panel on the fly.",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "license": "MIT",
   "authors": [
     {
@@ -11,17 +11,22 @@
       "role": "Developer"
     }
   ],
+  "config": {
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  },
   "require": {
+    "php": ">=7.0.4",
     "composer/installers": "~1.0",
-    "thefrosty/wp-utilities": "^1.2",
-    "php": ">=7.0.4"
+    "thefrosty/wp-utilities": "^1.2"
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
+    "inpsyde/php-coding-standards": "^0.13.3",
+    "phpmd/phpmd": "^2.6",
     "phpunit/phpunit": "6.*",
-    "wp-coding-standards/wpcs": "^0.13.1",
-    "wp-phpunit/wp-phpunit": "4.9.*",
-    "phpmd/phpmd": "^2.6"
+    "wp-phpunit/wp-phpunit": "4.9.*"
   },
   "scripts": {
     "post-install-cmd": [
@@ -30,16 +35,21 @@
     "post-update-cmd": [
       "@phpcs"
     ],
-    "phpcs": "./vendor/bin/phpcs --standard=PSR2 --extensions=php --tab-width=4 -sp --colors src/"
+    "phpcs": [
+      "./vendor/bin/phpcs --standard=phpcs.ruleset.xml"
+    ],
+    "phpmd": [
+      "./vendor/bin/phpmd src text --exclude vendor --suffixes php"
+    ]
   },
   "autoload": {
     "psr-4": {
-      "Dwnload\\WpSettingsApi\\": "src",
-      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
+      "Dwnload\\WpSettingsApi\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
+      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
     }
   }
 }

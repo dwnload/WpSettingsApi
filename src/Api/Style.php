@@ -110,9 +110,9 @@ class Style extends BaseModel
     /**
      * Set Style version.
      *
-     * @param string|bool|null $version
+     * @param string $version
      */
-    public function setVersion($version)
+    public function setVersion(string $version = '0.0.1')
     {
         $this->version = $version;
     }
@@ -120,11 +120,11 @@ class Style extends BaseModel
     /**
      * Get Style version.
      *
-     * @return string|bool|null
+     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
-        return $this->version;
+        return $this->version ?? '0.0.1';
     }
 
     /**

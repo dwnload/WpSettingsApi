@@ -259,6 +259,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
      * @param string $option_slug option slug
      *
      * @return bool|callable Boolean if no callback exists or Callable method
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     protected function getSanitizeCallback(string $option_slug = '')
     {
@@ -312,9 +313,9 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
                     $script->getInFooter()
                 );
                 \wp_enqueue_script($script->getHandle());
-            } else {
-                \wp_enqueue_script($script->getHandle());
+                continue;
             }
+            \wp_enqueue_script($script->getHandle());
         }
     }
 
@@ -339,9 +340,9 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
                     $style->getMedia()
                 );
                 \wp_enqueue_style($style->getHandle());
-            } else {
-                \wp_enqueue_style($style->getHandle());
+                continue;
             }
+            \wp_enqueue_style($style->getHandle());
         }
     }
 }

@@ -23,6 +23,8 @@ class Sanitize
      * @param string $option_slug
      *
      * @return mixed
+     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public static function sanitizeObfuscated($value, array $options, string $option_slug)
     {
