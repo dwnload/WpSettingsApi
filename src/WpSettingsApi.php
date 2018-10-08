@@ -95,9 +95,9 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
 
                 $callback_array = [$field->getClassObject(), $field->getType()];
 
-                if (!\class_exists(\get_class($field->getClassObject())) ||
-                    !\method_exists($field->getClassObject(), $field->getType()) ||
-                    !\is_callable($callback_array)
+                if (!\is_callable($callback_array) ||
+                    !\class_exists(\get_class($field->getClassObject())) ||
+                    !\method_exists($field->getClassObject(), $field->getType())
                 ) {
                     $callback_array = [(new FieldTypes()), $field->getType()];
                 }
