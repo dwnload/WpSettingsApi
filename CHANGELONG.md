@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
-## 2.4.1 - 2018-10-08
+## 2.4.2 - 2018-10-08
 * PHP 7.2 fix. Changes the order of the fields callback condition on the class object for `add_settings_field`.
+
+## 2.4.1 - 2018-09-25
+* Force return array type.
 
 ## 2.4.0 - 2018-09-25
 * Cleaned up composer.json to optimize autoloader and sort packages.
