@@ -18,6 +18,7 @@ class FieldTypes
 
     const FIELD_TYPE_TEXT = 'text';
     const FIELD_TYPE_URL = 'url';
+    const FIELD_TYPE_EMAIL = 'email';
     const FIELD_TYPE_NUMBER = 'number';
     const FIELD_TYPE_CHECKBOX = 'checkbox';
     const FIELD_TYPE_MULTICHECK = 'multicheck';
@@ -86,6 +87,28 @@ class FieldTypes
     public function password(array $args)
     {
         $args[SettingField::TYPE] = 'password';
+        $this->text($args);
+    }
+
+    /**
+     * Renders an input url field.
+     *
+     * @param array $args Array of Field object parameters
+     */
+    public function url(array $args)
+    {
+        $args[SettingField::TYPE] = 'url';
+        $this->text($args);
+    }
+
+    /**
+     * Renders an input email field.
+     *
+     * @param array $args Array of Field object parameters
+     */
+    public function email(array $args)
+    {
+        $args[SettingField::TYPE] = 'email';
         $this->text($args);
     }
 
