@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.4.4 - 2018-10-16
 * Add new setAttributes to the SettingField class.
 * SettingField() methods now return the object instance (allowing chaining). 
-* SettingSection() methods now return the object instance (allowing chaining). 
+* SettingSection() methods now return the object instance (allowing chaining).
+* Added `.gitattributes`. #8
 
 ## 2.4.3 - 2018-10-16
 * Add missing URL field type.
