@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
+## 2.4.3 - 2018-10-16
+* Add missing URL field type.
+* Add EMAIL field type.
+
 ## 2.4.2 - 2018-10-08
 * PHP 7.2 fix. Changes the order of the fields callback condition on the class object for `add_settings_field`.
 
