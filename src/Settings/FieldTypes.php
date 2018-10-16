@@ -387,11 +387,10 @@ value="%5$s"%6$s></div>',
     protected function getExtraFieldParams(array $args): string
     {
         $return = '';
-        $atts = isset($args['attributes']) && \is_array($args['attributes']) ?
-            $args['attributes'] : null;
+        $attributes = $this->getSettingFieldObject($args)->getAttributes() ?? [];
 
-        if (\is_array($atts)) {
-            foreach ($atts as $key => $value) {
+        if (!empty($attributes)) {
+            foreach ($attributes as $key => $value) {
                 $return .= \sprintf(' %s="%s"', \sanitize_key($key), \esc_attr($value));
             }
         }

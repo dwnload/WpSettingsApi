@@ -67,10 +67,12 @@ class SettingField
      * Sets the Fields description.
      *
      * @param string $description
+     * @return $this
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): SettingField
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -94,11 +96,13 @@ class SettingField
      * Sets the Fields default value.
      *
      * @param mixed $default
+     * @return $this
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setDefault($default)
+    public function setDefault($default): SettingField
     {
         $this->default = $default;
+        return $this;
     }
 
     /**
@@ -123,10 +127,12 @@ class SettingField
      * Sets the Fields label (description).
      *
      * @var string $label
+     * @return $this
      */
-    public function setLabel(string $label)
+    public function setLabel(string $label): SettingField
     {
         $this->label = $label;
+        return $this;
     }
 
     /**
@@ -151,10 +157,12 @@ class SettingField
      * Sets the Fields name.
      *
      * @param string $name
+     * @return $this
      */
-    public function setName(string $name)
+    public function setName(string $name): SettingField
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -189,11 +197,13 @@ class SettingField
      * Set the Fields output object.
      *
      * @param $class_object
+     * @return $this
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setClassObject($class_object)
+    public function setClassObject($class_object): SettingField
     {
         $this->class_object = $class_object;
+        return $this;
     }
 
     /**
@@ -219,10 +229,12 @@ class SettingField
      * - optional
      *
      * @param array $options
+     * @return $this
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): SettingField
     {
         $this->options = $options;
+        return $this;
     }
 
     /**
@@ -247,10 +259,12 @@ class SettingField
      * - optional
      *
      * @param callable $sanitize
+     * @return $this
      */
-    public function setSanitizeCallback(callable $sanitize)
+    public function setSanitizeCallback(callable $sanitize): SettingField
     {
         $this->sanitize_callback = $sanitize;
+        return $this;
     }
 
     /**
@@ -275,10 +289,12 @@ class SettingField
      * - optional
      *
      * @param string $section_id
+     * @return $this
      */
-    public function setSectionId(string $section_id)
+    public function setSectionId(string $section_id): SettingField
     {
         $this->section_id = $section_id;
+        return $this;
     }
 
     /**
@@ -302,10 +318,12 @@ class SettingField
      * Set the Fields size.
      *
      * @param string $size
+     * @return $this
      */
-    public function setSize(string $size)
+    public function setSize(string $size): SettingField
     {
         $this->size = $size;
+        return $this;
     }
 
     /**
@@ -330,10 +348,12 @@ class SettingField
      * Set the Fields input type (defaults to 'text').
      *
      * @param string $type
+     * @return $this
      */
-    public function setType(string $type)
+    public function setType(string $type): SettingField
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -357,10 +377,12 @@ class SettingField
      * Set the Fields input type (defaults to 'text').
      *
      * @param bool $obfuscated
+     * @return $this
      */
-    public function setObfuscate(bool $obfuscated = true)
+    public function setObfuscate(bool $obfuscated = true): SettingField
     {
         $this->obfuscated = $obfuscated;
+        return $this;
     }
 
     /**
@@ -369,5 +391,36 @@ class SettingField
     public function isObfuscated(): bool
     {
         return $this->obfuscated;
+    }
+
+    /**
+     * The Fields attributes array.
+     * - used for additional inline attributes.
+     *
+     * @var array $attributes
+     */
+    private $attributes = [];
+
+    /**
+     * Set the Fields attributes array.
+     * - optional
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function setAttributes(array $attributes): SettingField
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * Get the Fields attributes array.
+     *
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 }
