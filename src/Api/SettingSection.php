@@ -52,10 +52,12 @@ class SettingSection
      * Sets the Sections ID.
      *
      * @param string $id
+     * @return $this
      */
-    public function setId(string $id)
+    public function setId(string $id): SettingSection
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -79,10 +81,12 @@ class SettingSection
      * Sets the Section title.
      *
      * @param string $title
+     * @return $this
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): SettingSection
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
