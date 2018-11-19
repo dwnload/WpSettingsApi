@@ -12,7 +12,7 @@ It's a PHP class wrapper for handling WordPress [Settings API](http://codex.word
 
 To install this package, edit your `composer.json` file:
 
-```js
+```json
 {
     "require": {
         "dwnload/wp-settings-api": "^2.*"
@@ -41,6 +41,7 @@ directory:
 
 use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\Style;
+use Dwnload\WpSettingsApi\WpSettingsApi;
 
 \add_filter(App::FILTER_PREFIX . 'admin_scripts', [$this, 'adminScripts']);
 \add_filter(App::FILTER_PREFIX . 'admin_styles', [$this, 'adminStyles']);
@@ -54,13 +55,22 @@ use Dwnload\WpSettingsApi\Api\Style;
 public function adminScripts(array $scripts): array
 {
     \array_walk($scripts, function (Script $script, int $key) use (&$scripts) {
-        if ($script->getHandle() === 'dwnload-wp-settings-api') {
+        if ($script->getHandle() === WpSettingsApi::ADMIN_SCRIPT_HANDLE) {
             /**
              * If you're not using the `TheFrosty\WpUtilities\Plugin\AbstractHookProvider`
              * use `plugins_url()` in place of the `$this->getPlugin()->getUrl` or any other WP
              * function that will point to the asset.
              */
             $scripts[$key]->setSrc($this->getPlugin()->getUrl('assets/js/admin.js'));
+            $this->registerScript($script);
+        }
+        if ($script->getHandle() === WpSettingsApi::ADMIN_MEDIA_HANDLE) {
+            /**
+             * If you're not using the `TheFrosty\WpUtilities\Plugin\AbstractHookProvider`
+             * use `plugins_url()` in place of the `$this->getPlugin()->getUrl` or any other WP
+             * function that will point to the asset.
+             */
+            $scripts[$key]->setSrc($this->getPlugin()->getUrl('assets/js/wp-media-uploader.js'));
             $this->registerScript($script);
         }
     });
@@ -77,7 +87,7 @@ public function adminScripts(array $scripts): array
 public function adminStyles(array $styles): array
 {
     \array_walk($styles, function (Style $style, int $key) use (&$styles) {
-        if ($style->getHandle() === 'dwnload-wp-settings-api') {
+        if ($style->getHandle() === WpSettingsApi::ADMIN_STYLE_HANDLE) {
             /**
              * If you're not using the `TheFrosty\WpUtilities\Plugin\AbstractHookProvider`
              * use `plugins_url()` in place of the `$this->getPlugin()->getUrl` or any other WP
