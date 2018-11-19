@@ -20,6 +20,10 @@ use TheFrosty\WpUtilities\Plugin\WpHooksInterface;
  */
 class WpSettingsApi extends AbstractApp implements WpHooksInterface
 {
+    const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
+    const ADMIN_STYLE_HANDLE = self::ADMIN_SCRIPT_HANDLE;
+    const ADMIN_MEDIA_HANDLE = 'dwnload-wp-media-uploader';
+
     /**
      * Fire away captain!
      */
@@ -150,11 +154,19 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
          */
         $default_scripts = [
             new Script([
-                Script::HANDLE => 'dwnload-wp-settings-api',
+                Script::HANDLE => self::ADMIN_SCRIPT_HANDLE,
                 Script::SRC => 'src/assets/js/admin.js',
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->getApp()->getVersion(),
                 Script::IN_FOOTER => true,
+            ]),
+            new Script([
+                Script::HANDLE => self::ADMIN_MEDIA_HANDLE,
+                Script::SRC => 'src/assets/js/wp-media-uploader.js',
+                Script::DEPENDENCIES => ['jquery'],
+                Script::VERSION => $this->getApp()->getVersion(),
+                Script::IN_FOOTER => true,
+                Script::INLINE_SCRIPT => 'jQuery.wpMediaUploader();',
             ]),
         ];
 
@@ -166,7 +178,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
          */
         $default_styles = [
             new Style([
-                Style::HANDLE => 'dwnload-wp-settings-api',
+                Style::HANDLE => self::ADMIN_STYLE_HANDLE,
                 Style::SRC => 'src/assets/css/admin.css',
                 Style::DEPENDENCIES => [],
                 Style::VERSION => $this->getApp()->getVersion(),
@@ -197,7 +209,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
         \do_action(App::ACTION_PREFIX . 'localize_script', '', $localize);
 
         // The $handle needs to match the enqueued handle.
-        \wp_localize_script('dwnload-wp-settings-api', Script::OBJECT_NAME, $localize->getAllVars());
+        \wp_localize_script(self::ADMIN_SCRIPT_HANDLE, Script::OBJECT_NAME, $localize->getAllVars());
     }
 
     /**
@@ -317,6 +329,9 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
                 continue;
             }
             \wp_enqueue_script($script->getHandle());
+            if (!empty($script->getInlineScript())) {
+                \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
+            }
         }
     }
 
