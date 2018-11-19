@@ -30,7 +30,6 @@ class FieldTypes
     const FIELD_TYPE_FILE = 'file';
     const FIELD_TYPE_IMAGE = 'image';
     const FIELD_TYPE_PASSWORD = 'password';
-    const FIELD_TYPE_COLOR = 'color';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -123,22 +122,47 @@ class FieldTypes
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
         $_id = \sprintf('%s[%s]', $field->getSectionId(), $field->getId());
 
-        $output = $this->getInputField($args);
+        $field->setType(self::FIELD_TYPE_TEXT);
+        \ob_start();
+        echo $this->getInputField($args);
+        $output = \str_replace(
+            sprintf('class="FieldType_%s"', self::FIELD_TYPE_TEXT),
+            sprintf('class="FieldType_%s"', self::FIELD_TYPE_FILE),
+            \ob_get_clean()
+        );
+        $output = \str_replace(
+            '</div>',
+            \sprintf(
+                '<button class="button secondary wpMediaUploader" type="button" value="%s">%s</button></div>',
+                \esc_attr__('Browse media', 'custom-login'),
+                \esc_html__('Browse media', 'custom-login')
+            ),
+            $output
+        );
         $output .= $this->getFieldDescription($args);
 
         if (!empty($value)) {
             $output .= '<div id="' . $_id . '_preview" class="FieldType__file_preview">';
-            $check_image = \preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', $value);
-            if ($check_image) {
+            if (\preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', $value) !== false) {
                 $output .= '<div class="FieldType__file_image">';
-                $output .= '<img src="' . $value . '" alt="">';
-                $output .= '<a href="#" class="FieldType__file--remove" rel="' . $_id . '">Remove Image</a>';
+                $output .= \wp_get_attachment_image(\attachment_url_to_postid($value), 'medium');
                 $output .= '</div>';
             }
             $output .= '</div>';
         }
 
         echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
+    /**
+     * Renders an input image (file) field.
+     *
+     * @param array $args Array of Field object parameters
+     */
+    public function image(array $args)
+    {
+        $args[SettingField::TYPE] = 'file';
+        $this->file($args);
     }
 
     /**
@@ -329,6 +353,24 @@ value="%3$s"%4$s>',
         \wp_editor($value, $field->getSectionId() . '-' . $field->getId(), $editor_settings);
 
         $output .= \ob_get_clean();
+        $output .= '</div>';
+        $output .= $this->getFieldDescription($args);
+
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
+    /**
+     * Renders a html field.
+     *
+     * @param array $args Array of Field object parameters
+     */
+    public function html(array $args)
+    {
+        $field = $this->getSettingFieldObject($args);
+        $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
+
+        $output = '<div class="FieldType_html">';
+        $output .= \wp_kses_post($value);
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
