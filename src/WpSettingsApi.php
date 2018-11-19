@@ -326,12 +326,11 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
                     $script->getInFooter()
                 );
                 \wp_enqueue_script($script->getHandle());
+                $this->addInlineScript($script);
                 continue;
             }
             \wp_enqueue_script($script->getHandle());
-            if (!empty($script->getInlineScript())) {
-                \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
-            }
+            $this->addInlineScript($script);
         }
     }
 
@@ -359,6 +358,17 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
                 continue;
             }
             \wp_enqueue_style($style->getHandle());
+        }
+    }
+
+    /**
+     * Add an inline script.
+     * @param Script $script
+     */
+    private function addInlineScript(Script $script)
+    {
+        if (!empty($script->getInlineScript())) {
+            \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
         }
     }
 }
