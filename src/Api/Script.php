@@ -179,6 +179,7 @@ class Script extends BaseModel
      * Get the Inline Script data.
      *
      * @return bool|string
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public function getInlineScript()
     {

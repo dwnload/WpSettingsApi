@@ -124,7 +124,7 @@ class FieldTypes
 
         $field->setType(self::FIELD_TYPE_TEXT);
         \ob_start();
-        echo $this->getInputField($args);
+        echo $this->getInputField($args); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         $output = \str_replace(
             sprintf('class="FieldType_%s"', self::FIELD_TYPE_TEXT),
             sprintf('class="FieldType_%s"', self::FIELD_TYPE_FILE),
