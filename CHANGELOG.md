@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
+## 2.5.1 - 2018-11-19
+* Update: Move wp_add_inline_script into private helper method.
+
 ## 2.5.0 - 2018-11-19
 * Update: add missing field types defined in constants `html` & `image`.
 * Update: FileTypes `file` & `image` now proper re-use the WordPress media uploader.
