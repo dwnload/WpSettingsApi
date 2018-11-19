@@ -20,6 +20,7 @@ class Script extends BaseModel
     const DEPENDENCIES = 'dependencies';
     const VERSION = 'version';
     const IN_FOOTER = 'inFooter';
+    const INLINE_SCRIPT = 'inline_script';
 
     /**
      * Script handle (name).
@@ -155,5 +156,33 @@ class Script extends BaseModel
     public function getInFooter(): bool
     {
         return $this->in_footer;
+    }
+
+    /**
+     * Inline Script data.
+     *
+     * @var false|string $inline_script
+     */
+    protected $inline_script = false;
+
+    /**
+     * Set the Inline Script data.
+     *
+     * @param string $inline_script
+     */
+    public function setInlineScript(string $inline_script)
+    {
+        $this->inline_script = $inline_script;
+    }
+
+    /**
+     * Get the Inline Script data.
+     *
+     * @return bool|string
+     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
+     */
+    public function getInlineScript()
+    {
+        return $this->inline_script;
     }
 }

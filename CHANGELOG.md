@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
+## 2.5.0 - 2018-11-19
+* Update: add missing field types defined in constants `html` & `image`.
+* Update: FileTypes `file` & `image` now proper re-use the WordPress media uploader.
+* Update: `Script()` with new `Script::INLINE_SCRIPT` constant to register date to pass to `wp_add_inline_script` 
+(defaults to bottom).
+* Added: new `wp-media-uploader.js` for the `file` & `image` field uploads.
+* Removed: `color` field (missing) (to be added back later?).
+* Removed: `field-types.js`.
+
 ## 2.4.4 - 2018-10-16
 * Add new setAttributes to the SettingField class.
 * SettingField() methods now return the object instance (allowing chaining). 
