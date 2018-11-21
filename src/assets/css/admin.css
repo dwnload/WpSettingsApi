@@ -137,6 +137,10 @@
     color: #efefef;
 }
 
+.Dwnload_WP_Settings_Api__sidebar li {
+    list-style: none;
+}
+
 .Dwnload_WP_Settings_Api__sidebar .postbox {
     border-right: none;
     border-left: none;
@@ -178,6 +182,8 @@
 
 .Dwnload_WP_Settings_Api__body .form-table th {
     font-weight: 400;
+    min-width: 150px; /* Set a minimum */
+    width: inherit; /* Overwrite the 200px width */
 }
 
 .Dwnload_WP_Settings_Api__body .form-table th h4 {
