@@ -24,6 +24,8 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
     const ADMIN_STYLE_HANDLE = self::ADMIN_SCRIPT_HANDLE;
     const ADMIN_MEDIA_HANDLE = 'dwnload-wp-media-uploader';
 
+    const VERSION = '2.6';
+
     /**
      * Fire away captain!
      */
