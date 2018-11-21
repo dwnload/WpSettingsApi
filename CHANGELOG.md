@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 3.0.0
 - Complete rewrite.
 
+## 2.6 - 2018-11-21
+* Update: Settings navigation sections now hook into the `App::ACTION_PREFIX . 'settings_sidebars'` action tag. The 
+opening `ul` tag is hooked in to priority `0` and the closing `ul` is on `199`. Each section menu item is hooked into
+a priority starting at `3` and incrementing in value by _+2_.
+* Update: admin.css; fixing the removed `th` width attribute in **2.5.0**.
+* Update: admin.js; target sidebar anchor elements with the `[data-tab-id]` only.
+* Added: Version constant to the base file and passed to the settings page anchor title.
+
 ## 2.5.1 - 2018-11-19
 * Update: Move wp_add_inline_script into private helper method.
 

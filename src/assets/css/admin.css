@@ -101,7 +101,11 @@
     width: 222px;
 }
 
-#wpbody-content .Dwnload_WP_Settings_Api__sidebar .metabox-holder {
+#wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder {
+    padding-top: 10px;
+}
+
+#wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder ~ .metabox-holder {
     padding-top: 0;
 }
 
@@ -114,7 +118,7 @@
     margin-bottom: 0;
 }
 
-.Dwnload_WP_Settings_Api__menu li > a {
+.Dwnload_WP_Settings_Api__menu li > a[data-tab-id] {
     border-bottom: 1px solid #dedede;
     box-shadow: 0 1px 0 #fff;
     color: #555;
@@ -126,15 +130,19 @@
     transition: border-bottom 190ms;;
 }
 
-.Dwnload_WP_Settings_Api__menu li > a:hover {
+.Dwnload_WP_Settings_Api__menu li > a[data-tab-id]:hover {
     color: #222;
     border-bottom-color: #00426d;
 }
 
-.Dwnload_WP_Settings_Api__menu li > a.active {
+.Dwnload_WP_Settings_Api__menu li > a[data-tab-id].active {
     background-color: #0074a2;
     border-bottom: 2px solid #00426d;
     color: #efefef;
+}
+
+.Dwnload_WP_Settings_Api__sidebar li {
+    list-style: none;
 }
 
 .Dwnload_WP_Settings_Api__sidebar .postbox {
@@ -178,6 +186,8 @@
 
 .Dwnload_WP_Settings_Api__body .form-table th {
     font-weight: 400;
+    min-width: 150px; /* Set a minimum */
+    width: inherit; /* Overwrite the 200px width */
 }
 
 .Dwnload_WP_Settings_Api__body .form-table th h4 {

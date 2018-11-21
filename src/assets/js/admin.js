@@ -64,7 +64,7 @@
      * localStorage events.
      */
     menuItemListener: function () {
-      Dwnload_WP_Settings.objects.menu.find('a').on('click', function (e) {
+      Dwnload_WP_Settings.objects.menu.find('a[data-tab-id]').on('click', function (e) {
         let clickedGroup = $(this).data('tab-id')
 
         Dwnload_WP_Settings.objects.menu.find('a').removeClass('active')
