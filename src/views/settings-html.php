@@ -19,7 +19,11 @@ if (!($this instanceof WpSettingsApi)) {
                 <?php
                 printf(
                     esc_html__('A %s package.', 'wp-settings-api'),
-                    '<strong><a href="https://github.com/dwnload/WpSettingsApi" target="_blank">dwnload</a></strong>'
+                    sprintf(
+                        '<strong><a href="https://github.com/dwnload/WpSettingsApi" 
+title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></strong>',
+                        esc_attr(WpSettingsApi::VERSION)
+                    )
                 ); ?>
             </div>
         </div><!-- .Dwnload_WP_Settings_Api__header -->
