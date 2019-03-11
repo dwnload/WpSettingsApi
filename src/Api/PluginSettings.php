@@ -9,7 +9,7 @@ use TheFrosty\WpUtilities\Models\BaseModel;
  * Class PluginInfo
  * @package Dwnload\WpSettingsApi\Api
  */
-class PluginInfo extends BaseModel
+class PluginSettings extends BaseModel
 {
 
     /** @var string $nonce_s */
