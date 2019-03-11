@@ -14,7 +14,7 @@
     <arg name="tab-width" value="4"/>
 
     <!-- Rules: Check PHP version compatibility https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-    <config name="testVersion" value="7.0-"/>
+    <config name="testVersion" value="7.1-"/>
     <rule ref="PHPCompatibility"/>
 
     <rule ref="Inpsyde">
