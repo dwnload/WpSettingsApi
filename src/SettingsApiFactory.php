@@ -40,6 +40,6 @@ class SettingsApiFactory
      */
     private static function getId(array $fields): string
     {
-        return \md5(\serialize($fields));
+        return \md5(\json_encode($fields));
     }
 }
