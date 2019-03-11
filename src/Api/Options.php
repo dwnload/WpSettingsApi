@@ -2,7 +2,7 @@
 
 namespace Dwnload\WpSettingsApi\Api;
 
-use Dwnload\WpSettingsApi\AppFactory;
+use Dwnload\WpSettingsApi\SettingsApiFactory;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 
 /**
@@ -89,7 +89,7 @@ class Options
      */
     protected static function getSectionId(string $option_key): string
     {
-        foreach (SectionManager::getSections(AppFactory::getApp()->getMenuSlug()) as $section) {
+        foreach (SectionManager::getSections(SettingsApiFactory::getInstance()->getMenuSlug()) as $section) {
             $options = self::getOptions($section->getId());
             if (\array_key_exists($option_key, $options)) {
                 return $section->getId();

@@ -2,16 +2,31 @@
 
 namespace Dwnload\WpSettingsApi\Settings;
 
-use Dwnload\WpSettingsApi\AbstractApp;
 use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\WpSettingsApi;
 
 /**
  * Class SectionManager
  *
  * @package Dwnload\WpSettingsApi\Settings
  */
-class SectionManager extends AbstractApp
+class SectionManager
 {
+
+    /**
+     * WpSettingsApi object.
+     * @var WpSettingsApi $wp_settings_api
+     */
+    private $wp_settings_api;
+
+    /**
+     * SectionManager constructor.
+     * @param WpSettingsApi $wp_settings_api
+     */
+    public function __construct(WpSettingsApi $wp_settings_api)
+    {
+        $this->wp_settings_api = $wp_settings_api;
+    }
 
     /**
      * Array of SettingSection objects.
@@ -27,7 +42,7 @@ class SectionManager extends AbstractApp
      */
     public function setSections(array $sections)
     {
-        self::$settings_sections[$this->getApp()->getMenuSlug()] = $sections;
+        self::$settings_sections[$this->wp_settings_api->getPluginInfo()->getMenuSlug()] = $sections;
     }
 
     /**
@@ -39,7 +54,7 @@ class SectionManager extends AbstractApp
      */
     public function addSection(SettingSection $section): string
     {
-        self::$settings_sections[$this->getApp()->getMenuSlug()][] = $section;
+        self::$settings_sections[$this->wp_settings_api->getPluginInfo()->getMenuSlug()][] = $section;
 
         return $section->getId();
     }
@@ -47,12 +62,21 @@ class SectionManager extends AbstractApp
     /**
      * Get all settings SettingSection objects as an array.
      *
-     * @param string $menu_slug The App->getMenuSlug() instance id.
+     * @param string $menu_slug The WpSettingsApi->getPluginInfo()->getMenuSlug() instance id.
      *
      * @return SettingSection[] Array of SettingSection objects.
      */
-    public static function getSections(string $menu_slug = null): array
+    public static function getSection(string $menu_slug): array
     {
-        return self::$settings_sections[$menu_slug] ?? self::$settings_sections;
+        return self::$settings_sections[$menu_slug] ?? [];
+    }
+
+    /**
+     * Get all sections.
+     * @return array
+     */
+    public static function getSections(): array
+    {
+        return self::$settings_sections;
     }
 }
