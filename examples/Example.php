@@ -4,8 +4,7 @@ namespace Vendor\Package; // CHANGE ME
 
 use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\SettingSection;
-use Dwnload\WpSettingsApi\App;
-use Dwnload\WpSettingsApi\AppFactory;
+use Dwnload\WpSettingsApi\SettingsApiFactory;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
@@ -21,12 +20,12 @@ class ExampleSettings implements WpHooksInterface
 
     /**
      * Register our callback to the WP Settings API action hook
-     * `App::ACTION_PREFIX . 'init'`. This custom action passes two parameters
+     * `WpSettingsApi::ACTION_PREFIX . 'init'`. This custom action passes three parameters (two prior to version 2.7)
      * so you have to register a priority and the parameter count.
      */
     public function addHooks()
     {
-        \add_action(App::ACTION_PREFIX . 'init', [$this, 'init'], 10, 2);
+        \add_action(WpSettingsApi::ACTION_PREFIX . 'init', [$this, 'init'], 10, 3);
     }
 
     /**
@@ -45,9 +44,15 @@ class ExampleSettings implements WpHooksInterface
      *
      * @param SectionManager $section_manager
      * @param FieldManager $field_manager
+     * @param WpSettingsApi $wp_settings_api
      */
-    public function init(SectionManager $section_manager, FieldManager $field_manager)
+    public function init(SectionManager $section_manager, FieldManager $field_manager, WpSettingsApi $wp_settings_api)
     {
+        // Check for current app instance in case using more than once (slug set below in `SettingsApiFactory::create()`).
+        if ($wp_settings_api->getPluginInfo()->getMenuSlug() !== 'vendor-domain-settings') {
+            return;
+        }
+
         /**
          * Checkout Settings Section
          * `$section_manager->addSection` returns the ID of the new section to pass
@@ -93,9 +98,9 @@ class ExampleSettings implements WpHooksInterface
     }
 }
 
-$app = AppFactory::createApp([
+$app = SettingsApiFactory::create([
     'domain' => 'vendor-domain',
-    'file' => __FILE__, // Path to WpSettingsApi file.
+    'file' => __FILE__, // Path to WpSettingsApi file (not required, see README for more info).
     'menu-slug' => 'vendor-domain-settings',
     'menu-title' => 'Vendor Settings', // Title found in menu
     'page-title' => 'Vendor Settings Api', // Title output at top of settings page

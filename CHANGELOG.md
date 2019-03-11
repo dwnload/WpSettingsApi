@@ -6,8 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
-## 3.0.0
-- Complete rewrite.
+## 3.0.0 - 2019-03-11
+- Breaking rewrite which allows the use of multiple instances in one application.
+- Requires PHP >= 7.1
+- See [Example.php](https://github.com/dwnload/WpSettingsApi/tree/master/examples/Example.php) for update on how to use version 3.
+
+### Updated
+* `thefrosty/wp-utilities` to version 1.4.1.
+* SettingsApiFactory method `createApp` is now `create` which returns a new instance of the `PluginSettings`. Use like: 
+`new WpSettingsApi(SettingsApiFactory::create([]))`.
+
+### Removed
+* `AbstractApp()`, `App()` & `PluginInfo()`.
+### Added
+* On the init action hook, a third parameter has been added to the context of the current WpSettingsApi instance.
+It's also been moved into the base object since the App class was removed.
 
 ## 2.6 - 2018-11-21
 * Update: Settings navigation sections now hook into the `App::ACTION_PREFIX . 'settings_sidebars'` action tag. The 

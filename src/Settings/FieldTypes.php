@@ -179,10 +179,9 @@ class FieldTypes
         $output = '<div class="FieldType_checkbox">';
         $output .= \sprintf('<input type="hidden" name="%1$s" value="off">', $_id);
         $output .= \sprintf(
-            '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%4$s>',
+            '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%3$s>',
             $field->getSectionId(),
             $field->getId(),
-            \esc_attr($value),
             \checked($value, 'on', false)
         );
         $output .= \sprintf('<label for="%1$s"></label>', $_id);
