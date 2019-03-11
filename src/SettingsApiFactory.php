@@ -2,69 +2,44 @@
 
 namespace Dwnload\WpSettingsApi;
 
+use Dwnload\WpSettingsApi\Api\PluginSettings;
+
 /**
- * Class AppFactory
+ * Class SettingsApiFactory
  *
  * @package Dwnload\WpSettingsApi
  */
-class AppFactory
+class SettingsApiFactory
 {
     /**
-     * PluginInfo field settings array.
-     *
-     * @var array $fields
+     * Array of PluginSettings instances.
+     * @var PluginSettings[]
      */
-    private static $fields = [];
+    private static $instance = [];
 
     /**
-     * @var App[] $app;
-     */
-    private static $app;
-
-    /**
-     * Create the App instance.
-     *
+     * Create a new instance for the settings api.
      * @param array $fields
-     *
-     * @return App
+     * @return PluginSettings
      */
-    public static function createApp(array $fields): App
+    public static function create(array $fields): PluginSettings
     {
-        if (!(self::$app[self::getId()] instanceof App)) {
-            self::$fields = $fields;
-            self::$app[self::getId()] = new App($fields);
+        if (!isset(self::$instance[self::getId($fields)]) ||
+            !(self::$instance[self::getId($fields)] instanceof PluginSettings)
+        ) {
+            self::$instance[self::getId($fields)] = new PluginSettings($fields);
         }
 
-        return self::$app[self::getId()];
-    }
-
-    /**
-     * Get the App instance.
-     *
-     * @return App
-     */
-    public static function getApp(): App
-    {
-        return self::$app[self::getId()];
-    }
-
-    /**
-     * Get the field settings array.
-     *
-     * @return array
-     */
-    public static function getFields(): array
-    {
-        return self::$fields;
+        return self::$instance[self::getId($fields)];
     }
 
     /**
      * Get the field ID.
-     *
+     * @param array $fields
      * @return string
      */
-    public static function getId(): string
+    private static function getId(array $fields): string
     {
-        return \serialize(self::getFields());
+        return \md5(\serialize($fields));
     }
 }
