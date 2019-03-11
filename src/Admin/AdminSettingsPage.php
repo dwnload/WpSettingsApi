@@ -58,18 +58,18 @@ class AdminSettingsPage
         $default_scripts = [
             new Script([
                 Script::HANDLE => WpSettingsApi::ADMIN_SCRIPT_HANDLE,
-                Script::SRC => 'src/assets/js/admin.js',
+                Script::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/js/admin.js'),
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
             ]),
             new Script([
                 Script::HANDLE => WpSettingsApi::ADMIN_MEDIA_HANDLE,
-                Script::SRC => 'src/assets/js/wp-media-uploader.js',
+                Script::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/js/wp-media-uploader.js'),
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
-                Script::INLINE_SCRIPT => 'jQuery.wpMediaUploader();',
+                Script::INLINE_SCRIPT => 'if (typeof wpMediaUploader === "function") { jQuery.wpMediaUploader(); }',
             ]),
         ];
 
@@ -82,7 +82,7 @@ class AdminSettingsPage
         $default_styles = [
             new Style([
                 Style::HANDLE => WpSettingsApi::ADMIN_STYLE_HANDLE,
-                Style::SRC => 'src/assets/css/admin.css',
+                Style::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/css/admin.css'),
                 Style::DEPENDENCIES => [],
                 Style::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Style::MEDIA => 'screen',
