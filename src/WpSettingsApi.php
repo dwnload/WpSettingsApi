@@ -111,7 +111,7 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Initialize and registers the settings sections and fields to WordPress.
      */
-    protected function adminInit()
+    protected function adminInit() // phpcs:ignore
     {
         // Register settings sections
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
@@ -171,7 +171,7 @@ class WpSettingsApi extends AbstractHookProvider
             \register_setting(
                 $section->getId(),
                 $section->getId(),
-                function ($options) {
+                function ($options): array { // phpcs:ignore
                     return $this->sanitizeOptionsArray($options);
                 }
             );
