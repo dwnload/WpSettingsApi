@@ -23,7 +23,7 @@
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
-    "inpsyde/php-coding-standards": "^0.13.3",
+    "inpsyde/php-coding-standards": "^0.13.4",
     "phpmd/phpmd": "^2.6",
     "phpunit/phpunit": "6.*",
     "wp-phpunit/wp-phpunit": "4.9.*"
@@ -36,7 +36,7 @@
       "@phpcs"
     ],
     "phpcs": [
-      "./vendor/bin/phpcs --standard=phpcs.ruleset.xml"
+      "./vendor/bin/phpcs --standard=phpcs.ruleset.xml --runtime-set testVersion 7.1-"
     ]
   },
   "autoload": {
