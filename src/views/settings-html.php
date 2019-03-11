@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-use Dwnload\WpSettingsApi\App;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 
 /** @var $this \Dwnload\WpSettingsApi\WpSettingsApi */
@@ -14,7 +13,7 @@ if (!($this instanceof WpSettingsApi)) {
 
         <div class="Dwnload_WP_Settings_Api__header">
             <h3><?php echo esc_html(get_admin_page_title()); ?></h3>
-            <span><?php echo esc_html($this->getApp()->getVersion()); ?></span>
+            <span><?php echo esc_html($this->getPluginInfo()->getVersion()); ?></span>
             <div>
                 <?php
                 printf(
@@ -35,10 +34,10 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
         <div class="Dwnload_WP_Settings_Api__sticky">
             <div class="wrap">
                 <div class="Dwnload_WP_Settings_Api__sticky_notice">
-                    <?php do_action(App::ACTION_PREFIX . 'sticky_admin_notice'); ?>
+                    <?php do_action(WpSettingsApi::ACTION_PREFIX . 'sticky_admin_notice'); ?>
                 </div>
                 <div class="alignright">
-                    <?php do_action(App::ACTION_PREFIX . 'before_submit_button'); ?>
+                    <?php do_action(WpSettingsApi::ACTION_PREFIX . 'before_submit_button'); ?>
                     <?php submit_button(
                         __('Save All Changes', 'wp-settings-api'),
                         'primary',
@@ -53,7 +52,7 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
 
         <div class="Dwnload_WP_Settings_Api__sidebar">
             <?php include __DIR__ . '/setting/nav.php'; ?>
-            <?php do_action(App::ACTION_PREFIX . 'settings_sidebars', []); ?>
+            <?php do_action(WpSettingsApi::ACTION_PREFIX . 'settings_sidebars', []); ?>
         </div><!-- .Dwnload_WP_Settings_Api__sidebar -->
 
         <div class="Dwnload_WP_Settings_Api__body">
