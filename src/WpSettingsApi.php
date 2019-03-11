@@ -2,38 +2,79 @@
 
 namespace Dwnload\WpSettingsApi;
 
+use Dwnload\WpSettingsApi\Admin\AdminSettingsPage;
+use Dwnload\WpSettingsApi\Api\PluginSettings;
 use Dwnload\WpSettingsApi\Api\Sanitize;
 use Dwnload\WpSettingsApi\Api\SettingField;
-use Dwnload\WpSettingsApi\Api\LocalizeScripts;
-use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\SettingSection;
-use Dwnload\WpSettingsApi\Api\Style;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use TheFrosty\WpUtilities\Plugin\WpHooksInterface;
+use TheFrosty\WpUtilities\Plugin\AbstractHookProvider;
+use TheFrosty\WpUtilities\Plugin\HooksTrait;
 
 /**
  * Class WpSettingsApi
  *
  * @package Dwnload\WpSettingsApi
  */
-class WpSettingsApi extends AbstractApp implements WpHooksInterface
+class WpSettingsApi extends AbstractHookProvider
 {
-    const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
-    const ADMIN_STYLE_HANDLE = self::ADMIN_SCRIPT_HANDLE;
-    const ADMIN_MEDIA_HANDLE = 'dwnload-wp-media-uploader';
+    use HooksTrait;
 
-    const VERSION = '2.6';
+    public const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
+    public const ADMIN_STYLE_HANDLE = self::ADMIN_SCRIPT_HANDLE;
+    public const ADMIN_MEDIA_HANDLE = 'dwnload-wp-media-uploader';
+    public const FILTER_PREFIX = 'dwnload/wp_settings_api/';
+    public const ACTION_PREFIX = self::FILTER_PREFIX;
+    public const HOOK_PRIORITY = 999;
+    public const VERSION = '3.0.0';
 
     /**
-     * Fire away captain!
+     * The current plugin instance.
+     * @var PluginSettings $plugin_info
+     */
+    private $plugin_info;
+
+    /**
+     * WpSettingsApi constructor.
+     * @param PluginSettings $info
+     */
+    public function __construct(PluginSettings $info)
+    {
+        $this->plugin_info = $info;
+    }
+
+    /**
+     * Add class hooks.
      */
     public function addHooks()
     {
-        $this->getApp()->addHooks();
+        $this->addAction('init', function () {
+            if (\did_action(self::ACTION_PREFIX . 'init')) {
+                return;
+            }
+
+            /**
+             * Fires when this plugin is loaded!
+             *
+             * @param SectionManager Instance of the SectionManager object.
+             * @param FieldManager Instance of the FieldManager object.
+             * @param WpSettingsApi $this
+             */
+            \do_action(self::ACTION_PREFIX . 'init', (new SectionManager($this)), (new FieldManager()), $this);
+        }, self::HOOK_PRIORITY);
         $this->addAction('admin_menu', [$this, 'addAdminMenu']);
         $this->addAction('admin_init', [$this, 'adminInit']);
+    }
+
+    /**
+     * Get the current PluginInfo object.
+     * @return PluginSettings
+     */
+    public function getPluginInfo(): PluginSettings
+    {
+        return $this->plugin_info;
     }
 
     /**
@@ -42,21 +83,25 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
     protected function addAdminMenu()
     {
         $hook = \add_options_page(
-            \esc_html($this->getApp()->getPageTitle()),
-            \esc_html($this->getApp()->getMenuTitle()),
-            $this->getApp()->getAppCap(),
-            \apply_filters(App::FILTER_PREFIX . 'options_page_slug', $this->getApp()->getMenuSlug()),
-            [$this, 'settingsHtml']
+            \esc_html($this->plugin_info->getPageTitle()),
+            \esc_html($this->plugin_info->getMenuTitle()),
+            $this->getAppCap(),
+            \apply_filters(self::FILTER_PREFIX . 'options_page_slug', $this->plugin_info->getMenuSlug()),
+            function () {
+                $this->settingsHtml();
+            }
         );
-        $this->addAction('load-' . $hook, [$this, 'load'], 19);
+        if (\is_string($hook)) {
+            $this->addAction('load-' . $hook, [(new AdminSettingsPage($this)), 'load'], 19);
+        }
     }
 
     /**
      * Render the settings html.
      */
-    public function settingsHtml()
+    protected function settingsHtml()
     {
-        if (!\current_user_can($this->getApp()->getAppCap())) {
+        if (!\current_user_can($this->getAppCap())) {
             \wp_die(\esc_html__('You do not have sufficient permissions to access this page.'));
         }
 
@@ -69,7 +114,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
     protected function adminInit()
     {
         // Register settings sections
-        foreach (SectionManager::getSections($this->getApp()->getMenuSlug()) as $section) {
+        foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
             /** @var SettingSection $section */
             if (\get_option($section->getId(), false) === false) {
                 \add_option($section->getId(), []);
@@ -122,96 +167,25 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
         }
 
         // Register settings setting
-        foreach (SectionManager::getSections($this->getApp()->getMenuSlug()) as $section) {
+        foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
             \register_setting(
                 $section->getId(),
                 $section->getId(),
-                [$this, 'sanitizeOptionsArray']
+                function ($options) {
+                    return $this->sanitizeOptionsArray($options);
+                }
             );
         }
     }
 
     /**
-     * Fire hooks needed on the Settings Page (only).
+     * Returns the allowed admin capability to modify or view settings.
+     * @link https://codex.wordpress.org/Roles_and_Capabilities
+     * @return string
      */
-    protected function load()
+    private function getAppCap(): string
     {
-        \do_action(App::ACTION_PREFIX . 'settings_page_loaded');
-        $this->addAction('admin_enqueue_scripts', [$this, 'adminEnqueueScripts'], 99);
-        $this->addAction('admin_footer', [$this, 'localizeScripts'], 99);
-    }
-
-    /**
-     * Enqueue scripts and styles for the Settings page.
-     */
-    protected function adminEnqueueScripts()
-    {
-        /** WordPress Core */
-        \wp_enqueue_media();
-        \wp_enqueue_script('wp-color-picker');
-        \wp_enqueue_style('wp-color-picker');
-
-        /**
-         * Scripts
-         */
-        $default_scripts = [
-            new Script([
-                Script::HANDLE => self::ADMIN_SCRIPT_HANDLE,
-                Script::SRC => 'src/assets/js/admin.js',
-                Script::DEPENDENCIES => ['jquery'],
-                Script::VERSION => $this->getApp()->getVersion(),
-                Script::IN_FOOTER => true,
-            ]),
-            new Script([
-                Script::HANDLE => self::ADMIN_MEDIA_HANDLE,
-                Script::SRC => 'src/assets/js/wp-media-uploader.js',
-                Script::DEPENDENCIES => ['jquery'],
-                Script::VERSION => $this->getApp()->getVersion(),
-                Script::IN_FOOTER => true,
-                Script::INLINE_SCRIPT => 'jQuery.wpMediaUploader();',
-            ]),
-        ];
-
-        $scripts = \apply_filters(App::FILTER_PREFIX . 'admin_scripts', $default_scripts);
-        $this->enqueueScripts($scripts);
-
-        /**
-         * Styles
-         */
-        $default_styles = [
-            new Style([
-                Style::HANDLE => self::ADMIN_STYLE_HANDLE,
-                Style::SRC => 'src/assets/css/admin.css',
-                Style::DEPENDENCIES => [],
-                Style::VERSION => $this->getApp()->getVersion(),
-                Style::MEDIA => 'screen',
-            ]),
-        ];
-
-        $styles = \apply_filters(App::FILTER_PREFIX . 'admin_styles', $default_styles);
-        $this->enqueueStyles($styles);
-    }
-
-    /**
-     * Localize PHP objects to pass to any page JS.
-     */
-    protected function localizeScripts()
-    {
-        $localize = new LocalizeScripts();
-
-        $localize->add('prefix', $this->getApp()->getPrefix());
-        $localize->add('nonce', \wp_create_nonce($this->getApp()->getNonce()));
-
-        /**
-         * Use this action hook to pass new objects into the script output.
-         *
-         * @var string Empty string value.
-         * @var LocalizeScripts $localize Use this object to add new localized values to the registered output.
-         */
-        \do_action(App::ACTION_PREFIX . 'localize_script', '', $localize);
-
-        // The $handle needs to match the enqueued handle.
-        \wp_localize_script(self::ADMIN_SCRIPT_HANDLE, Script::OBJECT_NAME, $localize->getAllVars());
+        return (string)\apply_filters(self::FILTER_PREFIX . 'capability', 'manage_options');
     }
 
     /**
@@ -222,7 +196,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
      * @return array
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function sanitizeOptionsArray($options): array
+    private function sanitizeOptionsArray($options): array
     {
         if (empty($options)) {
             return (array)$options;
@@ -233,7 +207,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
          *
          * @var array $options The options array before getting sanitized
          */
-        \do_action(App::ACTION_PREFIX . 'before_sanitize_options', $options);
+        \do_action(self::ACTION_PREFIX . 'before_sanitize_options', $options);
 
         foreach ($options as $option_slug => $option_value) {
             $sanitize_callback = $this->getSanitizeCallback($option_slug);
@@ -263,7 +237,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
          *
          * @var array $options The options array after getting sanitized
          */
-        \do_action(App::ACTION_PREFIX . 'after_sanitize_options', $options);
+        \do_action(self::ACTION_PREFIX . 'after_sanitize_options', $options);
 
         return $options;
     }
@@ -276,7 +250,7 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
      * @return bool|callable Boolean if no callback exists or Callable method
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    protected function getSanitizeCallback(string $option_slug = '')
+    private function getSanitizeCallback(string $option_slug = '')
     {
         if (empty($option_slug)) {
             return false;
@@ -305,72 +279,5 @@ class WpSettingsApi extends AbstractApp implements WpHooksInterface
         }
 
         return false;
-    }
-
-    /**
-     * Helper to enqueue scripts via proper registration.
-     *
-     * @uses wp_register_script()
-     * @uses wp_enqueue_script()
-     *
-     * @param Script[] $scripts An array af Script objects.
-     */
-    protected function enqueueScripts(array $scripts)
-    {
-        /** @var Script $script */
-        foreach ($scripts as $script) {
-            if (!\wp_script_is($script->getHandle(), 'registered')) {
-                \wp_register_script(
-                    $script->getHandle(),
-                    $this->getApp()->getPluginsUrl($script->getSrc()),
-                    $script->getDependencies(),
-                    $script->getVersion(),
-                    $script->getInFooter()
-                );
-                \wp_enqueue_script($script->getHandle());
-                $this->addInlineScript($script);
-                continue;
-            }
-            \wp_enqueue_script($script->getHandle());
-            $this->addInlineScript($script);
-        }
-    }
-
-    /**
-     * Helper to enqueue styles via proper registration.
-     *
-     * @uses wp_register_style()
-     * @uses wp_enqueue_style()
-     *
-     * @param Style[] $styles An array af Style objects.
-     */
-    protected function enqueueStyles(array $styles)
-    {
-        /** @var Style $style */
-        foreach ($styles as $style) {
-            if (!\wp_style_is($style->getHandle(), 'registered')) {
-                \wp_register_style(
-                    $style->getHandle(),
-                    $this->getApp()->getPluginsUrl($style->getSrc()),
-                    $style->getDependencies(),
-                    $style->getVersion(),
-                    $style->getMedia()
-                );
-                \wp_enqueue_style($style->getHandle());
-                continue;
-            }
-            \wp_enqueue_style($style->getHandle());
-        }
-    }
-
-    /**
-     * Add an inline script.
-     * @param Script $script
-     */
-    private function addInlineScript(Script $script)
-    {
-        if (!empty($script->getInlineScript())) {
-            \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
-        }
     }
 }
