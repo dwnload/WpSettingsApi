@@ -17,7 +17,7 @@ class AppFactory
     private static $fields = [];
 
     /**
-     * @var App $app ;
+     * @var App[] $app;
      */
     private static $app;
 
@@ -30,12 +30,12 @@ class AppFactory
      */
     public static function createApp(array $fields): App
     {
-        if (!(self::$app instanceof App)) {
+        if (!(self::$app[self::getId()] instanceof App)) {
             self::$fields = $fields;
-            self::$app = new App($fields);
+            self::$app[self::getId()] = new App($fields);
         }
 
-        return self::$app;
+        return self::$app[self::getId()];
     }
 
     /**
@@ -45,7 +45,7 @@ class AppFactory
      */
     public static function getApp(): App
     {
-        return self::$app;
+        return self::$app[self::getId()];
     }
 
     /**
@@ -56,5 +56,15 @@ class AppFactory
     public static function getFields(): array
     {
         return self::$fields;
+    }
+
+    /**
+     * Get the field ID.
+     *
+     * @return string
+     */
+    public static function getId(): string
+    {
+        return \serialize(self::getFields());
     }
 }

@@ -2,19 +2,18 @@
 
 namespace Dwnload\WpSettingsApi\Api;
 
-use Dwnload\WpSettingsApi\App;
+use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Models\BaseModel;
 
 /**
  * Class PluginInfo
- *
  * @package Dwnload\WpSettingsApi\Api
  */
-abstract class PluginInfo extends BaseModel
+class PluginInfo extends BaseModel
 {
 
     /** @var string $nonce_s */
-    protected $nonce_s = App::FILTER_PREFIX . '%s';
+    protected $nonce_s = WpSettingsApi::FILTER_PREFIX . '%s';
 
     /** @var string $domain */
     private $domain;
