@@ -31,13 +31,13 @@ Usage Example
 
 ##### Known issues
 
-Since this is a PHP package an not a WordPress plugin the assets included can't be loaded properly.
+Since this is a PHP package and not a WordPress plugin the assets included can't be loaded properly.
 In order to have the settings page inherit the styles and use the proper JS, you've got to copy the
 `/assets` directory to your plugin or theme. Then add the following to filter the asset src to your
 directory:
 
 ```php
-// ASUME THIS IS IN A CLASS....
+// ASSUME THIS IS IN A CLASS....
 
 use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\Style;
