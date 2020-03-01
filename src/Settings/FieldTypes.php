@@ -320,7 +320,7 @@ value="%3$s"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
-            \stripslashes($value),
+            \stripslashes($value ?? ''),
             $this->getExtraFieldParams($args)
         );
         $output .= '</div>';
