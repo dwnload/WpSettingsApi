@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.1.1 - 2020-09-12
+- Require PHP >= 7.3
+- `WpSettingsApi::addHooks()` requires `:void` return type in `wp-utilities:^2`
+
 ## 3.0.0 - 2019-03-11
 - Breaking rewrite which allows the use of multiple instances in one application.
 - Requires PHP >= 7.1

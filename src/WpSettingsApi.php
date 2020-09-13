@@ -48,7 +48,7 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Add class hooks.
      */
-    public function addHooks()
+    public function addHooks(): void
     {
         $this->addAction('init', function () {
             if (\did_action(self::ACTION_PREFIX . 'init')) {
