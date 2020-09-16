@@ -1,40 +1,35 @@
-/* global jQuery */
+/* global jQuery, wp */
 /**
- * wpMediaUploader
- * Based on v1.0 2016-11-05 by Smartcat
- * @link https://github.com/smartcatdev/WP-Media-Uploader
+ * @copyright 2020
+ * @link https://rudrastyh.com/wordpress/customizable-media-uploader.html
  */
 (function ($) {
-  $.wpMediaUploader = function (options) {
+  const $body = $('body')
+  $body.on('click', 'button.wpMediaUploader', function (e) {
+    e.preventDefault()
+    const button = $(this)
+    const media = wp.media({
+      title: 'Insert image',
+      library: {
+        type: 'image'
+      },
+      button: {
+        text: 'Use this image' // button label text
+      },
+      multiple: false
+    }).on('select', function () { // it also has "open" and "close" events
+      const attachment = media.state().get('selection').first().toJSON()
+      console.log(attachment)
+      // button.html('<img src="' + attachment.url + '">')
+      button.prev().val(attachment.url)
+    }).open()
+  })
 
-    let settings = $.extend({
-      target: '.FieldType_file', // The class wrapping the textbox
-      uploaderTitle: 'Select or upload image', // The title of the media upload popup
-      uploaderButton: 'Set image', // the text of the button in the media upload popup
-      multiple: false, // Allow the user to select multiple images
-      modal: false, // is the upload button within a bootstrap modal ?
-    }, options);
-
-    $('button.wpMediaUploader').each(function (index, value) {
-      $(value).on('click', function (e) {
-        e.preventDefault();
-        let selector = $(this).closest('td'), custom_uploader;
-
-        custom_uploader = wp.media({
-          title: settings.uploaderTitle,
-          button: {
-            text: settings.uploaderButton
-          },
-          multiple: settings.multiple
-        }).on('select', function () {
-          let attachment = custom_uploader.state().get('selection').first().toJSON();
-          selector.find('img').fadeOut('fast');
-          selector.find('input').val(attachment.url);
-          if (settings.modal) {
-            $('.modal').css('overflowY', 'auto');
-          }
-        }).open();
-      });
-    });
-  }
-})(jQuery);
+  // Remove button click
+  // $body.on('click', '.misha-rmv', function (e) {
+  //   e.preventDefault()
+  //   let button = $(this)
+  //   button.next().val('') // emptying the hidden field
+  //   button.hide().prev().html('Upload image')
+  // })
+})(jQuery)

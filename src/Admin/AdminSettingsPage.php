@@ -15,6 +15,7 @@ use TheFrosty\WpUtilities\Plugin\HooksTrait;
  */
 class AdminSettingsPage
 {
+
     use HooksTrait;
 
     /**
@@ -48,7 +49,9 @@ class AdminSettingsPage
     protected function adminEnqueueScripts()
     {
         /** WordPress Core */
-        \wp_enqueue_media();
+        if (!\did_action('wp_enqueue_media')) {
+            \wp_enqueue_media();
+        }
         \wp_enqueue_script('wp-color-picker');
         \wp_enqueue_style('wp-color-picker');
 
@@ -69,7 +72,6 @@ class AdminSettingsPage
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
-                Script::INLINE_SCRIPT => 'if (typeof wpMediaUploader === "function") { jQuery.wpMediaUploader(); }',
             ]),
         ];
 
@@ -118,10 +120,10 @@ class AdminSettingsPage
     /**
      * Helper to enqueue scripts via proper registration.
      *
-     * @uses wp_register_script()
+     * @param Script[] $scripts An array af Script objects.
      * @uses wp_enqueue_script()
      *
-     * @param Script[] $scripts An array af Script objects.
+     * @uses wp_register_script()
      */
     protected function enqueueScripts(array $scripts)
     {
@@ -147,10 +149,10 @@ class AdminSettingsPage
     /**
      * Helper to enqueue styles via proper registration.
      *
-     * @uses wp_register_style()
+     * @param Style[] $styles An array af Style objects.
      * @uses wp_enqueue_style()
      *
-     * @param Style[] $styles An array af Style objects.
+     * @uses wp_register_style()
      */
     protected function enqueueStyles(array $styles)
     {

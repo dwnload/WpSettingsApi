@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.2.0 - 2020-09-15
+- Add support for WordPress 5.4+
+- Fixed media element uploads for WordPress 5.5.
+- Add `color` as a field type.
+- Remove inline JS for old WpMediaUpload element.
+
 ## 3.1.1 - 2020-09-12
 - Require PHP >= 7.3
 - `WpSettingsApi::addHooks()` requires `:void` return type in `wp-utilities:^2`
