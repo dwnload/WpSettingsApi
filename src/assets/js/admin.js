@@ -25,11 +25,9 @@
       this.showActiveMenuItem(Dwnload_WP_Settings.getActiveTab())
       this.showActiveForm(Dwnload_WP_Settings.getActiveTab())
       this.menuItemListener()
-      $(function() {
-        if (typeof(wpColorPicker) !== 'undefined') {
-          $('.FieldType_color input').wpColorPicker();
-        }
-      });
+      $(function () {
+        $('.FieldType_color input').wpColorPicker()
+      })
     },
 
     /**
@@ -40,11 +38,9 @@
      */
     showActiveMenuItem: function (activeTab) {
       if (activeTab !== '' && Dwnload_WP_Settings.objects.menu.find('[data-tab-id="' + activeTab + '"]').length) {
-        Dwnload_WP_Settings.objects.menu.find('[data-tab-id="' + activeTab + '"]')
-          .addClass('active')
+        Dwnload_WP_Settings.objects.menu.find('[data-tab-id="' + activeTab + '"]').addClass('active')
       } else {
-        Dwnload_WP_Settings.objects.menu.find('a').first()
-          .addClass('active')
+        Dwnload_WP_Settings.objects.menu.find('a').first().addClass('active')
       }
     },
 
@@ -88,7 +84,7 @@
      * @param {string} id
      */
     setActiveTab: function (id) {
-      if (typeof(localStorage) !== 'undefined') {
+      if (typeof (localStorage) !== 'undefined') {
         localStorage.setItem(Dwnload_WP_Settings.localStorageItemId, id)
       }
     },
@@ -101,7 +97,7 @@
     getActiveTab: function () {
       let activeTab
 
-      if (typeof(localStorage) !== 'undefined') {
+      if (typeof (localStorage) !== 'undefined') {
         activeTab = localStorage.getItem(Dwnload_WP_Settings.localStorageItemId)
       }
 
