@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.2.2 - 2020-09-16
+- Version bump since composer didn't pick up 3.2.1.
+
+## 3.2.1 - 2020-09-15
+- Fix JS not loading for the new color picker. 
+
 ## 3.2.0 - 2020-09-15
 - Add support for WordPress 5.4+
 - Fixed media element uploads for WordPress 5.5.
