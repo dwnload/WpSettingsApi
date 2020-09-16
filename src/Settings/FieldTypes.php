@@ -13,23 +13,24 @@ use Dwnload\WpSettingsApi\Api\SettingField;
 class FieldTypes
 {
 
-    const DEFAULT_SIZE = 'regular';
-    const DEFAULT_TYPE = 'text';
+    public const DEFAULT_SIZE = 'regular';
+    public const DEFAULT_TYPE = 'text';
 
-    const FIELD_TYPE_TEXT = 'text';
-    const FIELD_TYPE_URL = 'url';
-    const FIELD_TYPE_EMAIL = 'email';
-    const FIELD_TYPE_NUMBER = 'number';
-    const FIELD_TYPE_CHECKBOX = 'checkbox';
-    const FIELD_TYPE_MULTICHECK = 'multicheck';
-    const FIELD_TYPE_RADIO = 'radio';
-    const FIELD_TYPE_SELECT = 'select';
-    const FIELD_TYPE_TEXTAREA = 'textarea';
-    const FIELD_TYPE_HTML = 'html';
-    const FIELD_TYPE_WYSIWYG = 'wysiwyg';
-    const FIELD_TYPE_FILE = 'file';
-    const FIELD_TYPE_IMAGE = 'image';
-    const FIELD_TYPE_PASSWORD = 'password';
+    public const FIELD_TYPE_TEXT = 'text';
+    public const FIELD_TYPE_URL = 'url';
+    public const FIELD_TYPE_EMAIL = 'email';
+    public const FIELD_TYPE_COLOR = 'color';
+    public const FIELD_TYPE_NUMBER = 'number';
+    public const FIELD_TYPE_CHECKBOX = 'checkbox';
+    public const FIELD_TYPE_MULTICHECK = 'multicheck';
+    public const FIELD_TYPE_RADIO = 'radio';
+    public const FIELD_TYPE_SELECT = 'select';
+    public const FIELD_TYPE_TEXTAREA = 'textarea';
+    public const FIELD_TYPE_HTML = 'html';
+    public const FIELD_TYPE_WYSIWYG = 'wysiwyg';
+    public const FIELD_TYPE_FILE = 'file';
+    public const FIELD_TYPE_IMAGE = 'image';
+    public const FIELD_TYPE_PASSWORD = 'password';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -56,7 +57,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function text(array $args)
+    public function text(array $args): void
     {
         $output = $this->getInputField($args);
         $output .= $this->getFieldDescription($args);
@@ -69,7 +70,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function number(array $args)
+    public function number(array $args): void
     {
         $args[SettingField::TYPE] = 'number';
         if (!isset($args['attributes']['step'])) {
@@ -83,7 +84,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function password(array $args)
+    public function password(array $args): void
     {
         $args[SettingField::TYPE] = 'password';
         $this->text($args);
@@ -94,7 +95,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function url(array $args)
+    public function url(array $args): void
     {
         $args[SettingField::TYPE] = 'url';
         $this->text($args);
@@ -105,9 +106,20 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function email(array $args)
+    public function email(array $args): void
     {
         $args[SettingField::TYPE] = 'email';
+        $this->text($args);
+    }
+
+    /**
+     * Renders a input color field.
+     *
+     * @param array $args Array of Field object parameters
+     */
+    public function color(array $args): void
+    {
+        $args[SettingField::TYPE] = 'text';
         $this->text($args);
     }
 
@@ -116,7 +128,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function file(array $args)
+    public function file(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -159,7 +171,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function image(array $args)
+    public function image(array $args): void
     {
         $args[SettingField::TYPE] = 'file';
         $this->file($args);
@@ -170,7 +182,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function checkbox(array $args)
+    public function checkbox(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -196,7 +208,7 @@ class FieldTypes
      *
      * @param array $args Array of Field object parameters
      */
-    public function multicheck(array $args)
+    public function multicheck(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -236,7 +248,7 @@ value="%3$s"%4$s>',
      *
      * @param array $args Array of Field object parameters
      */
-    public function radio(array $args)
+    public function radio(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -273,7 +285,7 @@ value="%3$s"%4$s>',
      *
      * @param array $args Array of Field object parameters
      */
-    public function select(array $args)
+    public function select(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -309,7 +321,7 @@ value="%3$s"%4$s>',
      *
      * @param array $args Array of Field object parameters
      */
-    public function textarea(array $args)
+    public function textarea(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -334,7 +346,7 @@ value="%3$s"%4$s>',
      *
      * @param array $args Array of Field object parameters
      */
-    public function wysiwyg(array $args)
+    public function wysiwyg(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
@@ -363,7 +375,7 @@ value="%3$s"%4$s>',
      *
      * @param array $args Array of Field object parameters
      */
-    public function html(array $args)
+    public function html(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());

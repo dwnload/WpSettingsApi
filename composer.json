@@ -1,7 +1,7 @@
 {
   "name": "dwnload/wp-settings-api",
   "description": "A PHP class abstraction that removes all the headaches of the WordPress settings API under the hood and builds a nice options panel on the fly.",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "license": "MIT",
   "authors": [
     {
@@ -17,25 +17,43 @@
     "optimize-autoloader": true
   },
   "require": {
+    "ext-json": "*",
     "php": "^7.3",
     "composer/installers": "~1.0",
     "thefrosty/wp-utilities": "^2.0"
   },
   "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
     "inpsyde/php-coding-standards": "^0.13.4",
-    "phpmd/phpmd": "^2.6",
-    "phpunit/phpunit": "6.*|^7",
-    "wp-phpunit/wp-phpunit": "^5"
+    "phpunit/php-code-coverage": "^6",
+    "phpcompatibility/php-compatibility": "*",
+    "phpunit/phpunit": "^7",
+    "roave/security-advisories": "dev-master",
+    "roots/wordpress": "^5.5.1",
+    "slevomat/coding-standard": "~4.0",
+    "squizlabs/php_codesniffer": "^3.2",
+    "wp-phpunit/wp-phpunit": "^5.5.1"
   },
   "scripts": {
-    "post-install-cmd": [
-      "@phpcs"
-    ],
-    "post-update-cmd": [
-      "@phpcs"
+    "install-codestandards": [
+      "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
     ],
     "phpcs": [
-      "./vendor/bin/phpcs --standard=phpcs.ruleset.xml --runtime-set testVersion 7.1-"
+      "bash ./bin/phpcs.sh"
+    ],
+    "phpmd": [
+      "bash ./bin/phpmd.sh"
+    ],
+    "phpunit": [
+      "./vendor/bin/phpunit --colors --verbose"
+    ],
+    "eslint": [
+      "npm run eslint"
+    ],
+    "tests": [
+      "@phpcs",
+      "@phpunit",
+      "@eslint"
     ]
   },
   "autoload": {
@@ -45,7 +63,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Dwnload\\WpSettingsApi\\Tests\\": "tests"
+      "Dwnload\\Tests\\WpSettingsApi\\": "tests"
     }
   }
 }

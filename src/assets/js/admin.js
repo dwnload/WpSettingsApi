@@ -25,6 +25,11 @@
       this.showActiveMenuItem(Dwnload_WP_Settings.getActiveTab())
       this.showActiveForm(Dwnload_WP_Settings.getActiveTab())
       this.menuItemListener()
+      $(function() {
+        if (typeof(wpColorPicker) !== 'undefined') {
+          $('.FieldType_color input').wpColorPicker();
+        }
+      });
     },
 
     /**

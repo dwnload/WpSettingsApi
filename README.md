@@ -15,7 +15,7 @@ To install this package, edit your `composer.json` file:
 ```json
 {
     "require": {
-        "dwnload/wp-settings-api": "^3"
+        "dwnload/wp-settings-api": "^3.2"
     }
 }
 ```
@@ -43,8 +43,8 @@ use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\Style;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 
-\add_filter(App::FILTER_PREFIX . 'admin_scripts', [$this, 'adminScripts']);
-\add_filter(App::FILTER_PREFIX . 'admin_styles', [$this, 'adminStyles']);
+\add_filter(WpSettingsApi::FILTER_PREFIX . 'admin_scripts', [$this, 'adminScripts']);
+\add_filter(WpSettingsApi::FILTER_PREFIX . 'admin_styles', [$this, 'adminStyles']);
 
 /**
  * The default script needs to be moved from the vendor directory somewhere into our app since the
