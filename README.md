@@ -29,9 +29,11 @@ Usage Example
 
 @see [examples/Example.php](https://github.com/dwnload/WpSettingsApi/tree/master/examples/Example.php)
 
-##### Known issues
+#### Suggested package
 
-Since this is a PHP package and not a WordPress plugin the assets included can't be loaded properly.
+⭐️ `frontpack/composer-assets-plugin`
+
+**Otherwise**, since this is a PHP package and not a WordPress plugin the assets included can't be loaded properly.
 In order to have the settings page inherit the styles and use the proper JS, you've got to copy the
 `/assets` directory to your plugin or theme. Then add the following to filter the asset src to your
 directory:
@@ -55,24 +57,27 @@ use Dwnload\WpSettingsApi\WpSettingsApi;
 public function adminScripts(array $scripts): array
 {
     \array_walk($scripts, function (Script $script, int $key) use (&$scripts) {
-        if ($script->getHandle() === WpSettingsApi::ADMIN_SCRIPT_HANDLE) {
+        switch ($script->getHandle()) {
+            case WpSettingsApi::ADMIN_SCRIPT_HANDLE:
             /**
              * If you're not using the `TheFrosty\WpUtilities\Plugin\AbstractHookProvider`
              * use `plugins_url()` in place of the `$this->getPlugin()->getUrl` or any other WP
              * function that will point to the asset.
+             * (Should match `frontpack/composer-assets-plugin configs`)
              */
             $scripts[$key]->setSrc($this->getPlugin()->getUrl('assets/js/admin.js'));
-            $this->registerScript($script);
-        }
-        if ($script->getHandle() === WpSettingsApi::ADMIN_MEDIA_HANDLE) {
+            break;
+        case WpSettingsApi::ADMIN_MEDIA_HANDLE:
             /**
              * If you're not using the `TheFrosty\WpUtilities\Plugin\AbstractHookProvider`
              * use `plugins_url()` in place of the `$this->getPlugin()->getUrl` or any other WP
              * function that will point to the asset.
+             * (Should match `frontpack/composer-assets-plugin configs`)
              */
             $scripts[$key]->setSrc($this->getPlugin()->getUrl('assets/js/wp-media-uploader.js'));
-            $this->registerScript($script);
+            break;
         }
+        $this->registerScript($script);
     });
 
     return $scripts;

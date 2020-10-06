@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 2020-10-06 (README and composer.json update)
+- Add suggestion for `frontpack/composer-assets-plugin`.
+
 ## 3.2.2 - 2020-09-16
 - Version bump since composer didn't pick up 3.2.1.
 
