@@ -24,12 +24,4 @@
       button.prev().val(attachment.url)
     }).open()
   })
-
-  // Remove button click
-  // $body.on('click', '.misha-rmv', function (e) {
-  //   e.preventDefault()
-  //   let button = $(this)
-  //   button.next().val('') // emptying the hidden field
-  //   button.hide().prev().html('Upload image')
-  // })
 })(jQuery)
