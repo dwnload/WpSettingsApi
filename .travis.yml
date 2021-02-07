@@ -1,5 +1,4 @@
 os: linux
-dist: trusty
 
 cache:
   directories:
@@ -27,7 +26,7 @@ env:
     - WORDPRESS_DB_USER=wp
     - WORDPRESS_DB_PASS=password
     - WORDPRESS_DB_NAME=wp_tests
-    - WP_VERSION=5.5.1
+    - WP_VERSION=5.6.1
     - WP_MULTISITE=0
 
 install:
