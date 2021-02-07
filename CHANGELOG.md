@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.2.3 - 2021-02-07
+- Fix: JQMIGRATE: jQuery.fn.blur() event shorthand is deprecated #23.
+
 ## 2020-10-06 (README and composer.json update)
 - Add suggestion for `frontpack/composer-assets-plugin`.
 
