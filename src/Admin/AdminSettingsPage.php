@@ -36,7 +36,7 @@ class AdminSettingsPage
     /**
      * Fire hooks needed on the Settings Page (only).
      */
-    public function load()
+    public function load(): void
     {
         \do_action(WpSettingsApi::ACTION_PREFIX . 'settings_page_loaded');
         $this->addAction('admin_enqueue_scripts', [$this, 'adminEnqueueScripts'], 99);
@@ -46,7 +46,7 @@ class AdminSettingsPage
     /**
      * Enqueue scripts and styles for the Settings page.
      */
-    protected function adminEnqueueScripts()
+    protected function adminEnqueueScripts(): void
     {
         /** WordPress Core */
         if (!\did_action('wp_enqueue_media')) {
@@ -98,7 +98,7 @@ class AdminSettingsPage
     /**
      * Localize PHP objects to pass to any page JS.
      */
-    protected function localizeScripts()
+    protected function localizeScripts(): void
     {
         $localize = new LocalizeScripts();
 
@@ -125,9 +125,8 @@ class AdminSettingsPage
      *
      * @uses wp_register_script()
      */
-    protected function enqueueScripts(array $scripts)
+    protected function enqueueScripts(array $scripts): void
     {
-        /** @var Script $script */
         foreach ($scripts as $script) {
             if (!\wp_script_is($script->getHandle(), 'registered')) {
                 \wp_register_script(
@@ -154,9 +153,8 @@ class AdminSettingsPage
      *
      * @uses wp_register_style()
      */
-    protected function enqueueStyles(array $styles)
+    protected function enqueueStyles(array $styles): void
     {
-        /** @var Style $style */
         foreach ($styles as $style) {
             if (!\wp_style_is($style->getHandle(), 'registered')) {
                 \wp_register_style(
@@ -177,7 +175,7 @@ class AdminSettingsPage
      * Add an inline script.
      * @param Script $script
      */
-    private function addInlineScript(Script $script)
+    private function addInlineScript(Script $script): void
     {
         if (!empty($script->getInlineScript())) {
             \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
