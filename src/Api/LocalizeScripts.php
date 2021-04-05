@@ -26,7 +26,7 @@ class LocalizeScripts
      */
     public function add(string $key, string $value)
     {
-        self::$vars[$key] = \html_entity_decode((string)$value, ENT_QUOTES, 'UTF-8');
+        self::$vars[$key] = \html_entity_decode((string)$value, \ENT_QUOTES, 'UTF-8');
     }
 
     /**
