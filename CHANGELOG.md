@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.3 - 2021-04-05
+- Add field type: `multiselect`, use `Dwnload\WpSettingsApi\Settings\FieldTypes::FIELD_TYPE_MULTISELECT`.
+- Add missing "attributes" constant: `Dwnload\WpSettingsApi\Settings\FieldTypes\SettingField::ATTRIBUTES`.
+- Update composer development dependencies.
+
 ## 3.2.3 - 2021-02-07
 - Fix: JQMIGRATE: jQuery.fn.blur() event shorthand is deprecated #23.
 
