@@ -25,6 +25,7 @@ class FieldTypes
     public const FIELD_TYPE_MULTICHECK = 'multicheck';
     public const FIELD_TYPE_RADIO = 'radio';
     public const FIELD_TYPE_SELECT = 'select';
+    public const FIELD_TYPE_MULTISELECT = 'multiselect';
     public const FIELD_TYPE_TEXTAREA = 'textarea';
     public const FIELD_TYPE_HTML = 'html';
     public const FIELD_TYPE_WYSIWYG = 'wysiwyg';
@@ -41,7 +42,7 @@ class FieldTypes
      */
     public function getSettingFieldObject(array $args): SettingField
     {
-        if (isset($args[SettingField::FIELD_OBJECT]) &&
+        if (isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
             $args[SettingField::FIELD_OBJECT] instanceof SettingField
         ) {
             return $args[SettingField::FIELD_OBJECT];
@@ -292,12 +293,11 @@ value="%3$s"%4$s>',
 
         $output = '<div class="FieldType_select">';
         $output .= \sprintf(
-            '<select class="chosen-select %1$s" name="%2$s[%3$s]%5$s" id="%2$s[%3$s]"%4$s>',
+            '<select class="select2 %1$s" name="%2$s[%3$s]" id="%2$s[%3$s]"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
             $this->getExtraFieldParams($args),
-            isset($args['attributes']['multiple']) ? '[]' : ''
         );
 
         foreach ($field->getOptions() as $key => $label) {
@@ -307,6 +307,54 @@ value="%3$s"%4$s>',
                 \esc_attr($key),
                 \is_array($value) && \in_array($key, $value, true) ? ' selected' : \selected($value, $key, false),
                 \esc_html($view)
+            );
+        }
+        $output .= '</select>';
+        $output .= '</div>';
+        $output .= $this->getFieldDescription($args);
+
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
+    /**
+     * Renders an input multi-select field.
+     *
+     * @param array $args Array of Field object parameters
+     * phpcd:disable Inpsyde.CodeQuality.NestingLevel.High
+     */
+    public function multiselect(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
+        $value = \is_array($value) ? \array_map('\esc_attr', $value) : \esc_attr($value);
+
+        $output = '<div class="FieldType_multiselect">';
+        $output .= \sprintf(
+            '<select class="select2 %1$s" size="%1$s" name="%2$s[%3$s][]" id="%2$s[%3$s]" multiple%4$s>',
+            $field->getSize(),
+            $field->getSectionId(),
+            $field->getId(),
+            $this->getExtraFieldParams($args),
+        );
+        foreach ($field->getOptions() as $key => $label) {
+            if (\is_array($label)) {
+                $output .= \sprintf('<optgroup label="%s">', $key);
+                foreach ($label as $index => $val) {
+                    $output .= \sprintf(
+                        '<option value="%1$s"%2$s>%3$s</option>',
+                        \esc_attr($index),
+                        \is_array($value) && \in_array((string)$index, $value, true) ? ' selected' : '',
+                        \esc_html($val)
+                    );
+                }
+                $output .= '</optgroup>';
+                continue;
+            }
+            $output .= \sprintf(
+                '<option value="%1$s"%2$s>%3$s</option>',
+                \esc_attr($key),
+                \is_array($value) && \in_array((string)$key, $value, true) ? ' selected' : '',
+                \esc_html($label)
             );
         }
         $output .= '</select>';
@@ -444,7 +492,7 @@ value="%5$s"%6$s></div>',
 
         if (!empty($attributes)) {
             foreach ($attributes as $key => $value) {
-                $return .= \sprintf(' %s="%s"', \sanitize_key($key), \esc_attr($value));
+                $return .= \sprintf(' %s="%s"', \esc_attr($key), \esc_attr($value));
             }
         }
 
