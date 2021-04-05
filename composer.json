@@ -1,7 +1,6 @@
 {
   "name": "dwnload/wp-settings-api",
   "description": "A PHP class abstraction that removes all the headaches of the WordPress settings API under the hood and builds a nice options panel on the fly.",
-  "version": "3.2.3",
   "license": "MIT",
   "authors": [
     {
@@ -23,16 +22,16 @@
     "thefrosty/wp-utilities": "^2.0"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
-    "inpsyde/php-coding-standards": "^0.13.4",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+    "inpsyde/php-coding-standards": "1.0.0-RC1",
     "phpunit/php-code-coverage": "^6",
     "phpcompatibility/php-compatibility": "*",
     "phpunit/phpunit": "^7",
     "roave/security-advisories": "dev-master",
-    "roots/wordpress": "^5.5.1",
+    "roots/wordpress": "~5.7.0",
     "slevomat/coding-standard": "~4.0",
     "squizlabs/php_codesniffer": "^3.2",
-    "wp-phpunit/wp-phpunit": "^5.5.1"
+    "wp-phpunit/wp-phpunit": "~5.7.0"
   },
   "suggest": {
     "frontpack/composer-assets-plugin": "Composer plugin for copying of frontend assets into public directory."
