@@ -8,25 +8,26 @@ use Dwnload\WpSettingsApi\Settings\FieldTypes;
  * Class SettingField
  *
  * @package Dwnload\WpSettingsApi\Api
- * phpcs:disable Inpsyde.CodeQuality.PropertyPerClassLimit.TooMuchProperties
  */
 class SettingField
 {
     /**
      * Array key values.
+     * phpcs:disable Inpsyde.CodeQuality.PropertyPerClassLimit.TooMuchProperties
      */
-    const ID = 'id';
-    const CLASS_OBJECT = 'class_object';
-    const DEFAULT = 'default';
-    const DESC = 'description';
-    const LABEL = 'label';
-    const NAME = 'name';
-    const OPTIONS = 'options';
-    const SANITIZE = 'sanitize_callback';
-    const SECTION_ID = 'section_id';
-    const SIZE = 'size';
-    const TYPE = 'type';
-    const FIELD_OBJECT = SettingField::class;
+    public const ID = 'id';
+    public const ATTRIBUTES = 'attributes';
+    public const CLASS_OBJECT = 'class_object';
+    public const DEFAULT = 'default';
+    public const DESC = 'description';
+    public const LABEL = 'label';
+    public const NAME = 'name';
+    public const OPTIONS = 'options';
+    public const SANITIZE = 'sanitize_callback';
+    public const SECTION_ID = 'section_id';
+    public const SIZE = 'size';
+    public const TYPE = 'type';
+    public const FIELD_OBJECT = SettingField::class;
 
     /**
      * SettingField constructor.
