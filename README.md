@@ -33,6 +33,9 @@ Usage Example
 
 ⭐️ `frontpack/composer-assets-plugin`
 
+**As of v3.2.1**, this shouldn't be needed any more (unless you are filtering local assets only). Assets will now
+be loaded via the jsdelivr CDN. 
+
 **Otherwise**, since this is a PHP package and not a WordPress plugin the assets included can't be loaded properly.
 In order to have the settings page inherit the styles and use the proper JS, you've got to copy the
 `/assets` directory to your plugin or theme. Then add the following to filter the asset src to your

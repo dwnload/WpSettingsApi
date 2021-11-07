@@ -55,20 +55,34 @@ class AdminSettingsPage
         \wp_enqueue_script('wp-color-picker');
         \wp_enqueue_style('wp-color-picker');
 
+        $use_local = \apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
+        $get_src = function (string $path) use ($use_local): string {
+            if ($use_local) {
+                return $this->wp_settings_api->getPlugin()->getUrl($path);
+            }
+
+            $debug = \defined('SCRIPT_DEBUG') && \SCRIPT_DEBUG;
+            return \sprintf(
+                'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%f/%s',
+                $this->wp_settings_api->getPluginInfo()->getVersion(),
+                $debug === true ? $path : \str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
+            );
+        };
+
         /**
          * Scripts
          */
         $default_scripts = [
             new Script([
                 Script::HANDLE => WpSettingsApi::ADMIN_SCRIPT_HANDLE,
-                Script::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/js/admin.js'),
+                Script::SRC => $get_src('src/assets/js/admin.js'),
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
             ]),
             new Script([
                 Script::HANDLE => WpSettingsApi::ADMIN_MEDIA_HANDLE,
-                Script::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/js/wp-media-uploader.js'),
+                Script::SRC => $get_src('src/assets/js/wp-media-uploader.js'),
                 Script::DEPENDENCIES => ['jquery'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
@@ -84,7 +98,7 @@ class AdminSettingsPage
         $default_styles = [
             new Style([
                 Style::HANDLE => WpSettingsApi::ADMIN_STYLE_HANDLE,
-                Style::SRC => $this->wp_settings_api->getPlugin()->getUrl('src/assets/css/admin.css'),
+                Style::SRC => $get_src('src/assets/css/admin.min.css'),
                 Style::DEPENDENCIES => [],
                 Style::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Style::MEDIA => 'screen',
