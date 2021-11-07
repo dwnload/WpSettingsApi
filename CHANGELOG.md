@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.3.2 - 2021-11-07
+- Incorrect version passed to the new JS Delivr CDN.
+
 ## 3.3.1 - 2021-11-07
 - Add new filter to allow for local assets.
   - Use `WpSettingsApi::FILTER_PREFIX . 'use_local_scripts'`, to return a boolean value.
