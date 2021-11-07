@@ -28,7 +28,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const FILTER_PREFIX = 'dwnload/wp_settings_api/';
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.2.3';
+    public const VERSION = '3.3.1';
 
     /**
      * The current plugin instance.

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.3.1 - 2021-11-07
+- Add new filter to allow for local assets.
+  - Use `WpSettingsApi::FILTER_PREFIX . 'use_local_scripts'`, to return a boolean value.
+  - Assets for admin settings will now be loaded from the jsdelivr CDN (if local assets is false).
+
 ## 3.3 - 2021-04-05
 - Add field type: `multiselect`, use `Dwnload\WpSettingsApi\Settings\FieldTypes::FIELD_TYPE_MULTISELECT`.
 - Add missing "attributes" constant: `Dwnload\WpSettingsApi\Settings\FieldTypes\SettingField::ATTRIBUTES`.
