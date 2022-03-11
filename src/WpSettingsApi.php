@@ -227,7 +227,6 @@ class WpSettingsApi extends AbstractHookProvider
             // Treat everything that's not an array as a string
             if (!\is_array($option_value)) {
                 $options[$option_slug] = \sanitize_text_field($option_value);
-                continue;
             }
         }
 
