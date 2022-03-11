@@ -27,6 +27,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const ADMIN_MEDIA_HANDLE = 'dwnload-wp-media-uploader';
     public const FILTER_PREFIX = 'dwnload/wp_settings_api/';
     public const ACTION_PREFIX = self::FILTER_PREFIX;
+    public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_PRIORITY = 999;
     public const VERSION = '3.3.2';
 
@@ -51,7 +52,7 @@ class WpSettingsApi extends AbstractHookProvider
     public function addHooks(): void
     {
         $this->addAction('init', function () {
-            if (\did_action(self::ACTION_PREFIX . 'init')) {
+            if (\did_action(self::HOOK_INIT)) {
                 return;
             }
 
@@ -62,7 +63,7 @@ class WpSettingsApi extends AbstractHookProvider
              * @param FieldManager Instance of the FieldManager object.
              * @param WpSettingsApi $this
              */
-            \do_action(self::ACTION_PREFIX . 'init', (new SectionManager($this)), (new FieldManager()), $this);
+            \do_action(self::HOOK_INIT, (new SectionManager($this)), (new FieldManager()), $this);
         }, self::HOOK_PRIORITY);
         $this->addAction('admin_menu', [$this, 'addAdminMenu']);
         $this->addAction('admin_init', [$this, 'adminInit']);
