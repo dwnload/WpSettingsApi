@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.4.0 - 2022-13-11
+- Require PHP ^7.4.
+- Update composer dev-dependencies.
+- Build PHP 8.0 with Travis.
+
 ## 3.3.2 - 2021-11-07
 - Incorrect version passed to the new JS Delivr CDN.
 
