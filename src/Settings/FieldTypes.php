@@ -472,7 +472,7 @@ value="%5$s"%6$s></div>',
     protected function getFieldDescription(array $args): string
     {
         if (!empty($args[SettingField::DESC])) {
-            return \sprintf('<p class="description">%s</p>', \esc_html($args[SettingField::DESC]));
+            return \sprintf('<p class="description">%s</p>', \wp_kses_post($args[SettingField::DESC]));
         }
 
         return '';
