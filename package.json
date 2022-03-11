@@ -16,8 +16,9 @@
     ]
   },
   "devDependencies": {
-    "eslint": "~6.4.0",
-    "eslint-plugin-import": "^2.22.0",
-    "standard": "^14.3.4"
+    "eslint": "~8.10.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-no-jquery": "^2.7.0",
+    "standard": "^16.0.4"
   }
 }
