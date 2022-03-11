@@ -8,7 +8,7 @@ cache:
 language: php
 php:
   - '7.4'
-  - '7.3'
+  - '8.0'
 
 branches:
   only:
@@ -26,7 +26,7 @@ env:
     - WORDPRESS_DB_USER=wp
     - WORDPRESS_DB_PASS=password
     - WORDPRESS_DB_NAME=wp_tests
-    - WP_VERSION=5.7.0
+    - WP_VERSION=5.9.2
     - WP_MULTISITE=0
 
 install:
