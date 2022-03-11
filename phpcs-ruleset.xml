@@ -46,6 +46,6 @@
 
     <!-- Loads the PHP Compatibility ruleset. -->
     <rule ref="PHPCompatibility" />
-    <!-- Check for cross-version support for PHP 7.3 and higher. -->
-    <config name="testVersion" value="7.3-"/>
+    <!-- Check for cross-version support for PHP 7.4 and higher. -->
+    <config name="testVersion" value="7.4-"/>
 </ruleset>
