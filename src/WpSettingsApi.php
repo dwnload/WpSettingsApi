@@ -115,7 +115,6 @@ class WpSettingsApi extends AbstractHookProvider
     {
         // Register settings sections
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
-            /** @var SettingSection $section */
             if (\get_option($section->getId(), false) === false) {
                 \add_option($section->getId(), []);
             }
