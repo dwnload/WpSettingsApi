@@ -24,8 +24,8 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "ext-json": "*",
     "php": "^7.4 || ^8.0",
+    "ext-json": "*",
     "thefrosty/wp-utilities": "^2.5"
   },
   "require-dev": {
