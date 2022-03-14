@@ -7,7 +7,6 @@ use Dwnload\WpSettingsApi\Api\SettingField;
 
 /**
  * Class FieldTypes
- *
  * @package Dwnload\WpSettingsApi\Settings
  */
 class FieldTypes
@@ -35,14 +34,13 @@ class FieldTypes
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
-     *
      * @param array $args Array of SettingField object parameters
-     *
      * @return SettingField
      */
     public function getSettingFieldObject(array $args): SettingField
     {
-        if (isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
+        if (
+            isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
             $args[SettingField::FIELD_OBJECT] instanceof SettingField
         ) {
             return $args[SettingField::FIELD_OBJECT];
@@ -55,7 +53,6 @@ class FieldTypes
 
     /**
      * Renders an input text field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function text(array $args): void
@@ -68,65 +65,59 @@ class FieldTypes
 
     /**
      * Renders an input number field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function number(array $args): void
     {
-        $args[SettingField::TYPE] = 'number';
-        if (!isset($args['attributes']['step'])) {
-            $args['attributes']['step'] = 'any';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_NUMBER;
+        if (!isset($args[SettingField::ATTRIBUTES]['step'])) {
+            $args[SettingField::ATTRIBUTES]['step'] = 'any';
         }
         $this->text($args);
     }
 
     /**
      * Renders an input password field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function password(array $args): void
     {
-        $args[SettingField::TYPE] = 'password';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_PASSWORD;
         $this->text($args);
     }
 
     /**
      * Renders an input url field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function url(array $args): void
     {
-        $args[SettingField::TYPE] = 'url';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_URL;
         $this->text($args);
     }
 
     /**
      * Renders an input email field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function email(array $args): void
     {
-        $args[SettingField::TYPE] = 'email';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_EMAIL;
         $this->text($args);
     }
 
     /**
      * Renders a input color field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function color(array $args): void
     {
-        $args[SettingField::TYPE] = 'text';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_COLOR; // This was 'text' before ??
         $this->text($args);
     }
 
     /**
      * Renders an input file field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function file(array $args): void
@@ -169,18 +160,16 @@ class FieldTypes
 
     /**
      * Renders an input image (file) field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function image(array $args): void
     {
-        $args[SettingField::TYPE] = 'file';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_FILE;
         $this->file($args);
     }
 
     /**
      * Renders an input checkbox field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function checkbox(array $args): void
@@ -206,7 +195,6 @@ class FieldTypes
 
     /**
      * Renders an input multi-checkbox field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function multicheck(array $args): void
@@ -218,7 +206,7 @@ class FieldTypes
         $output = '<div class="FieldType_multicheckbox">';
         $output .= '<ul>';
         foreach ($field->getOptions() as $key => $label) {
-            $checked = isset($value[$key]) ? $value[$key] : '0';
+            $checked = $value[$key] ?? '0';
             $output .= '<li>';
             $output .= \sprintf(
                 '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" 
@@ -246,7 +234,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input radio field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function radio(array $args): void
@@ -283,7 +270,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a select field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function select(array $args): void
@@ -318,7 +304,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input multi-select field.
-     *
      * @param array $args Array of Field object parameters
      * phpcd:disable Inpsyde.CodeQuality.NestingLevel.High
      */
@@ -366,7 +351,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a textarea field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function textarea(array $args): void
@@ -391,7 +375,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a textarea wysiwyg field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function wysiwyg(array $args): void
@@ -420,7 +403,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a html field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function html(array $args): void
@@ -438,9 +420,7 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input field.
-     *
      * @param array $args Array of Field object parameters
-     *
      * @return string
      */
     protected function getInputField(array $args): string
@@ -464,9 +444,7 @@ value="%5$s"%6$s></div>',
 
     /**
      * Get field description for display.
-     *
      * @param array $args settings field args
-     *
      * @return string
      */
     protected function getFieldDescription(array $args): string
@@ -480,9 +458,7 @@ value="%5$s"%6$s></div>',
 
     /**
      * Helper to return extra parameters as a string.
-     *
      * @param array $args settings field args
-     *
      * @return string
      */
     protected function getExtraFieldParams(array $args): string
