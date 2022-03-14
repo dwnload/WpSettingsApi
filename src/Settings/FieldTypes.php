@@ -120,10 +120,11 @@ class FieldTypes
      */
     public function color(array $args): void
     {
-        $args[SettingField::ATTRIBUTES] = array_merge(
+        $field = $this->getSettingFieldObject($args);
+        $field->setAttributes(array_merge(
             $args[SettingField::ATTRIBUTES] ?? [],
-            ['class' => 'color-picker']
-        );
+            ['class' => ['color-picker']]
+        ));
         $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_COLOR; // This was 'text' before ??
         $this->text($args);
     }
@@ -134,10 +135,11 @@ class FieldTypes
      */
     public function coloralpha(array $args): void
     {
-        $args[SettingField::ATTRIBUTES] = array_merge(
+        $field = $this->getSettingFieldObject($args);
+        $field->setAttributes(array_merge(
             $args[SettingField::ATTRIBUTES] ?? [],
-            ['class' => 'color-picker', 'data-alpha-enabled' => 'true']
-        );
+            ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
+        ));
         $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_COLOR_ALPHA;
         $this->text($args);
     }
@@ -457,7 +459,7 @@ value="%3$s"%4$s>',
             Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         return sprintf(
-            '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text%7$s" id="%3$s[%4$s]" name="%3$s[%4$s]"
+            '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text %7$s" id="%3$s[%4$s]" name="%3$s[%4$s]"
 value="%5$s"%6$s></div>',
             $field->getType(),
             $field->getSize(),
