@@ -153,13 +153,13 @@ class SettingField extends BaseModel
     /**
      * The Fields callback object.
      * - if null the Field type name needs to have a method in the FieldTypes class.
-     * @var object|null $class_object
+     * @var mixed $class_object
      */
-    private ?object $class_object;
+    private $class_object;
 
     /**
      * Set the Fields output object.
-     * @param $class_object
+     * @param mixed $class_object
      * @return self
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
@@ -172,10 +172,10 @@ class SettingField extends BaseModel
 
     /**
      * Get the Fields output object.
-     * @return object|null
+     * @return mixed
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    public function getClassObject(): ?object
+    public function getClassObject()
     {
         return $this->class_object;
     }
