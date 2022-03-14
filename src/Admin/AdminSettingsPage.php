@@ -2,15 +2,25 @@
 
 namespace Dwnload\WpSettingsApi\Admin;
 
+use Dwnload\WpSettingsApi\ActionHookName;
 use Dwnload\WpSettingsApi\Api\LocalizeScripts;
 use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\Style;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Plugin\HooksTrait;
+use function apply_filters;
+use function do_action;
+use function wp_add_inline_script;
+use function wp_enqueue_script;
+use function wp_enqueue_style;
+use function wp_localize_script;
+use function wp_register_script;
+use function wp_register_style;
+use function wp_script_is;
+use function wp_style_is;
 
 /**
  * Class AdminSettingsPage
- *
  * @package Dwnload\WpSettingsApi\Admin
  */
 class AdminSettingsPage
@@ -38,7 +48,7 @@ class AdminSettingsPage
      */
     public function load(): void
     {
-        \do_action(WpSettingsApi::ACTION_PREFIX . 'settings_page_loaded');
+        do_action(WpSettingsApi::ACTION_PREFIX . 'settings_page_loaded');
         $this->addAction('admin_enqueue_scripts', [$this, 'adminEnqueueScripts'], 99);
         $this->addAction('admin_footer', [$this, 'localizeScripts'], 99);
     }
@@ -52,16 +62,16 @@ class AdminSettingsPage
         if (!\did_action('wp_enqueue_media')) {
             \wp_enqueue_media();
         }
-        \wp_enqueue_script('wp-color-picker');
-        \wp_enqueue_style('wp-color-picker');
+        wp_enqueue_style('wp-color-picker');
 
-        $use_local = \apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
+        $use_local = apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
         $get_src = function (string $path) use ($use_local): string {
             if ($use_local) {
                 return $this->wp_settings_api->getPlugin()->getUrl($path);
             }
 
             $debug = \defined('SCRIPT_DEBUG') && \SCRIPT_DEBUG;
+
             return \sprintf(
                 'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s',
                 WpSettingsApi::VERSION,
@@ -76,8 +86,15 @@ class AdminSettingsPage
             new Script([
                 Script::HANDLE => WpSettingsApi::ADMIN_SCRIPT_HANDLE,
                 Script::SRC => $get_src('src/assets/js/admin.js'),
-                Script::DEPENDENCIES => ['jquery'],
+                Script::DEPENDENCIES => ['jquery', 'wp-color-picker'],
                 Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
+                Script::IN_FOOTER => true,
+            ]),
+            new Script([
+                Script::HANDLE => 'wp-color-picker-alpha',
+                Script::SRC => $get_src('src/assets/js/wp-color-picker-alpha.js'),
+                Script::DEPENDENCIES => ['jquery', 'wp-color-picker'],
+                Script::VERSION => '3.0.2',
                 Script::IN_FOOTER => true,
             ]),
             new Script([
@@ -89,7 +106,7 @@ class AdminSettingsPage
             ]),
         ];
 
-        $scripts = \apply_filters(WpSettingsApi::FILTER_PREFIX . 'admin_scripts', $default_scripts);
+        $scripts = apply_filters(ActionHookName::ADMIN_SETTINGS_ADMIN_SCRIPTS, $default_scripts);
         $this->enqueueScripts($scripts);
 
         /**
@@ -105,7 +122,7 @@ class AdminSettingsPage
             ]),
         ];
 
-        $styles = \apply_filters(WpSettingsApi::FILTER_PREFIX . 'admin_styles', $default_styles);
+        $styles = apply_filters(ActionHookName::ADMIN_SETTINGS_ADMIN_STYLES, $default_styles);
         $this->enqueueStyles($styles);
     }
 
@@ -121,67 +138,62 @@ class AdminSettingsPage
 
         /**
          * Use this action hook to pass new objects into the script output.
-         *
          * @var string Empty string value.
          * @var LocalizeScripts $localize Use this object to add new localized values to the registered output.
          */
-        \do_action(WpSettingsApi::ACTION_PREFIX . 'localize_script', '', $localize);
+        do_action(ActionHookName::ADMIN_SETTINGS_LOCALIZE_SCRIPT, '', $localize);
 
         // The $handle needs to match the enqueued handle.
-        \wp_localize_script(WpSettingsApi::ADMIN_SCRIPT_HANDLE, Script::OBJECT_NAME, $localize->getAllVars());
+        wp_localize_script(WpSettingsApi::ADMIN_SCRIPT_HANDLE, Script::OBJECT_NAME, $localize->getAllVars());
     }
 
     /**
      * Helper to enqueue scripts via proper registration.
-     *
      * @param Script[] $scripts An array af Script objects.
      * @uses wp_enqueue_script()
-     *
      * @uses wp_register_script()
      */
     protected function enqueueScripts(array $scripts): void
     {
         foreach ($scripts as $script) {
-            if (!\wp_script_is($script->getHandle(), 'registered')) {
-                \wp_register_script(
+            if (!wp_script_is($script->getHandle(), 'registered')) {
+                wp_register_script(
                     $script->getHandle(),
                     $script->getSrc(),
                     $script->getDependencies(),
                     $script->getVersion(),
                     $script->getInFooter()
                 );
-                \wp_enqueue_script($script->getHandle());
+                wp_enqueue_script($script->getHandle());
                 $this->addInlineScript($script);
                 continue;
             }
-            \wp_enqueue_script($script->getHandle());
+            wp_enqueue_script($script->getHandle());
             $this->addInlineScript($script);
         }
     }
 
     /**
      * Helper to enqueue styles via proper registration.
-     *
      * @param Style[] $styles An array af Style objects.
      * @uses wp_enqueue_style()
-     *
      * @uses wp_register_style()
      */
     protected function enqueueStyles(array $styles): void
     {
         foreach ($styles as $style) {
-            if (!\wp_style_is($style->getHandle(), 'registered')) {
-                \wp_register_style(
+            if (!wp_style_is($style->getHandle(), 'registered')) {
+                wp_register_style(
                     $style->getHandle(),
                     $style->getSrc(),
                     $style->getDependencies(),
                     $style->getVersion(),
                     $style->getMedia()
                 );
-                \wp_enqueue_style($style->getHandle());
+                wp_enqueue_style($style->getHandle());
                 continue;
             }
-            \wp_enqueue_style($style->getHandle());
+            wp_enqueue_style($style->getHandle());
         }
     }
 
@@ -192,7 +204,7 @@ class AdminSettingsPage
     private function addInlineScript(Script $script): void
     {
         if (!empty($script->getInlineScript())) {
-            \wp_add_inline_script($script->getHandle(), $script->getInlineScript());
+            wp_add_inline_script($script->getHandle(), $script->getInlineScript());
         }
     }
 }
