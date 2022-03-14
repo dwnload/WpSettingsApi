@@ -1,27 +1,32 @@
 <?php declare(strict_types=1);
 
-use Dwnload\WpSettingsApi\Api\SettingSection;
+use Dwnload\WpSettingsApi\ActionHookName;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use Dwnload\WpSettingsApi\WpSettingsApi;
 
-/** @var $this Dwnload\WpSettingsApi\WpSettingsApi */
 $sections = SectionManager::getSection($this->getPluginInfo()->getMenuSlug());
 
-add_action(WpSettingsApi::ACTION_PREFIX . 'settings_sidebars', function () {
-    echo '<ul class="Dwnload_WP_Settings_Api__menu">';
-}, 0);
+add_action(
+    ActionHookName::SETTINGS_SETTINGS_SIDEBARS,
+    static function (): void {
+        echo '<ul class="Dwnload_WP_Settings_Api__menu">';
+    }, 0
+);
 
+static $count = 0;
 foreach ($sections as $key => $section) {
-    ++$key;
-    add_action(WpSettingsApi::ACTION_PREFIX . 'settings_sidebars', function () use ($section) {
+    $count += $key;
+    add_action(ActionHookName::SETTINGS_SETTINGS_SIDEBARS, static function () use ($section): void {
         printf(
             '<li><a href="javascript:;" data-tab-id="Dwnload_WP_Settings_Api__%s">%s</a></li>',
             esc_attr($section->getId()),
             esc_html($section->getTitle())
         );
-    }, ++$key * 2 + 1);
+    }, $count + 2);
 }
 
-add_action(WpSettingsApi::ACTION_PREFIX . 'settings_sidebars', function () {
-    echo '</ul>';
-}, 199);
+add_action(
+    ActionHookName::SETTINGS_SETTINGS_SIDEBARS,
+    static function (): void {
+        echo '</ul>';
+    }, 205
+);
