@@ -9,8 +9,13 @@ use Dwnload\WpSettingsApi\Api\Style;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Plugin\HooksTrait;
 use function apply_filters;
+use function defined;
+use function did_action;
 use function do_action;
+use function sprintf;
+use function str_replace;
 use function wp_add_inline_script;
+use function wp_enqueue_media;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
 use function wp_localize_script;
@@ -18,6 +23,7 @@ use function wp_register_script;
 use function wp_register_style;
 use function wp_script_is;
 use function wp_style_is;
+use const SCRIPT_DEBUG;
 
 /**
  * Class AdminSettingsPage
@@ -59,11 +65,9 @@ class AdminSettingsPage
     protected function adminEnqueueScripts(): void
     {
         /** WordPress Core */
-        if (!\did_action('wp_enqueue_media')) {
-            \wp_enqueue_media();
+        if (!did_action('wp_enqueue_media')) {
+            wp_enqueue_media();
         }
-        wp_enqueue_script('wp-color-picker');
-        wp_enqueue_style('wp-color-picker');
 
         $use_local = apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
         $get_src = function (string $path) use ($use_local): string {
@@ -71,12 +75,12 @@ class AdminSettingsPage
                 return $this->wp_settings_api->getPlugin()->getUrl($path);
             }
 
-            $debug = \defined('SCRIPT_DEBUG') && \SCRIPT_DEBUG;
+            $debug = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG;
 
-            return \sprintf(
+            return sprintf(
                 'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s',
                 WpSettingsApi::VERSION,
-                $debug === true ? $path : \str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
+                $debug === true ? $path : str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
             );
         };
 
@@ -117,7 +121,7 @@ class AdminSettingsPage
             new Style([
                 Style::HANDLE => WpSettingsApi::ADMIN_STYLE_HANDLE,
                 Style::SRC => $get_src('src/assets/css/admin.min.css'),
-                Style::DEPENDENCIES => [],
+                Style::DEPENDENCIES => ['wp-color-picker'],
                 Style::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Style::MEDIA => 'screen',
             ]),
