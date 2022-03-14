@@ -22,7 +22,7 @@ class AdminSettingsPage
      * WpSettingsApi object.
      * @var WpSettingsApi $wp_settings_api
      */
-    private $wp_settings_api;
+    private WpSettingsApi $wp_settings_api;
 
     /**
      * AdminSettingsPage constructor.
