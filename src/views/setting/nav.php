@@ -9,7 +9,8 @@ add_action(
     ActionHookName::SETTINGS_SETTINGS_SIDEBARS,
     static function (): void {
         echo '<ul class="Dwnload_WP_Settings_Api__menu">';
-    }, 0
+    },
+    0
 );
 
 static $count = 0;
@@ -28,5 +29,6 @@ add_action(
     ActionHookName::SETTINGS_SETTINGS_SIDEBARS,
     static function (): void {
         echo '</ul>';
-    }, 205
+    },
+    205
 );
