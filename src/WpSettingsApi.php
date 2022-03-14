@@ -6,7 +6,6 @@ use Dwnload\WpSettingsApi\Admin\AdminSettingsPage;
 use Dwnload\WpSettingsApi\Api\PluginSettings;
 use Dwnload\WpSettingsApi\Api\Sanitize;
 use Dwnload\WpSettingsApi\Api\SettingField;
-use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
@@ -15,11 +14,11 @@ use TheFrosty\WpUtilities\Plugin\HooksTrait;
 
 /**
  * Class WpSettingsApi
- *
  * @package Dwnload\WpSettingsApi
  */
 class WpSettingsApi extends AbstractHookProvider
 {
+
     use HooksTrait;
 
     public const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
@@ -29,13 +28,13 @@ class WpSettingsApi extends AbstractHookProvider
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.3.2';
+    public const VERSION = '3.5.0';
 
     /**
      * The current plugin instance.
      * @var PluginSettings $plugin_info
      */
-    private $plugin_info;
+    private PluginSettings $plugin_info;
 
     /**
      * WpSettingsApi constructor.
@@ -51,14 +50,13 @@ class WpSettingsApi extends AbstractHookProvider
      */
     public function addHooks(): void
     {
-        $this->addAction('init', function () {
+        $this->addAction('init', static function (): void {
             if (\did_action(self::HOOK_INIT)) {
                 return;
             }
 
             /**
              * Fires when this plugin is loaded!
-             *
              * @param SectionManager Instance of the SectionManager object.
              * @param FieldManager Instance of the FieldManager object.
              * @param WpSettingsApi $this
@@ -81,14 +79,14 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Create admin menu and sub-menu items.
      */
-    protected function addAdminMenu()
+    protected function addAdminMenu(): void
     {
         $hook = \add_options_page(
             \esc_html($this->plugin_info->getPageTitle()),
             \esc_html($this->plugin_info->getMenuTitle()),
             $this->getAppCap(),
             \apply_filters(self::FILTER_PREFIX . 'options_page_slug', $this->plugin_info->getMenuSlug()),
-            function () {
+            function (): void {
                 $this->settingsHtml();
             }
         );
@@ -100,7 +98,7 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Render the settings html.
      */
-    protected function settingsHtml()
+    protected function settingsHtml(): void
     {
         if (!\current_user_can($this->getAppCap())) {
             \wp_die(\esc_html__('You do not have sufficient permissions to access this page.'));
@@ -112,7 +110,7 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Initialize and registers the settings sections and fields to WordPress.
      */
-    protected function adminInit() // phpcs:ignore
+    protected function adminInit(): void
     {
         // Register settings sections
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
@@ -144,13 +142,19 @@ class WpSettingsApi extends AbstractHookProvider
                     SettingField::FIELD_OBJECT => $field,
                 ];
 
-                $callback_array = [$field->getClassObject(), $field->getType()];
+                $classObject = $field->getClassObject();
+                $getCallbackArray = static fn(): array => [(new FieldTypes()), $field->getType()];
+                if ($classObject !== null) {
+                    $callback_array = [$classObject, $field->getType()];
 
-                if (!\is_callable($callback_array) ||
-                    !\class_exists(\get_class($field->getClassObject())) ||
-                    !\method_exists($field->getClassObject(), $field->getType())
-                ) {
-                    $callback_array = [(new FieldTypes()), $field->getType()];
+                    if (!\is_callable($callback_array) ||
+                        !\class_exists(\get_class($classObject)) ||
+                        !\method_exists($classObject, $field->getType())
+                    ) {
+                        $callback_array = $getCallbackArray();
+                    }
+                } else {
+                    $callback_array = $getCallbackArray();
                 }
 
                 // @todo double check `$callback_array` fallback is callable.
@@ -190,9 +194,7 @@ class WpSettingsApi extends AbstractHookProvider
 
     /**
      * Sanitize callback for Settings API
-     *
      * @param mixed $options
-     *
      * @return array
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
@@ -204,7 +206,6 @@ class WpSettingsApi extends AbstractHookProvider
 
         /**
          * Hook loads before options are sanitized. Manipulate options array here.
-         *
          * @var array $options The options array before getting sanitized
          */
         \do_action(self::ACTION_PREFIX . 'before_sanitize_options', $options);
@@ -216,7 +217,6 @@ class WpSettingsApi extends AbstractHookProvider
             if (!empty($sanitize_callback)) {
                 /**
                  * Sanitize Callback accepted args.
-                 *
                  * @param mixed $option_value
                  * @param array $options
                  * @param string $option_slug
@@ -233,8 +233,7 @@ class WpSettingsApi extends AbstractHookProvider
 
         /**
          * Hook loads after options are sanitized.
-         *
-         * @var array $options The options array after getting sanitized
+         * @param array $options The options array after getting sanitized
          */
         \do_action(self::ACTION_PREFIX . 'after_sanitize_options', $options);
 
@@ -243,9 +242,7 @@ class WpSettingsApi extends AbstractHookProvider
 
     /**
      * Get sanitation callback for given option slug
-     *
      * @param string $option_slug option slug
-     *
      * @return bool|callable Boolean if no callback exists or Callable method
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
@@ -264,15 +261,15 @@ class WpSettingsApi extends AbstractHookProvider
                 }
 
                 // Call our obfuscated setting sanitizer so stars (****) don't get saved.
-                if ($field->isObfuscated() &&
+                if (
+                    $field->isObfuscated() &&
                     \method_exists(Sanitize::class, 'sanitizeObfuscated')
                 ) {
                     return Sanitize::class . '::sanitizeObfuscated';
                 }
 
                 // Return the callback name
-                return !empty($field->getSanitizeCallback()) &&
-                \is_callable($field->getSanitizeCallback()) ?
+                return !empty($field->getSanitizeCallback()) && \is_callable($field->getSanitizeCallback()) ?
                     $field->getSanitizeCallback() : false;
             }
         }
