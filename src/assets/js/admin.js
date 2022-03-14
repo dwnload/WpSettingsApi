@@ -28,7 +28,7 @@
       this.showActiveForm(WpSettingsApi.getActiveTab())
       this.menuItemListener()
       $(function () {
-        $('input .color-picker').wpColorPicker()
+        $('input.color-picker').wpColorPicker()
       })
     },
 
