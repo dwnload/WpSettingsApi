@@ -211,17 +211,17 @@ class SettingField extends BaseModel
 
     /**
      * The Fields sanitize method callback.
-     * @var callable|null $sanitize_callback
+     * @var mixed $sanitize_callback
      */
-    private $sanitize_callback = null;
+    private $sanitize_callback;
 
     /**
      * Set the Fields sanitize callback.
      * - optional
-     * @param callable|null $sanitize
+     * @param mixed $sanitize
      * @return self
      */
-    public function setSanitizeCallback(?callable $sanitize): self
+    public function setSanitizeCallback($sanitize): self
     {
         $this->sanitize_callback = $sanitize;
 
@@ -230,9 +230,9 @@ class SettingField extends BaseModel
 
     /**
      * Get the "sanitize" callback (if set).
-     * @return callable|null
+     * @return mixed
      */
-    public function getSanitizeCallback(): ?callable
+    public function getSanitizeCallback()
     {
         return $this->sanitize_callback;
     }
