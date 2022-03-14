@@ -84,17 +84,17 @@ class AdminSettingsPage
          */
         $default_scripts = [
             new Script([
-                Script::HANDLE => WpSettingsApi::ADMIN_SCRIPT_HANDLE,
-                Script::SRC => $get_src('src/assets/js/admin.js'),
-                Script::DEPENDENCIES => ['jquery', 'wp-color-picker'],
-                Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
-                Script::IN_FOOTER => true,
-            ]),
-            new Script([
                 Script::HANDLE => 'wp-color-picker-alpha',
                 Script::SRC => $get_src('src/assets/js/wp-color-picker-alpha.js'),
                 Script::DEPENDENCIES => ['jquery', 'wp-color-picker'],
                 Script::VERSION => '3.0.2',
+                Script::IN_FOOTER => true,
+            ]),
+            new Script([
+                Script::HANDLE => WpSettingsApi::ADMIN_SCRIPT_HANDLE,
+                Script::SRC => $get_src('src/assets/js/admin.js'),
+                Script::DEPENDENCIES => ['jquery', 'wp-color-picker-alpha'],
+                Script::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Script::IN_FOOTER => true,
             ]),
             new Script([
