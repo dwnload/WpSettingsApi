@@ -49,10 +49,10 @@
       "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
     ],
     "phpcs": [
-      "bash ./bin/phpcs.sh"
+      "bash ./vendor/thefrosty/wp-utilities/bin/phpcs.sh"
     ],
     "phpmd": [
-      "bash ./bin/phpmd.sh"
+      "bash ./vendor/thefrosty/wp-utilities/bin/phpmd.sh"
     ],
     "phpunit": [
       "./vendor/bin/phpunit --colors --verbose"
