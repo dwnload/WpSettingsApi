@@ -122,10 +122,10 @@ class FieldTypes
     {
         $field = $this->getSettingFieldObject($args);
         $field->setAttributes(array_merge(
-            $args[SettingField::ATTRIBUTES] ?? [],
+            $field->getAttributes(),
             ['class' => ['color-picker']]
         ));
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_COLOR; // This was 'text' before ??
+        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
         $this->text($args);
     }
 
@@ -137,10 +137,10 @@ class FieldTypes
     {
         $field = $this->getSettingFieldObject($args);
         $field->setAttributes(array_merge(
-            $args[SettingField::ATTRIBUTES] ?? [],
+            $field->getAttributes(),
             ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
         ));
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_COLOR_ALPHA;
+        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
         $this->text($args);
     }
 
@@ -496,6 +496,7 @@ value="%5$s"%6$s></div>',
     {
         $return = '';
         $attributes = $this->getSettingFieldObject($args)->getAttributes() ?? [];
+        unset($attributes['class']); // Remove the `class` attribute from the list of attributes (since it requires an array value).
 
         if (!empty($attributes)) {
             foreach ($attributes as $key => $value) {
