@@ -5,6 +5,7 @@ namespace Dwnload\WpSettingsApi\Api;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use function absint;
 use function array_key_exists;
+use function get_option;
 use function is_array;
 use function str_repeat;
 use function strlen;
@@ -46,7 +47,7 @@ class Options
      */
     public static function getOptions(string $section_id)
     {
-        return \get_option($section_id, []);
+        return get_option($section_id, []);
     }
 
     /**
