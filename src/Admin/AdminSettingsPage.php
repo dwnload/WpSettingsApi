@@ -62,6 +62,7 @@ class AdminSettingsPage
         if (!\did_action('wp_enqueue_media')) {
             \wp_enqueue_media();
         }
+        wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
 
         $use_local = apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
