@@ -117,5 +117,5 @@
     }
   }
 
-  $(document).ready(WpSettingsApi.init)
+  $(document).ready(() => WpSettingsApi.init())
 }(jQuery))
