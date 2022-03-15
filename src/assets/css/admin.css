@@ -115,7 +115,7 @@
 }
 
 .Dwnload_WP_Settings_Api__menu li {
-    margin-bottom: 0;
+    margin-bottom: 2px;
 }
 
 .Dwnload_WP_Settings_Api__menu li > a[data-tab-id] {
@@ -148,9 +148,7 @@
 .Dwnload_WP_Settings_Api__sidebar .postbox {
     border-right: none;
     border-left: none;
-    font-size: 80%;
-    min-width: 222px; /* Same as .Dwnload_WP_Settings_Api__sidebar width */
-    margin-bottom: -1px;
+    min-width: 100%;
 }
 
 /************ MAIN ***************/
