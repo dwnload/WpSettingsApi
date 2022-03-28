@@ -2,67 +2,38 @@
 
 namespace Dwnload\WpSettingsApi\Api;
 
+use TheFrosty\WpUtilities\Models\BaseModel;
+
 /**
- * Class SectionBuilder
- *
+ * Class SettingSection
  * @package Dwnload\WpSettingsApi\Api
  */
-class SettingSection
+class SettingSection extends BaseModel
 {
 
-    const SECTION_ID = 'id';
-    const SECTION_TITLE = 'title';
-
-    /**
-     * SettingSection constructor.
-     *
-     * @param array $properties
-     */
-    public function __construct(array $properties = [])
-    {
-        if (!empty($properties)) {
-            foreach ($properties as $key => $value) {
-                $this->__set($key, $value);
-            }
-        }
-    }
-
-    /**
-     * Magic setter.
-     *
-     * @param string $key The property
-     * @param mixed $value The value of the property
-     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
-     */
-    public function __set(string $key, $value)
-    {
-        if (\property_exists($this, $key)) {
-            $this->$key = $value;
-        }
-    }
+    public const SECTION_ID = 'id';
+    public const SECTION_TITLE = 'title';
 
     /**
      * The Section ID.
-     *
      * @var string $id
      */
-    private $id;
+    private string $id;
 
     /**
      * Sets the Sections ID.
-     *
      * @param string $id
-     * @return $this
+     * @return self
      */
-    public function setId(string $id): SettingSection
+    public function setId(string $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * Get the Sections ID.
-     *
      * @return string
      */
     public function getId(): string
@@ -72,30 +43,40 @@ class SettingSection
 
     /**
      * The Section title.
-     *
      * @var string $title
      */
-    private $title;
+    private string $title;
 
     /**
      * Sets the Section title.
-     *
      * @param string $title
-     * @return $this
+     * @return self
      */
-    public function setTitle(string $title): SettingSection
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
      * Gets the Section title.
-     *
      * @return string
      */
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * Get serializable fields.
+     * @return string[]
+     */
+    protected function getSerializableFields(): array
+    {
+        return [
+            self::SECTION_ID,
+            self::SECTION_TITLE,
+        ];
     }
 }

@@ -3,14 +3,15 @@
 namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
+use TheFrosty\WpUtilities\Models\BaseModel;
 
 /**
  * Class SettingField
- *
  * @package Dwnload\WpSettingsApi\Api
  */
-class SettingField
+class SettingField extends BaseModel
 {
+
     /**
      * Array key values.
      * phpcs:disable Inpsyde.CodeQuality.PropertyPerClassLimit.TooMuchProperties
@@ -30,55 +31,25 @@ class SettingField
     public const FIELD_OBJECT = SettingField::class;
 
     /**
-     * SettingField constructor.
-     *
-     * @param array $properties
-     */
-    public function __construct(array $properties = [])
-    {
-        if (!empty($properties)) {
-            foreach ($properties as $key => $value) {
-                $this->__set($key, $value);
-            }
-        }
-    }
-
-    /**
-     * Magic setter.
-     *
-     * @param string $key The property
-     * @param mixed $value The value of the property
-     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
-     */
-    public function __set(string $key, $value)
-    {
-        if (\property_exists($this, $key)) {
-            $this->$key = $value;
-        }
-    }
-
-    /**
      * The Fields description.
-     *
-     * @var string $description
+     * @var string|null $description
      */
-    private $description;
+    private ?string $description;
 
     /**
      * Sets the Fields description.
-     *
      * @param string $description
-     * @return $this
+     * @return self
      */
-    public function setDescription(string $description): SettingField
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Gets the Fields description.
-     *
      * @return string
      */
     public function getDescription(): string
@@ -88,27 +59,25 @@ class SettingField
 
     /**
      * The Fields default value.
-     *
      * @var mixed $default
      */
     private $default;
 
     /**
      * Sets the Fields default value.
-     *
      * @param mixed $default
-     * @return $this
+     * @return self
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setDefault($default): SettingField
+    public function setDefault($default): self
     {
         $this->default = $default;
+
         return $this;
     }
 
     /**
      * Gets the Fields default value.
-     *
      * @return mixed
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
@@ -119,26 +88,24 @@ class SettingField
 
     /**
      * The Fields label (description).
-     *
      * @var string $label
      */
-    private $label;
+    private string $label = '';
 
     /**
      * Sets the Fields label (description).
-     *
+     * @return self
      * @var string $label
-     * @return $this
      */
-    public function setLabel(string $label): SettingField
+    public function setLabel(string $label): self
     {
         $this->label = $label;
+
         return $this;
     }
 
     /**
      * Gets Fields label (description).
-     *
      * @return string
      */
     public function getLabel(): string
@@ -149,26 +116,24 @@ class SettingField
     /**
      * The Fields name.
      * - used internally.
-     *
      * @var string $name
      */
-    private $name;
+    private string $name;
 
     /**
      * Sets the Fields name.
-     *
      * @param string $name
-     * @return $this
+     * @return self
      */
-    public function setName(string $name): SettingField
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * Gets the Fields name.
-     *
      * @return string
      */
     public function getName(): string
@@ -178,7 +143,6 @@ class SettingField
 
     /**
      * Gets the Fields ID (AKA name).
-     *
      * @return string
      */
     public function getId(): string
@@ -189,27 +153,26 @@ class SettingField
     /**
      * The Fields callback object.
      * - if null the Field type name needs to have a method in the FieldTypes class.
-     *
-     * @var object $class_object
+     * @var mixed $class_object
      */
     private $class_object;
 
     /**
      * Set the Fields output object.
-     *
-     * @param $class_object
-     * @return $this
+     * @param mixed $class_object
+     * @return self
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setClassObject($class_object): SettingField
+    public function setClassObject($class_object): self
     {
         $this->class_object = $class_object;
+
         return $this;
     }
 
     /**
      * Get the Fields output object.
-     * @return object
+     * @return mixed
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     public function getClassObject()
@@ -220,27 +183,25 @@ class SettingField
     /**
      * The Fields options array.
      * - used for html array options like radios, checkboxes, etc.
-     *
      * @var array $options
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * Set the Fields options array.
      * - optional
-     *
      * @param array $options
-     * @return $this
+     * @return self
      */
-    public function setOptions(array $options): SettingField
+    public function setOptions(array $options): self
     {
         $this->options = $options;
+
         return $this;
     }
 
     /**
      * Get the Fields options array.
-     *
      * @return array
      */
     public function getOptions(): array
@@ -250,28 +211,26 @@ class SettingField
 
     /**
      * The Fields sanitize method callback.
-     *
-     * @var callable $sanitize_callback
+     * @var mixed $sanitize_callback
      */
     private $sanitize_callback;
 
     /**
      * Set the Fields sanitize callback.
      * - optional
-     *
-     * @param callable $sanitize
-     * @return $this
+     * @param mixed $sanitize
+     * @return self
      */
-    public function setSanitizeCallback(callable $sanitize): SettingField
+    public function setSanitizeCallback($sanitize): self
     {
         $this->sanitize_callback = $sanitize;
+
         return $this;
     }
 
     /**
-     * Get the sanitize callback (if set).
-     *
-     * @return null|callable
+     * Get the "sanitize" callback (if set).
+     * @return mixed
      */
     public function getSanitizeCallback()
     {
@@ -280,27 +239,25 @@ class SettingField
 
     /**
      * The Fields Section it's attached to.
-     *
      * @var string $section_id
      */
-    private $section_id;
+    private string $section_id;
 
     /**
      * Set the Fields Section ID.
      * - optional
-     *
      * @param string $section_id
-     * @return $this
+     * @return self
      */
-    public function setSectionId(string $section_id): SettingField
+    public function setSectionId(string $section_id): self
     {
         $this->section_id = $section_id;
+
         return $this;
     }
 
     /**
      * Get the Fields Section ID.
-     *
      * @return string
      */
     public function getSectionId(): string
@@ -310,26 +267,24 @@ class SettingField
 
     /**
      * The Fields CSS size attribute.
-     *
      * @var string $size
      */
-    private $size;
+    private string $size;
 
     /**
      * Set the Fields size.
-     *
      * @param string $size
-     * @return $this
+     * @return self
      */
-    public function setSize(string $size): SettingField
+    public function setSize(string $size): self
     {
         $this->size = $size;
+
         return $this;
     }
 
     /**
      * Get the Fields size.
-     *
      * @return string
      */
     public function getSize(): string
@@ -340,26 +295,24 @@ class SettingField
     /**
      * The Fields input type.
      * - optional
-     *
      * @var string $type
      */
-    private $type = 'text';
+    private string $type = FieldTypes::DEFAULT_TYPE;
 
     /**
      * Set the Fields input type (defaults to 'text').
-     *
      * @param string $type
-     * @return $this
+     * @return self
      */
-    public function setType(string $type): SettingField
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
      * Get the Fields type.
-     *
      * @return string
      */
     public function getType(): string
@@ -369,24 +322,24 @@ class SettingField
 
     /**
      * The Fields name.
-     *
      * @var bool $obfuscated
      */
-    private $obfuscated = false;
+    private bool $obfuscated = false;
 
     /**
-     * Set the Fields input type (defaults to 'text').
-     *
+     * Set the Fields as being obfuscated.
      * @param bool $obfuscated
-     * @return $this
+     * @return self
      */
-    public function setObfuscate(bool $obfuscated = true): SettingField
+    public function setObfuscate(bool $obfuscated = true): self
     {
         $this->obfuscated = $obfuscated;
+
         return $this;
     }
 
     /**
+     * Is the Field obfuscated?
      * @return bool
      */
     public function isObfuscated(): bool
@@ -397,27 +350,25 @@ class SettingField
     /**
      * The Fields attributes array.
      * - used for additional inline attributes.
-     *
      * @var array $attributes
      */
-    private $attributes = [];
+    private array $attributes = [];
 
     /**
      * Set the Fields attributes array.
      * - optional
-     *
      * @param array $attributes
-     * @return $this
+     * @return self
      */
-    public function setAttributes(array $attributes): SettingField
+    public function setAttributes(array $attributes): self
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
     /**
      * Get the Fields attributes array.
-     *
      * @return array
      */
     public function getAttributes(): array

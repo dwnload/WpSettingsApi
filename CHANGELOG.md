@@ -6,11 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
-## 3.4.1 - 2022-13-11
+## 3.4.1 - 2022-03-11
 - In FieldTypes::getFieldDescription(); don't escape HTML, but pass it through `wp_kses_post` which 
 will "Sanitizes content for allowed HTML tags".
 
-## 3.4.0 - 2022-13-11
+## 3.4.0 - 2022-03-11
 - Require PHP ^7.4.
 - Update composer dev-dependencies.
 - Build PHP 8.0 with Travis.

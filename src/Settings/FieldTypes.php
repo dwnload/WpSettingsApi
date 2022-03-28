@@ -4,10 +4,16 @@ namespace Dwnload\WpSettingsApi\Settings;
 
 use Dwnload\WpSettingsApi\Api\Options;
 use Dwnload\WpSettingsApi\Api\SettingField;
+use function array_map;
+use function array_merge;
+use function esc_attr;
+use function esc_html;
+use function in_array;
+use function is_array;
+use function sprintf;
 
 /**
  * Class FieldTypes
- *
  * @package Dwnload\WpSettingsApi\Settings
  */
 class FieldTypes
@@ -20,6 +26,7 @@ class FieldTypes
     public const FIELD_TYPE_URL = 'url';
     public const FIELD_TYPE_EMAIL = 'email';
     public const FIELD_TYPE_COLOR = 'color';
+    public const FIELD_TYPE_COLOR_ALPHA = 'coloralpha';
     public const FIELD_TYPE_NUMBER = 'number';
     public const FIELD_TYPE_CHECKBOX = 'checkbox';
     public const FIELD_TYPE_MULTICHECK = 'multicheck';
@@ -35,14 +42,13 @@ class FieldTypes
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
-     *
      * @param array $args Array of SettingField object parameters
-     *
      * @return SettingField
      */
     public function getSettingFieldObject(array $args): SettingField
     {
-        if (isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
+        if (
+            isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
             $args[SettingField::FIELD_OBJECT] instanceof SettingField
         ) {
             return $args[SettingField::FIELD_OBJECT];
@@ -55,7 +61,6 @@ class FieldTypes
 
     /**
      * Renders an input text field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function text(array $args): void
@@ -68,72 +73,86 @@ class FieldTypes
 
     /**
      * Renders an input number field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function number(array $args): void
     {
-        $args[SettingField::TYPE] = 'number';
-        if (!isset($args['attributes']['step'])) {
-            $args['attributes']['step'] = 'any';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_NUMBER;
+        if (!isset($args[SettingField::ATTRIBUTES]['step'])) {
+            $args[SettingField::ATTRIBUTES]['step'] = 'any';
         }
         $this->text($args);
     }
 
     /**
      * Renders an input password field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function password(array $args): void
     {
-        $args[SettingField::TYPE] = 'password';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_PASSWORD;
         $this->text($args);
     }
 
     /**
      * Renders an input url field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function url(array $args): void
     {
-        $args[SettingField::TYPE] = 'url';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_URL;
         $this->text($args);
     }
 
     /**
      * Renders an input email field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function email(array $args): void
     {
-        $args[SettingField::TYPE] = 'email';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_EMAIL;
         $this->text($args);
     }
 
     /**
-     * Renders a input color field.
-     *
+     * Renders a ninput color field.
      * @param array $args Array of Field object parameters
      */
     public function color(array $args): void
     {
-        $args[SettingField::TYPE] = 'text';
+        $field = $this->getSettingFieldObject($args);
+        $field->setAttributes(array_merge(
+            $field->getAttributes(),
+            ['class' => ['color-picker']]
+        ));
+        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
+        $this->text($args);
+    }
+
+    /**
+     * Renders an input color alpha field.
+     * @param array $args Array of Field object parameters
+     */
+    public function coloralpha(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $field->setAttributes(array_merge(
+            $field->getAttributes(),
+            ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
+        ));
+        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
         $this->text($args);
     }
 
     /**
      * Renders an input file field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function file(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        $_id = \sprintf('%s[%s]', $field->getSectionId(), $field->getId());
+        $_id = sprintf('%s[%s]', $field->getSectionId(), $field->getId());
 
         $field->setType(self::FIELD_TYPE_TEXT);
         \ob_start();
@@ -145,7 +164,7 @@ class FieldTypes
         );
         $output = \str_replace(
             '</div>',
-            \sprintf(
+            sprintf(
                 '<button class="button secondary wpMediaUploader" type="button" value="%s">%s</button></div>',
                 \esc_attr__('Browse media', 'custom-login'),
                 \esc_html__('Browse media', 'custom-login')
@@ -169,35 +188,33 @@ class FieldTypes
 
     /**
      * Renders an input image (file) field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function image(array $args): void
     {
-        $args[SettingField::TYPE] = 'file';
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_FILE;
         $this->file($args);
     }
 
     /**
      * Renders an input checkbox field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function checkbox(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        $_id = \sprintf('%s[%s]', $field->getSectionId(), $field->getId());
+        $_id = sprintf('%s[%s]', $field->getSectionId(), $field->getId());
 
         $output = '<div class="FieldType_checkbox">';
-        $output .= \sprintf('<input type="hidden" name="%1$s" value="off">', $_id);
-        $output .= \sprintf(
+        $output .= sprintf('<input type="hidden" name="%1$s" value="off">', $_id);
+        $output .= sprintf(
             '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%3$s>',
             $field->getSectionId(),
             $field->getId(),
             \checked($value, 'on', false)
         );
-        $output .= \sprintf('<label for="%1$s"></label>', $_id);
+        $output .= sprintf('<label for="%1$s"></label>', $_id);
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
@@ -206,21 +223,20 @@ class FieldTypes
 
     /**
      * Renders an input multi-checkbox field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function multicheck(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        $value = \is_array($value) ? \array_map('esc_attr', $value) : \esc_attr($value);
+        $value = is_array($value) ? array_map('esc_attr', $value) : esc_attr($value);
 
         $output = '<div class="FieldType_multicheckbox">';
         $output .= '<ul>';
         foreach ($field->getOptions() as $key => $label) {
-            $checked = isset($value[$key]) ? $value[$key] : '0';
+            $checked = $value[$key] ?? '0';
             $output .= '<li>';
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<input type="checkbox" class="checkbox" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" 
 value="%3$s"%4$s>',
                 $field->getSectionId(),
@@ -228,7 +244,7 @@ value="%3$s"%4$s>',
                 $key,
                 \checked($checked, $key, false)
             );
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label>',
                 $field->getSectionId(),
                 $field->getId(),
@@ -246,7 +262,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input radio field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function radio(array $args): void
@@ -258,14 +273,14 @@ value="%3$s"%4$s>',
         $output .= '<ul>';
         foreach ($field->getOptions() as $key => $label) {
             $output .= '<li>';
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s >',
                 $field->getSectionId(),
                 $field->getId(),
                 $key,
                 \checked($value, $key, false)
             );
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label><br>',
                 $field->getSectionId(),
                 $field->getId(),
@@ -283,7 +298,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a select field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function select(array $args): void
@@ -292,7 +306,7 @@ value="%3$s"%4$s>',
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         $output = '<div class="FieldType_select">';
-        $output .= \sprintf(
+        $output .= sprintf(
             '<select class="select2 %1$s" name="%2$s[%3$s]" id="%2$s[%3$s]"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
@@ -302,11 +316,11 @@ value="%3$s"%4$s>',
 
         foreach ($field->getOptions() as $key => $label) {
             $view = isset($args['show_key_value']) && true === $args['show_key_value'] ? $key : $label;
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
-                \esc_attr($key),
-                \is_array($value) && \in_array($key, $value, true) ? ' selected' : \selected($value, $key, false),
-                \esc_html($view)
+                esc_attr($key),
+                is_array($value) && in_array($key, $value, true) ? ' selected' : \selected($value, $key, false),
+                esc_html($view)
             );
         }
         $output .= '</select>';
@@ -318,7 +332,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input multi-select field.
-     *
      * @param array $args Array of Field object parameters
      * phpcd:disable Inpsyde.CodeQuality.NestingLevel.High
      */
@@ -326,10 +339,10 @@ value="%3$s"%4$s>',
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        $value = \is_array($value) ? \array_map('\esc_attr', $value) : \esc_attr($value);
+        $value = is_array($value) ? array_map('\esc_attr', $value) : esc_attr($value);
 
         $output = '<div class="FieldType_multiselect">';
-        $output .= \sprintf(
+        $output .= sprintf(
             '<select class="select2 %1$s" size="%1$s" name="%2$s[%3$s][]" id="%2$s[%3$s]" multiple%4$s>',
             $field->getSize(),
             $field->getSectionId(),
@@ -337,24 +350,24 @@ value="%3$s"%4$s>',
             $this->getExtraFieldParams($args),
         );
         foreach ($field->getOptions() as $key => $label) {
-            if (\is_array($label)) {
-                $output .= \sprintf('<optgroup label="%s">', $key);
+            if (is_array($label)) {
+                $output .= sprintf('<optgroup label="%s">', $key);
                 foreach ($label as $index => $val) {
-                    $output .= \sprintf(
+                    $output .= sprintf(
                         '<option value="%1$s"%2$s>%3$s</option>',
-                        \esc_attr($index),
-                        \is_array($value) && \in_array((string)$index, $value, true) ? ' selected' : '',
-                        \esc_html($val)
+                        esc_attr($index),
+                        is_array($value) && in_array((string)$index, $value, true) ? ' selected' : '',
+                        esc_html($val)
                     );
                 }
                 $output .= '</optgroup>';
                 continue;
             }
-            $output .= \sprintf(
+            $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
-                \esc_attr($key),
-                \is_array($value) && \in_array((string)$key, $value, true) ? ' selected' : '',
-                \esc_html($label)
+                esc_attr($key),
+                is_array($value) && in_array((string)$key, $value, true) ? ' selected' : '',
+                esc_html($label)
             );
         }
         $output .= '</select>';
@@ -366,7 +379,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a textarea field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function textarea(array $args): void
@@ -375,7 +387,7 @@ value="%3$s"%4$s>',
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         $output = '<div class="FieldType_textarea">';
-        $output .= \sprintf(
+        $output .= sprintf(
             '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]"%5$s>%4$s</textarea>',
             $field->getSize(),
             $field->getSectionId(),
@@ -391,7 +403,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a textarea wysiwyg field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function wysiwyg(array $args): void
@@ -406,7 +417,7 @@ value="%3$s"%4$s>',
             'textarea_name' => $field->getSectionId() . '[' . $field->getId() . ']',
             'textarea_rows' => 10,
         ];
-        $editor_settings = \array_merge($editor_settings, $field->getOptions());
+        $editor_settings = array_merge($editor_settings, $field->getOptions());
 
         \ob_start();
         \wp_editor($value, $field->getSectionId() . '-' . $field->getId(), $editor_settings);
@@ -420,7 +431,6 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a html field.
-     *
      * @param array $args Array of Field object parameters
      */
     public function html(array $args): void
@@ -438,9 +448,7 @@ value="%3$s"%4$s>',
 
     /**
      * Renders an input field.
-     *
      * @param array $args Array of Field object parameters
-     *
      * @return string
      */
     protected function getInputField(array $args): string
@@ -450,29 +458,30 @@ value="%3$s"%4$s>',
             Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault()) :
             Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
-        return \sprintf(
-            '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]"
+        return sprintf(
+            '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text %7$s" id="%3$s[%4$s]" name="%3$s[%4$s]"
 value="%5$s"%6$s></div>',
             $field->getType(),
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
-            \esc_attr($value),
-            $this->getExtraFieldParams($args)
+            esc_attr($value),
+            $this->getExtraFieldParams($args),
+            implode(' ',
+                array_map('\sanitize_html_class', $field->getAttributes()['class'] ?? [])
+            )
         );
     }
 
     /**
      * Get field description for display.
-     *
      * @param array $args settings field args
-     *
      * @return string
      */
     protected function getFieldDescription(array $args): string
     {
         if (!empty($args[SettingField::DESC])) {
-            return \sprintf('<p class="description">%s</p>', \wp_kses_post($args[SettingField::DESC]));
+            return sprintf('<p class="description">%s</p>', \wp_kses_post($args[SettingField::DESC]));
         }
 
         return '';
@@ -480,19 +489,18 @@ value="%5$s"%6$s></div>',
 
     /**
      * Helper to return extra parameters as a string.
-     *
      * @param array $args settings field args
-     *
      * @return string
      */
     protected function getExtraFieldParams(array $args): string
     {
         $return = '';
         $attributes = $this->getSettingFieldObject($args)->getAttributes() ?? [];
+        unset($attributes['class']); // Remove the `class` attribute from the list of attributes (since it requires an array value).
 
         if (!empty($attributes)) {
             foreach ($attributes as $key => $value) {
-                $return .= \sprintf(' %s="%s"', \esc_attr($key), \esc_attr($value));
+                $return .= sprintf(' %s="%s"', esc_attr($key), esc_attr($value));
             }
         }
 
