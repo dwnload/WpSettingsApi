@@ -92,7 +92,8 @@
 }
 
 /*******SIDEBAR/MAIN *************/
-.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__sidebar, .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__body {
+.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__sidebar,
+.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__body {
     min-height: 950px;
 }
 
@@ -149,6 +150,7 @@
 .Dwnload_WP_Settings_Api__sidebar .postbox {
     border-right: none;
     border-left: none;
+    margin-bottom: 1px;
     min-width: 100%;
 }
 
