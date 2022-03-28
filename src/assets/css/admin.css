@@ -36,10 +36,11 @@
     display: none;
 }
 
-.Dwnload_WP_Settings_Api__notices div.updated,
-.Dwnload_WP_Settings_Api__notices div.error {
+.Dwnload_WP_Settings_Api__notices div.error,
+.Dwnload_WP_Settings_Api__notices div.updated {
     background-color: transparent;
     margin: 0;
+    border-right: 0;
 }
 
 /************ STICKY *************/
@@ -91,7 +92,8 @@
 }
 
 /*******SIDEBAR/MAIN *************/
-.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__sidebar, .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__body {
+.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__sidebar,
+.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__body {
     min-height: 950px;
 }
 
@@ -115,7 +117,7 @@
 }
 
 .Dwnload_WP_Settings_Api__menu li {
-    margin-bottom: 0;
+    margin-bottom: 2px;
 }
 
 .Dwnload_WP_Settings_Api__menu li > a[data-tab-id] {
@@ -148,9 +150,8 @@
 .Dwnload_WP_Settings_Api__sidebar .postbox {
     border-right: none;
     border-left: none;
-    font-size: 80%;
-    min-width: 222px; /* Same as .Dwnload_WP_Settings_Api__sidebar width */
-    margin-bottom: -1px;
+    margin-bottom: 1px;
+    min-width: 100%;
 }
 
 /************ MAIN ***************/

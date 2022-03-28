@@ -13,19 +13,22 @@
     },
 
     /**
-     * Initiate the JS
+     * Initiation.
      */
     init: function () {
       this.initUIBindings()
     },
 
+    /**
+     * Bind UI events.
+     */
     initUIBindings: function () {
       this.objects.group.hide()
       this.showActiveMenuItem(WpSettingsApi.getActiveTab())
       this.showActiveForm(WpSettingsApi.getActiveTab())
       this.menuItemListener()
       $(function () {
-        $('.FieldType_color input').wpColorPicker()
+        $('input.color-picker').wpColorPicker()
       })
     },
 
@@ -114,5 +117,5 @@
     }
   }
 
-  $(document).ready(WpSettingsApi.init())
+  $(document).ready(() => WpSettingsApi.init())
 }(jQuery))

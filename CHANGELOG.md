@@ -6,11 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
-## 3.4.1 - 2022-13-11
+## 3.5.0 - 2022-03-28
+- Add new Alpha Color Picker field type.
+- Update `SettingField` and `SettingSection` to extend the `BaseModel` class.
+- Add new `ActionHookName` interface for easier hook calling.
+- Cleanup Options code (formatting PSR12), use import functions, and update docblock(s).
+- Update views to utilize new interface constants for repeatable action hook name(s) defined in the Interface.
+- 
+
+## 3.4.1 - 2022-03-11
 - In FieldTypes::getFieldDescription(); don't escape HTML, but pass it through `wp_kses_post` which 
 will "Sanitizes content for allowed HTML tags".
 
-## 3.4.0 - 2022-13-11
+## 3.4.0 - 2022-03-11
 - Require PHP ^7.4.
 - Update composer dev-dependencies.
 - Build PHP 8.0 with Travis.

@@ -7,7 +7,6 @@ use Dwnload\WpSettingsApi\WpSettingsApi;
 
 /**
  * Class SectionManager
- *
  * @package Dwnload\WpSettingsApi\Settings
  */
 class SectionManager
@@ -17,7 +16,7 @@ class SectionManager
      * WpSettingsApi object.
      * @var WpSettingsApi $wp_settings_api
      */
-    private $wp_settings_api;
+    private WpSettingsApi $wp_settings_api;
 
     /**
      * SectionManager constructor.
@@ -30,14 +29,12 @@ class SectionManager
 
     /**
      * Array of SettingSection objects.
-     *
      * @var array SettingSection[]
      */
-    protected static $settings_sections = [];
+    protected static array $settings_sections = [];
 
     /**
      * Set settings sections
-     *
      * @param SettingSection[] $sections An array of SettingSection objects.
      */
     public function setSections(array $sections)
@@ -47,9 +44,7 @@ class SectionManager
 
     /**
      * Add a new SettingSection object.
-     *
      * @param SettingSection $section Array of SettingSection objects.
-     *
      * @return string The registered section ID
      */
     public function addSection(SettingSection $section): string
@@ -61,9 +56,7 @@ class SectionManager
 
     /**
      * Get all settings SettingSection objects as an array.
-     *
      * @param string $menu_slug The WpSettingsApi->getPluginInfo()->getMenuSlug() instance id.
-     *
      * @return SettingSection[] Array of SettingSection objects.
      */
     public static function getSection(string $menu_slug): array
