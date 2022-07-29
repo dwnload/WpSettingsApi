@@ -30,6 +30,7 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+    "ext-simplexml": "*",
     "inpsyde/php-coding-standards": "^1.0",
     "phpunit/php-code-coverage": "^9",
     "phpcompatibility/php-compatibility": "*",
@@ -43,6 +44,16 @@
   },
   "suggest": {
     "frontpack/composer-assets-plugin": "Composer plugin for copying of frontend assets into public directory."
+  },
+  "autoload": {
+    "psr-4": {
+      "Dwnload\\WpSettingsApi\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Dwnload\\Tests\\WpSettingsApi\\": "tests/unit"
+    }
   },
   "scripts": {
     "install-codestandards": [
@@ -65,15 +76,5 @@
       "@phpunit",
       "@eslint"
     ]
-  },
-  "autoload": {
-    "psr-4": {
-      "Dwnload\\WpSettingsApi\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Dwnload\\Tests\\WpSettingsApi\\": "tests"
-    }
   }
 }
