@@ -36,7 +36,7 @@
     "phpcompatibility/php-compatibility": "*",
     "phpunit/phpunit": "^9",
     "roave/security-advisories": "dev-master",
-    "roots/wordpress": "~5.9.0",
+    "roots/wordpress": "~6.0.1",
     "slevomat/coding-standard": "~4.0",
     "squizlabs/php_codesniffer": "^3.2",
     "wp-phpunit/wp-phpunit": "~6.0.1",
