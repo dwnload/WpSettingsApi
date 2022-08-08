@@ -18,7 +18,7 @@
     },
     "optimize-autoloader": true,
     "platform": {
-      "php": "7.4.26"
+      "php": "7.4"
     },
     "sort-packages": true
   },
@@ -26,7 +26,7 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "ext-json": "*",
-    "thefrosty/wp-utilities": "^2.5"
+    "thefrosty/wp-utilities": "^2.8"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -36,10 +36,10 @@
     "phpcompatibility/php-compatibility": "*",
     "phpunit/phpunit": "^9",
     "roave/security-advisories": "dev-master",
-    "roots/wordpress": "~5.9.0",
+    "roots/wordpress": "~6.0.1",
     "slevomat/coding-standard": "~4.0",
     "squizlabs/php_codesniffer": "^3.2",
-    "wp-phpunit/wp-phpunit": "~5.9.0",
+    "wp-phpunit/wp-phpunit": "~6.0.1",
     "yoast/phpunit-polyfills": "^1.0.2"
   },
   "suggest": {
