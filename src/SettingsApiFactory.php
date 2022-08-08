@@ -10,7 +10,6 @@ use Dwnload\WpSettingsApi\Api\PluginSettings;
  */
 class SettingsApiFactory
 {
-
     /**
      * Array of PluginSettings instances.
      * @var PluginSettings[] $instance

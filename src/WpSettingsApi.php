@@ -18,7 +18,6 @@ use TheFrosty\WpUtilities\Plugin\HooksTrait;
  */
 class WpSettingsApi extends AbstractHookProvider
 {
-
     use HooksTrait;
 
     public const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
@@ -105,6 +104,8 @@ class WpSettingsApi extends AbstractHookProvider
 
     /**
      * Initialize and registers the settings sections and fields to WordPress.
+     * phpcs:disable Inpsyde.CodeQuality.FunctionLength.TooLong
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      */
     protected function adminInit(): void
     {
@@ -143,13 +144,14 @@ class WpSettingsApi extends AbstractHookProvider
                 if ($classObject !== null) {
                     $callback_array = [$classObject, $field->getType()];
 
-                    if (!\is_callable($callback_array) ||
+                    if (
+                        !\is_callable($callback_array) ||
                         !\class_exists(\get_class($classObject)) ||
                         !\method_exists($classObject, $field->getType())
                     ) {
                         $callback_array = $getCallbackArray();
                     }
-                } else {
+                } else { // phpcs:ignore Inpsyde.CodeQuality.NoElse.ElseFound
                     $callback_array = $getCallbackArray();
                 }
 
@@ -240,6 +242,7 @@ class WpSettingsApi extends AbstractHookProvider
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
      * @return bool|callable Boolean if no callback exists or Callable method
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     private function getSanitizeCallback(string $option_slug = '')
