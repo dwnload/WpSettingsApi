@@ -16,7 +16,7 @@ To install this package, edit your `composer.json` file:
 ```json
 {
     "require": {
-        "dwnload/wp-settings-api": "^3.2"
+        "dwnload/wp-settings-api": "^3.6"
     }
 }
 ```
