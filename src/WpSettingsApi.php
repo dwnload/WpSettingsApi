@@ -18,7 +18,6 @@ use TheFrosty\WpUtilities\Plugin\HooksTrait;
  */
 class WpSettingsApi extends AbstractHookProvider
 {
-
     use HooksTrait;
 
     public const ADMIN_SCRIPT_HANDLE = 'dwnload-wp-settings-api';
@@ -28,7 +27,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.5.0';
+    public const VERSION = '3.6.0';
 
     /**
      * The current plugin instance.
@@ -51,10 +50,6 @@ class WpSettingsApi extends AbstractHookProvider
     public function addHooks(): void
     {
         $this->addAction('init', function (): void {
-            if (\did_action(self::HOOK_INIT)) {
-                return;
-            }
-
             /**
              * Fires when this plugin is loaded!
              * @param SectionManager Instance of the SectionManager object.
@@ -109,6 +104,8 @@ class WpSettingsApi extends AbstractHookProvider
 
     /**
      * Initialize and registers the settings sections and fields to WordPress.
+     * phpcs:disable Inpsyde.CodeQuality.FunctionLength.TooLong
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      */
     protected function adminInit(): void
     {
@@ -147,13 +144,14 @@ class WpSettingsApi extends AbstractHookProvider
                 if ($classObject !== null) {
                     $callback_array = [$classObject, $field->getType()];
 
-                    if (!\is_callable($callback_array) ||
+                    if (
+                        !\is_callable($callback_array) ||
                         !\class_exists(\get_class($classObject)) ||
                         !\method_exists($classObject, $field->getType())
                     ) {
                         $callback_array = $getCallbackArray();
                     }
-                } else {
+                } else { // phpcs:ignore Inpsyde.CodeQuality.NoElse.ElseFound
                     $callback_array = $getCallbackArray();
                 }
 
@@ -244,6 +242,7 @@ class WpSettingsApi extends AbstractHookProvider
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
      * @return bool|callable Boolean if no callback exists or Callable method
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     private function getSanitizeCallback(string $option_slug = '')

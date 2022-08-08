@@ -18,7 +18,7 @@
     },
     "optimize-autoloader": true,
     "platform": {
-      "php": "7.4.26"
+      "php": "7.4"
     },
     "sort-packages": true
   },
@@ -26,7 +26,7 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "ext-json": "*",
-    "thefrosty/wp-utilities": "^2.5"
+    "thefrosty/wp-utilities": "^2.8"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",

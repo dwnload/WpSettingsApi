@@ -34,8 +34,6 @@
         <exclude name="Inpsyde.CodeQuality.LineLength.TooLong"/>
     </rule>
 
-    <rule ref="PSR2"/>
-
     <rule ref="PSR12">
         <exclude name="PSR12.Files.FileHeader.IncorrectOrder"/>
         <exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
