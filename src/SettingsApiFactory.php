@@ -6,16 +6,16 @@ use Dwnload\WpSettingsApi\Api\PluginSettings;
 
 /**
  * Class SettingsApiFactory
- *
  * @package Dwnload\WpSettingsApi
  */
 class SettingsApiFactory
 {
+
     /**
      * Array of PluginSettings instances.
-     * @var PluginSettings[]
+     * @var PluginSettings[] $instance
      */
-    private static $instance = [];
+    private static array $instance = [];
 
     /**
      * Create a new instance for the settings api.
@@ -24,7 +24,8 @@ class SettingsApiFactory
      */
     public static function create(array $fields): PluginSettings
     {
-        if (!isset(self::$instance[self::getId($fields)]) ||
+        if (
+            !isset(self::$instance[self::getId($fields)]) ||
             !(self::$instance[self::getId($fields)] instanceof PluginSettings)
         ) {
             self::$instance[self::getId($fields)] = new PluginSettings($fields);
