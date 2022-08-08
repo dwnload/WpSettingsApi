@@ -28,7 +28,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.5.0';
+    public const VERSION = '3.6.0';
 
     /**
      * The current plugin instance.
@@ -51,10 +51,6 @@ class WpSettingsApi extends AbstractHookProvider
     public function addHooks(): void
     {
         $this->addAction('init', function (): void {
-            if (\did_action(self::HOOK_INIT)) {
-                return;
-            }
-
             /**
              * Fires when this plugin is loaded!
              * @param SectionManager Instance of the SectionManager object.
