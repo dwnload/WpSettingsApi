@@ -19,7 +19,7 @@ foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $s
              * Action hook before settings section loads.
              * @param SettingSection $section
              */
-            do_action(ActionHookName::FORM_TOP, $section);
+            do_action(ActionHookName::FORM_TOP, $section, $this);
 
             settings_fields($section->getId());
             do_settings_sections($section->getId());
@@ -28,7 +28,7 @@ foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $s
              * Action hook after settings section loads (before submit button).
              * @param SettingSection $section
              */
-            do_action(ActionHookName::FORM_BOTTOM, $section);
+            do_action(ActionHookName::FORM_BOTTOM, $section, $this);
 
             submit_button(
                 sprintf(esc_attr__('Save &ldquo;%s&rdquo;', 'dwnload-wp-settings-api'), $section->getTitle()),
@@ -41,4 +41,4 @@ foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $s
 }
 
 /** Action hook after all settings sections load. */
-do_action(ActionHookName::AFTER_SETTINGS_SECTIONS_FORM);
+do_action(ActionHookName::AFTER_SETTINGS_SECTIONS_FORM, $this);

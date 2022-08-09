@@ -35,10 +35,10 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
         <div class="Dwnload_WP_Settings_Api__sticky">
             <div class="wrap">
                 <div class="Dwnload_WP_Settings_Api__sticky_notice">
-                    <?php do_action(ActionHookName::SETTINGS_STICKY_ADMIN_NOTICE); ?>
+                    <?php do_action(ActionHookName::SETTINGS_STICKY_ADMIN_NOTICE, $this); ?>
                 </div>
                 <div class="alignright">
-                    <?php do_action(ActionHookName::SETTINGS_BEFORE_SUBMIT_BUTTON); ?>
+                    <?php do_action(ActionHookName::SETTINGS_BEFORE_SUBMIT_BUTTON, $this); ?>
                     <?php submit_button(
                         __('Save All Changes', 'wp-settings-api'),
                         'primary',
@@ -53,7 +53,7 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
 
         <div class="Dwnload_WP_Settings_Api__sidebar">
             <?php include __DIR__ . '/setting/nav.php'; ?>
-            <?php do_action(ActionHookName::SETTINGS_SETTINGS_SIDEBARS, []); ?>
+            <?php do_action(ActionHookName::SETTINGS_SETTINGS_SIDEBARS, $this); ?>
         </div><!-- .Dwnload_WP_Settings_Api__sidebar -->
 
         <div class="Dwnload_WP_Settings_Api__body">
