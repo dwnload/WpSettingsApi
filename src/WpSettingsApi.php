@@ -26,6 +26,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const FILTER_PREFIX = 'dwnload/wp_settings_api/';
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
+    public const HOOK_INIT_SLUG__S = self::HOOK_INIT . '-%s';
     public const HOOK_PRIORITY = 999;
     public const VERSION = '3.6.1';
 
@@ -58,6 +59,7 @@ class WpSettingsApi extends AbstractHookProvider
              */
             \do_action(self::HOOK_INIT, (new SectionManager($this)), (new FieldManager()), $this);
         }, self::HOOK_PRIORITY);
+        $this->addAction(self::HOOK_INIT, [$this, 'initMenuSlug'], 10, 3);
         $this->addAction('admin_menu', [$this, 'addAdminMenu']);
         $this->addAction('admin_init', [$this, 'adminInit']);
     }
@@ -80,6 +82,25 @@ class WpSettingsApi extends AbstractHookProvider
     public function isCurrentMenuSlug(string $menu_slug): bool
     {
         return $this->getPluginInfo()->getMenuSlug() === $menu_slug;
+    }
+
+    /**
+     * Add a custom action for the current WpSettingsApi based on the instance menu slug.
+     * @param SectionManager $section_manager Instance of the SectionManager object.
+     * @param FieldManager $field_manager Instance of the FieldManager object.
+     * @param WpSettingsApi $wp_settings_api
+     */
+    protected function initMenuSlug(
+        SectionManager $section_manager,
+        FieldManager $field_manager,
+        WpSettingsApi $wp_settings_api
+    ): void {
+        \do_action(
+            \sprintf(self::HOOK_INIT_SLUG__S, $this->getPluginInfo()->getMenuSlug()),
+            $section_manager,
+            $field_manager,
+            $wp_settings_api
+        );
     }
 
     /**
