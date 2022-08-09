@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.6.1 - 2022-08-09
+- Add mew `WpSettingsApi::HOOK_INIT_SLUG__S` action hook, which would allow hooks only on current 
+`getPluginInfo()->getMenuSlug()`. 
+- Change passed param in `do_action` for `ActionHookName::SETTINGS_SETTINGS_SIDEBARS` from an array to a
+`WpSettingsApi` instance. [#48](https://github.com/dwnload/WpSettingsApi/pull/48)
+- Add `isCurrentMenuSlug($slug)` to allow for easy boolean condition checks.
+
+## 3.6.0 - 2022-08-08
+- Lock WP Utilities to version `^2.8`.
+- Fix: Allow multiple settings instances by not removing current action hook. (Fixes 
+ [#13](https://github.com/dwnload/WpSettingsApi/issues/13))
+
 ## 3.5.0 - 2022-03-28
 - Add new Alpha Color Picker field type.
 - Update `SettingField` and `SettingSection` to extend the `BaseModel` class.
