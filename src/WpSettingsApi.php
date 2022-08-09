@@ -27,7 +27,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const ACTION_PREFIX = self::FILTER_PREFIX;
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.6.0';
+    public const VERSION = '3.6.1';
 
     /**
      * The current plugin instance.
@@ -69,6 +69,17 @@ class WpSettingsApi extends AbstractHookProvider
     public function getPluginInfo(): PluginSettings
     {
         return $this->plugin_info;
+    }
+
+    /**
+     * Is the current instance's menu slug equal to the passed slug.
+     * @param string $menu_slug
+     * @return bool
+     * @since 3.6.1
+     */
+    public function isCurrentMenuSlug(string $menu_slug): bool
+    {
+        return $this->getPluginInfo()->getMenuSlug() === $menu_slug;
     }
 
     /**
