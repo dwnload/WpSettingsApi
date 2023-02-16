@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.7.0 - 2023-02-16
+- Set minimum PHP version to 8.0.
+
 ## 3.6.1 - 2022-08-09
 - Add mew `WpSettingsApi::HOOK_INIT_SLUG__S` action hook, which would allow hooks only on current 
 `getPluginInfo()->getMenuSlug()`. 
