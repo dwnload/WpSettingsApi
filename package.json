@@ -1,10 +1,9 @@
 {
   "name": "wp-settings-api",
-  "version": "3.2.0",
+  "version": "3.7.0",
   "private": true,
   "author": "Austin Passy <thefrosty@users.noreply.github.com>",
   "scripts": {
-    "travis": "if [ \"$TRAVIS_COMMIT_RANGE\" ]; then standard $TRAVIS_COMMIT_RANGE; else standard; fi",
     "eslint": "./vendor/thefrosty/wp-utilities/bin/eslint.sh"
   },
   "standard": {
