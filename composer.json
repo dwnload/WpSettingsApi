@@ -26,7 +26,7 @@
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "thefrosty/wp-utilities": "^2.8"
+    "thefrosty/wp-utilities": "^3.0"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
