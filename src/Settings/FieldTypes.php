@@ -139,7 +139,9 @@ class FieldTypes
                 ['pattern' => '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}']
             )
         );
+        \ob_start();
         $this->text($args);
+        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, \ob_get_clean());
     }
 
     /**
