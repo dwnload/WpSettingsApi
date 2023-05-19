@@ -132,7 +132,7 @@ class FieldTypes
     public function datetime(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = \sprintf('%s-local', FieldTypes::FIELD_TYPE_DATETIME);
+        $args[SettingField::TYPE] = sprintf('%s-local', FieldTypes::FIELD_TYPE_DATETIME);
         $field->setAttributes(
             array_merge(
                 $field->getAttributes(),
