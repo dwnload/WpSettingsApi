@@ -313,11 +313,12 @@ class SettingField extends BaseModel
 
     /**
      * Get the Fields type.
+     * @since 2.8.1 Replace "_" & "-". Example: Type=datetime-local, Method=datetimeLocal().
      * @return string
      */
     public function getType(): string
     {
-        return $this->type;
+        return str_replace(['_', '-'], '', lcfirst(ucwords($this->type, '_-')));
     }
 
     /**

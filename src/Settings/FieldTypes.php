@@ -27,7 +27,7 @@ class FieldTypes
     public const FIELD_TYPE_TEXT = 'text';
     public const FIELD_TYPE_URL = 'url';
     public const FIELD_TYPE_DATE = 'date';
-    public const FIELD_TYPE_DATETIME = 'datetime';
+    public const FIELD_TYPE_DATETIME = 'datetime-local';
     public const FIELD_TYPE_EMAIL = 'email';
     public const FIELD_TYPE_COLOR = 'color';
     public const FIELD_TYPE_COLOR_ALPHA = 'coloralpha';
@@ -129,10 +129,10 @@ class FieldTypes
      * Renders an input datetime-local field.
      * @param array $args Array of Field object parameters
      */
-    public function datetime(array $args): void
+    public function datetimeLocal(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = sprintf('%s-local', FieldTypes::FIELD_TYPE_DATETIME);
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATETIME;
         $field->setAttributes(
             array_merge(
                 $field->getAttributes(),
