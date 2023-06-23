@@ -41,9 +41,12 @@ class Sanitize
      */
     private static function getSectionId(string $option_slug): string
     {
-        // Iterate over registered fields and see if we can find proper callback
+        // Iterate over registered fields and see if we can find proper callback.
         foreach (FieldManager::getFields() as $fields) {
-            /** @var SettingField $field */
+            /**
+             * Filed object.
+             * @var SettingField $field
+             */
             foreach ($fields as $field) {
                 if ($field->getName() === $option_slug) {
                     return $field->getSectionId();

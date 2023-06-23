@@ -10,6 +10,7 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 /**
  * Class SettingField
  * @package Dwnload\WpSettingsApi\Api
+ * phpcs:disable SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification
  */
 class SettingField extends BaseModel
 {
@@ -94,8 +95,8 @@ class SettingField extends BaseModel
 
     /**
      * Sets the Fields label (description).
+     * @param string $label
      * @return self
-     * @var string $label
      */
     public function setLabel(string $label): self
     {

@@ -28,7 +28,7 @@ class Options
      *                          Defaults to an empty string.
      * @return mixed
      */
-    public static function getOption(string $option_key, string $section_id = null, mixed $default = ''): mixed
+    public static function getOption(string $option_key, ?string $section_id = null, mixed $default = ''): mixed
     {
         if (empty($section_id)) {
             $section_id = self::getSectionId($option_key);
@@ -49,6 +49,7 @@ class Options
     }
 
     /**
+     * Get the obfuscated option value.
      * @param string $option_key Settings field key name in the section option array.
      * @param string $section_id The Section object ID the option belongs too.
      * @param mixed $default (Optional) Default value if option is not found.
@@ -82,6 +83,7 @@ class Options
     }
 
     /**
+     * Get the Section ID by option key.
      * @param string $option_key
      * @return string
      */

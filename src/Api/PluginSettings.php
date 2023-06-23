@@ -10,6 +10,8 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 /**
  * Class PluginInfo
  * @package Dwnload\WpSettingsApi\Api
+ * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable Squiz.Commenting.FunctionComment.Missing
  */
 class PluginSettings extends BaseModel
 {

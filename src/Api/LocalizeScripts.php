@@ -17,7 +17,7 @@ class LocalizeScripts
 
     /**
      * Localized array to pass from PHP to JS.
-     * @var array $vars
+     * @var string[] $vars
      */
     protected static array $vars = [];
 
