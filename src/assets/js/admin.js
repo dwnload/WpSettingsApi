@@ -3,7 +3,7 @@
   'use strict'
 
   const WpSettingsApi = {
-    localStorageItemId: 'activeTab',
+    localStorageItemId: '_wpSettingApiActiveTab',
     objects: {
       container: $('.Dwnload_WP_Settings_Api__container'),
       header: $('.Dwnload_WP_Settings_Api__header'),
