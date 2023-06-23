@@ -252,6 +252,18 @@ p.style-pack-img-wrapper img {
     display: block;
 }
 
+.Dwnload_WP_Settings_Api__body div[data-repeater] {
+    background: rgba(0, 0, 0, 0.05);
+    padding: calc(1.75%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin: 0 0 15px 0;
+}
+
+.Dwnload_WP_Settings_Api__body div[data-repeater]:first-of-type a.alignright {
+    display: none;
+    visibility: hidden;
+}
+
 @media screen and (max-width: 600px) {
     .Dwnload_WP_Settings_Api__sidebar {
         float: none;
