@@ -27,6 +27,7 @@
       this.showActiveMenuItem(WpSettingsApi.getActiveTab())
       this.showActiveForm(WpSettingsApi.getActiveTab())
       this.menuItemListener()
+      this.repeaterFieldsListener()
       $(function () {
         $('input.color-picker').wpColorPicker()
       })
@@ -77,6 +78,29 @@
         WpSettingsApi.objects.group.hide()
         WpSettingsApi.getActiveFormObject(clickedGroup).fadeIn('fast')
         e.preventDefault()
+      })
+    },
+
+    /**
+     * Listen repeater field clicks.
+     */
+    repeaterFieldsListener: function () {
+      $('.FieldType_repeater').on('click', 'a.button', function (e) {
+        e.preventDefault()
+
+        const $repeater = $(this).closest('.FieldType_repeater').find('[data-repeatable]'),
+          count = $repeater.length,
+          $clone = $repeater.first().clone()
+
+        $clone.find('[id]').each(function () {
+          this.id = this.id + '_' + count
+        })
+
+        $clone.find('[name]').each(function () {
+          this.name = this.name + '[' + count + ']'
+        })
+
+        $clone.insertBefore($(this))
       })
     },
 
