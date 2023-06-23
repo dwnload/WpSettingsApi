@@ -213,7 +213,7 @@ class SettingField extends BaseModel
      * The Fields sanitize method callback.
      * @var mixed $sanitize_callback
      */
-    private mixed $sanitize_callback;
+    private mixed $sanitize_callback = null;
 
     /**
      * Set the Fields sanitize callback.
