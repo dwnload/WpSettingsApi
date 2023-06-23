@@ -85,22 +85,37 @@
      * Listen repeater field clicks.
      */
     repeaterFieldsListener: function () {
-      $('.FieldType_repeater').on('click', 'a.button', function (e) {
+      const $repeater = $('.FieldType_repeater')
+
+      $repeater.on('click', 'a.button[data-add]', function (e) {
         e.preventDefault()
 
-        const $repeater = $(this).closest('.FieldType_repeater').find('[data-repeatable]'),
-          count = $repeater.length,
-          $clone = $repeater.first().clone()
+        const $group = $(this).
+            closest('.FieldType_repeater').
+            find('[data-repeatable]'),
+          count = $group.length,
+          $clone = $group.first().clone()
 
         $clone.find('[id]').each(function () {
           this.id = this.id + '_' + count
         })
-
         $clone.find('[name]').each(function () {
           this.name = this.name + '[' + count + ']'
         })
+        $clone.find('[value]').each(function () {
+          this.value = ''
+        })
 
         $clone.insertBefore($(this))
+      })
+
+      $repeater.on('click', 'a.button[data-remove]', function (e) {
+        e.preventDefault()
+
+        $(this).
+          closest('.FieldType_repeater').
+          find('[data-repeatable]').
+          remove()
       })
     },
 
