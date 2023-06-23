@@ -120,7 +120,7 @@ class AdminSettingsPage
         $default_styles = [
             new Style([
                 Style::HANDLE => WpSettingsApi::ADMIN_STYLE_HANDLE,
-                Style::SRC => $get_src('src/assets/css/admin.min.css'),
+                Style::SRC => $get_src('src/assets/css/admin.css'),
                 Style::DEPENDENCIES => ['wp-color-picker'],
                 Style::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Style::MEDIA => 'screen',
