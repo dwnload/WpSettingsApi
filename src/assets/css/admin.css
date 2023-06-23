@@ -259,6 +259,15 @@ p.style-pack-img-wrapper img {
     margin: 0 0 15px 0;
 }
 
+.FieldType_repeater__header {
+    clear: both;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.FieldType_repeater__header a[data-remove] {
+    color: darkred;
+}
+
 .FieldType_repeater > div[data-repeatable]:first-of-type a[data-remove] {
     display: none;
     visibility: hidden;

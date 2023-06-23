@@ -489,25 +489,25 @@ value="%3$s"%4$s>',
         }
 
         $output = '<div class="FieldType_repeater">';
-        $output .= \sprintf('<div data-repeatable="%s">', \count($fields));
+        $output .= '<div data-repeatable>';
         $output .= \sprintf(
-            '<a href="javascript:;" class="alignright button-secondary" data-remove>%s</a>',
+            '<p class="FieldType_repeater__header"><a href="javascript:;" class="alignright button-secondary" data-remove>%s</a></p>',
             \esc_html__('Remove', 'wp-settings-api')
         );
-        \ob_start();
         foreach ($fields as $key => $repeaterField) {
             if (!$repeaterField instanceof SettingField) {
                 continue;
             }
 
             $output .= '<div class="repeater-wrap">';
+            \ob_start();
             $_args = $repeaterField->toArray();
             $_args[SettingField::NAME] = \sprintf('%s[%d]', $repeaterField->getId(), $key);
             $_args[SettingField::SECTION_ID] = \sprintf('%s[%s]', $field->getSectionId(), $field->getId());
             $this->{$repeaterField->getType()}($_args);
+            $output .= \ob_get_clean();
             $output .= '</div>';
         }
-        $output .= \ob_get_clean();
         $output .= '</div><!-- [data-repeatable] -->';
         $output .= \sprintf(
             '<a href="javascript:;" class="button button-primary" data-add>%s</a>',
