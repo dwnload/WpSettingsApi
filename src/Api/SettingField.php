@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -61,15 +63,14 @@ class SettingField extends BaseModel
      * The Fields default value.
      * @var mixed $default
      */
-    private $default;
+    private mixed $default;
 
     /**
      * Sets the Fields default value.
      * @param mixed $default
      * @return self
-     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setDefault($default): self
+    public function setDefault(mixed $default): self
     {
         $this->default = $default;
 
@@ -79,9 +80,8 @@ class SettingField extends BaseModel
     /**
      * Gets the Fields default value.
      * @return mixed
-     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    public function getDefault()
+    public function getDefault(): mixed
     {
         return $this->default;
     }
@@ -155,15 +155,14 @@ class SettingField extends BaseModel
      * - if null the Field type name needs to have a method in the FieldTypes class.
      * @var mixed $class_object
      */
-    private $class_object;
+    private mixed $class_object;
 
     /**
      * Set the Fields output object.
      * @param mixed $class_object
      * @return self
-     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    public function setClassObject($class_object): self
+    public function setClassObject(mixed $class_object): self
     {
         $this->class_object = $class_object;
 
@@ -173,9 +172,8 @@ class SettingField extends BaseModel
     /**
      * Get the Fields output object.
      * @return mixed
-     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    public function getClassObject()
+    public function getClassObject(): mixed
     {
         return $this->class_object;
     }
@@ -213,7 +211,7 @@ class SettingField extends BaseModel
      * The Fields sanitize method callback.
      * @var mixed $sanitize_callback
      */
-    private $sanitize_callback;
+    private mixed $sanitize_callback;
 
     /**
      * Set the Fields sanitize callback.
@@ -221,7 +219,7 @@ class SettingField extends BaseModel
      * @param mixed $sanitize
      * @return self
      */
-    public function setSanitizeCallback($sanitize): self
+    public function setSanitizeCallback(mixed $sanitize): self
     {
         $this->sanitize_callback = $sanitize;
 
@@ -232,7 +230,7 @@ class SettingField extends BaseModel
      * Get the "sanitize" callback (if set).
      * @return mixed
      */
-    public function getSanitizeCallback()
+    public function getSanitizeCallback(): mixed
     {
         return $this->sanitize_callback;
     }
@@ -313,8 +311,8 @@ class SettingField extends BaseModel
 
     /**
      * Get the Fields type.
-     * @since 2.8.1 Replace "_" & "-". Example: Type=datetime-local, Method=datetimeLocal().
      * @return string
+     * @since 2.8.1 Replace "_" & "-". Example: Type=datetime-local, Method=datetimeLocal().
      */
     public function getType(): string
     {
