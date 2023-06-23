@@ -159,11 +159,11 @@ class WpSettingsApi extends AbstractHookProvider
 
         // Register settings fields.
         foreach (FieldManager::getFields() as $section_id => $fields) {
+            /**
+             * Field object.
+             * @var SettingField[] $fields
+             */
             foreach ($fields as $field) {
-                /**
-                 * Field object.
-                 * @var SettingField $field
-                 */
                 $args = [
                     SettingField::ID => $field->getId(),
                     SettingField::DEFAULT => $field->getDefault(),
@@ -173,6 +173,7 @@ class WpSettingsApi extends AbstractHookProvider
                     SettingField::SANITIZE => $field->getSanitizeCallback(),
                     SettingField::SECTION_ID => $field->getSectionId(),
                     SettingField::SIZE => $field->getSize(),
+                    SettingField::REPEATER_FIELDS => $field->getFields(),
                     SettingField::FIELD_OBJECT => $field,
                 ];
 
@@ -189,8 +190,6 @@ class WpSettingsApi extends AbstractHookProvider
                         $callback_array = $getCallbackArray();
                     }
                 }
-
-                // @todo double check `$callback_array` fallback is callable.
 
                 \add_settings_field(
                     $section_id . '[' . $field->getName() . ']',
