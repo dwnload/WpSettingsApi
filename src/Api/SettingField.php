@@ -65,7 +65,7 @@ class SettingField extends BaseModel
      * The Fields default value.
      * @var mixed $default
      */
-    private mixed $default;
+    private mixed $default = '';
 
     /**
      * Sets the Fields default value.
@@ -157,7 +157,7 @@ class SettingField extends BaseModel
      * - if null the Field type name needs to have a method in the FieldTypes class.
      * @var mixed $class_object
      */
-    private mixed $class_object;
+    private mixed $class_object = null;
 
     /**
      * Set the Fields output object.
