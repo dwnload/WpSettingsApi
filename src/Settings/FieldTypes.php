@@ -43,6 +43,7 @@ class FieldTypes
     public const FIELD_TYPE_FILE = 'file';
     public const FIELD_TYPE_IMAGE = 'image';
     public const FIELD_TYPE_PASSWORD = 'password';
+    public const FIELD_TYPE_REPEATER = 'repeater';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -52,7 +53,7 @@ class FieldTypes
     public function getSettingFieldObject(array $args): SettingField
     {
         if (
-            isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
+            isset($args[SettingField::FIELD_OBJECT]) &&
             $args[SettingField::FIELD_OBJECT] instanceof SettingField
         ) {
             return $args[SettingField::FIELD_OBJECT];
@@ -472,6 +473,41 @@ value="%3$s"%4$s>',
 
         echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
+
+    /**
+     * Renders a repeater field.
+     * @param array $args Array of Field object parameters
+     * @throws \Exception
+     */
+    public function repeater(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        if (!\is_array($field->getFields())) {
+            return;
+        }
+
+        $output = '<div class="FieldType_repeater">';
+        $output .= '<div data-repeatable>';
+        \ob_start();
+        foreach ($field->getFields() as $field) {
+            if (!$field instanceof SettingField) {
+                continue;
+            }
+
+            $type = $field->getType();
+            $this->$type($field->toArray());
+        }
+        $output .= \ob_get_clean();
+        $output .= '</div><!-- data-repeatable -->';
+        $output .= \sprintf(
+            '<a href="javascript:;" class="button">%s</a>',
+            \esc_html__('Add Fields', 'wp-settings-api')
+        );
+        $output .= '</div>';
+
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
 
     /**
      * Renders a html field.
