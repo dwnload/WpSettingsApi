@@ -31,6 +31,7 @@ class SettingField extends BaseModel
     public const SECTION_ID = 'section_id';
     public const SIZE = 'size';
     public const TYPE = 'type';
+    public const REPEATER_FIELDS = 'fields';
     public const FIELD_OBJECT = SettingField::class;
 
     /**
@@ -321,6 +322,33 @@ class SettingField extends BaseModel
     }
 
     /**
+     * Repeater fields array
+     * @var SettingField[] $fields
+     */
+    private ?array $fields;
+
+    /**
+     * Set the Fields input type (defaults to 'text').
+     * @param SettingField[] $fields
+     * @return self
+     */
+    public function setFields(array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Get the Fields type.
+     * @return array|null
+     */
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    /**
      * The Fields name.
      * @var bool $obfuscated
      */
@@ -374,5 +402,23 @@ class SettingField extends BaseModel
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    public function getSerializableFields(): array
+    {
+        return [
+            self::ID,
+            self::ATTRIBUTES,
+            self::CLASS_OBJECT,
+            self::DEFAULT,
+            self::DESC,
+            self::LABEL,
+            self::NAME,
+            self::OPTIONS,
+            self::SANITIZE,
+            self::SIZE,
+            self::TYPE,
+            self::FIELD_OBJECT,
+        ];
     }
 }
