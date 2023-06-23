@@ -404,6 +404,10 @@ class SettingField extends BaseModel
         return $this->attributes;
     }
 
+    /**
+     * Get all serializable fields for toArray().
+     * @return string[]
+     */
     public function getSerializableFields(): array
     {
         return [

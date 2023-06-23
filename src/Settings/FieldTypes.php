@@ -17,6 +17,7 @@ use function sprintf;
 /**
  * Class FieldTypes
  * @package Dwnload\WpSettingsApi\Settings
+ * phpcs:disable Generic.Files.LineLength.TooLong
  */
 class FieldTypes
 {
@@ -65,131 +66,6 @@ class FieldTypes
     }
 
     /**
-     * Renders an input text field.
-     * @param array $args Array of Field object parameters
-     */
-    public function text(array $args): void
-    {
-        $output = $this->getInputField($args);
-        $output .= $this->getFieldDescription($args);
-
-        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-    }
-
-    /**
-     * Renders an input number field.
-     * @param array $args Array of Field object parameters
-     */
-    public function number(array $args): void
-    {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_NUMBER;
-        if (!isset($args[SettingField::ATTRIBUTES]['step'])) {
-            $args[SettingField::ATTRIBUTES]['step'] = 'any';
-        }
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input password field.
-     * @param array $args Array of Field object parameters
-     */
-    public function password(array $args): void
-    {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_PASSWORD;
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input url field.
-     * @param array $args Array of Field object parameters
-     */
-    public function url(array $args): void
-    {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_URL;
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input date field.
-     * @param array $args Array of Field object parameters
-     */
-    public function date(array $args): void
-    {
-        $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATE;
-        $field->setAttributes(
-            array_merge(
-                $field->getAttributes(),
-                ['pattern' => '\d{4}-\d{2}-\d{2}']
-            )
-        );
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input datetime-local field.
-     * @param array $args Array of Field object parameters
-     */
-    public function datetimeLocal(array $args): void
-    {
-        $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATETIME;
-        $field->setAttributes(
-            array_merge(
-                $field->getAttributes(),
-                ['pattern' => '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}']
-            )
-        );
-        \ob_start();
-        $this->text($args);
-        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, \ob_get_clean());
-    }
-
-    /**
-     * Renders an input email field.
-     * @param array $args Array of Field object parameters
-     */
-    public function email(array $args): void
-    {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_EMAIL;
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input color field.
-     * @param array $args Array of Field object parameters
-     */
-    public function color(array $args): void
-    {
-        $field = $this->getSettingFieldObject($args);
-        $field->setAttributes(
-            array_merge(
-                $field->getAttributes(),
-                ['class' => ['color-picker']]
-            )
-        );
-        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
-        $this->text($args);
-    }
-
-    /**
-     * Renders an input color alpha field.
-     * @param array $args Array of Field object parameters
-     */
-    public function coloralpha(array $args): void
-    {
-        $field = $this->getSettingFieldObject($args);
-        $field->setAttributes(
-            array_merge(
-                $field->getAttributes(),
-                ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
-            )
-        );
-        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
-        $this->text($args);
-    }
-
-    /**
      * Renders an input file field.
      * @param array $args Array of Field object parameters
      */
@@ -211,8 +87,8 @@ class FieldTypes
             '</div>',
             sprintf(
                 '<button class="button secondary wpMediaUploader" type="button" value="%s">%s</button></div>',
-                \esc_attr__('Browse media', 'custom-login'),
-                \esc_html__('Browse media', 'custom-login')
+                \esc_attr__('Browse media', 'wp-settings-api'),
+                \esc_html__('Browse media', 'wp-settings-api')
             ),
             $output
         );
@@ -360,7 +236,7 @@ value="%3$s"%4$s>',
         );
 
         foreach ($field->getOptions() as $key => $label) {
-            $view = isset($args['show_key_value']) && true === $args['show_key_value'] ? $key : $label;
+            $view = isset($args['show_key_value']) && $args['show_key_value'] === true ? $key : $label;
             $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
                 esc_attr($key),
