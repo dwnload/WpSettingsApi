@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -24,7 +26,7 @@ class LocalizeScripts
      * @param string $key
      * @param string $value
      */
-    public function add(string $key, string $value)
+    public function add(string $key, string $value): void
     {
         self::$vars[$key] = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
     }
