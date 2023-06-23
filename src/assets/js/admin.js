@@ -112,7 +112,13 @@
       $repeater.on('click', '[data-remove]', function (e) {
         e.preventDefault()
 
-        $(this).closest('[data-repeatable]').remove()
+        const $group = $(this).
+          closest('.FieldType_repeater').
+          find('[data-repeatable]')
+
+        if ($group.length > 1) {
+          $(this).closest('[data-repeatable]').remove()
+        }
       })
     },
 
