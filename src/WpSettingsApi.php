@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi;
 
@@ -128,7 +130,7 @@ class WpSettingsApi extends AbstractHookProvider
     protected function settingsHtml(): void
     {
         if (!\current_user_can($this->getAppCap())) {
-            \wp_die(\esc_html__('You do not have sufficient permissions to access this page.'));
+            \wp_die(\esc_html__('You do not have sufficient permissions to access this page.', 'wp-settings-api'));
         }
 
         include __DIR__ . '/views/settings-html.php';
@@ -141,7 +143,7 @@ class WpSettingsApi extends AbstractHookProvider
      */
     protected function adminInit(): void
     {
-        // Register settings sections
+        // Register settings sections.
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
             if (\get_option($section->getId(), false) === false) {
                 \add_option($section->getId(), []);
@@ -155,10 +157,13 @@ class WpSettingsApi extends AbstractHookProvider
             );
         }
 
-        // Register settings fields
+        // Register settings fields.
         foreach (FieldManager::getFields() as $section_id => $fields) {
             foreach ($fields as $field) {
-                /** @var SettingField $field */
+                /**
+                 * Field object.
+                 * @var SettingField $field
+                 */
                 $args = [
                     SettingField::ID => $field->getId(),
                     SettingField::DEFAULT => $field->getDefault(),
@@ -173,18 +178,16 @@ class WpSettingsApi extends AbstractHookProvider
 
                 $classObject = $field->getClassObject();
                 $getCallbackArray = static fn(): array => [(new FieldTypes()), $field->getType()];
+                $callback_array = $getCallbackArray();
                 if ($classObject !== null) {
                     $callback_array = [$classObject, $field->getType()];
 
                     if (
                         !\is_callable($callback_array) ||
-                        !\class_exists(\get_class($classObject)) ||
                         !\method_exists($classObject, $field->getType())
                     ) {
                         $callback_array = $getCallbackArray();
                     }
-                } else { // phpcs:ignore Inpsyde.CodeQuality.NoElse.ElseFound
-                    $callback_array = $getCallbackArray();
                 }
 
                 // @todo double check `$callback_array` fallback is callable.
@@ -200,14 +203,12 @@ class WpSettingsApi extends AbstractHookProvider
             }
         }
 
-        // Register settings setting
+        // Register settings setting.
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
             \register_setting(
                 $section->getId(),
                 $section->getId(),
-                function ($options): array { // phpcs:ignore
-                    return $this->sanitizeOptionsArray($options);
-                }
+                fn($options): array => $this->sanitizeOptionsArray($options)
             );
         }
     }
@@ -228,7 +229,7 @@ class WpSettingsApi extends AbstractHookProvider
      * @return array
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    private function sanitizeOptionsArray($options): array
+    private function sanitizeOptionsArray(mixed $options): array
     {
         if (empty($options)) {
             return (array)$options;
@@ -243,7 +244,7 @@ class WpSettingsApi extends AbstractHookProvider
         foreach ($options as $option_slug => $option_value) {
             $sanitize_callback = $this->getSanitizeCallback($option_slug);
 
-            // If callback is set, call it
+            // If callback is set, call it.
             if (!empty($sanitize_callback)) {
                 /**
                  * Sanitize Callback accepted args.
@@ -255,7 +256,7 @@ class WpSettingsApi extends AbstractHookProvider
                 continue;
             }
 
-            // Treat everything that's not an array as a string
+            // Treat everything that's not an array as a string.
             if (!\is_array($option_value)) {
                 $options[$option_slug] = \sanitize_text_field($option_value);
             }
@@ -273,19 +274,22 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
-     * @return bool|callable Boolean if no callback exists or Callable method
+     * @return callable|bool|string Boolean if no callback exists or Callable method
      * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    private function getSanitizeCallback(string $option_slug = '')
+    private function getSanitizeCallback(string $option_slug = ''): callable|bool|string
     {
         if (empty($option_slug)) {
             return false;
         }
 
-        // Iterate over registered fields and see if we can find proper callback
+        // Iterate over registered fields and see if we can find proper callback.
         foreach (FieldManager::getFields() as $section_id => $fields) {
-            /** @var SettingField $field */
+            /**
+             * Field object.
+             * @var SettingField $field
+             */
             foreach ($fields as $field) {
                 if ($field->getName() !== $option_slug) {
                     continue;
@@ -299,7 +303,7 @@ class WpSettingsApi extends AbstractHookProvider
                     return Sanitize::class . '::sanitizeObfuscated';
                 }
 
-                // Return the callback name
+                // Return the callback name.
                 return !empty($field->getSanitizeCallback()) && \is_callable($field->getSanitizeCallback()) ?
                     $field->getSanitizeCallback() : false;
             }

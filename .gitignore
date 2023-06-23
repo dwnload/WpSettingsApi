@@ -6,3 +6,4 @@ tests/clover.xml
 /wordpress
 /vendor
 composer.lock
+phpcs-report.xml
