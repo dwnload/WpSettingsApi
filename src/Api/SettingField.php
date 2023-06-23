@@ -420,8 +420,10 @@ class SettingField extends BaseModel
             self::NAME,
             self::OPTIONS,
             self::SANITIZE,
+            self::SECTION_ID,
             self::SIZE,
             self::TYPE,
+            self::REPEATER_FIELDS,
             self::FIELD_OBJECT,
         ];
     }
