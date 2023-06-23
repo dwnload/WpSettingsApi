@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Settings;
 
@@ -29,7 +31,7 @@ class SectionManager
 
     /**
      * Array of SettingSection objects.
-     * @var array SettingSection[]
+     * @var array<SettingSection> $settings_sections
      */
     protected static array $settings_sections = [];
 
@@ -37,7 +39,7 @@ class SectionManager
      * Set settings sections
      * @param SettingSection[] $sections An array of SettingSection objects.
      */
-    public function setSections(array $sections)
+    public function setSections(array $sections): void
     {
         self::$settings_sections[$this->wp_settings_api->getPluginInfo()->getMenuSlug()] = $sections;
     }

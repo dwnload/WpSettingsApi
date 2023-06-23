@@ -10,6 +10,8 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 /**
  * Class PluginInfo
  * @package Dwnload\WpSettingsApi\Api
+ * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable Squiz.Commenting.FunctionComment.Missing
  */
 class PluginSettings extends BaseModel
 {
@@ -43,7 +45,7 @@ class PluginSettings extends BaseModel
         return $this->domain;
     }
 
-    protected function setDomain(string $domain)
+    protected function setDomain(string $domain): void
     {
         $this->domain = $domain;
     }
@@ -53,7 +55,7 @@ class PluginSettings extends BaseModel
         return $this->file;
     }
 
-    protected function setFile(string $file)
+    protected function setFile(string $file): void
     {
         $this->file = $file;
     }
@@ -68,7 +70,7 @@ class PluginSettings extends BaseModel
         return $this->menu_slug ?? $this->domain;
     }
 
-    protected function setMenuSlug(string $slug)
+    protected function setMenuSlug(string $slug): void
     {
         $this->menu_slug = $slug;
     }
@@ -78,7 +80,7 @@ class PluginSettings extends BaseModel
         return $this->menu_title;
     }
 
-    protected function setMenuTitle(string $title)
+    protected function setMenuTitle(string $title): void
     {
         $this->menu_title = $title;
     }
@@ -88,7 +90,7 @@ class PluginSettings extends BaseModel
         return $this->page_title;
     }
 
-    protected function setPageTitle(string $title)
+    protected function setPageTitle(string $title): void
     {
         $this->page_title = $title;
     }
@@ -98,7 +100,7 @@ class PluginSettings extends BaseModel
         return $this->prefix;
     }
 
-    protected function setPrefix(string $prefix)
+    protected function setPrefix(string $prefix): void
     {
         $this->prefix = $prefix;
     }
@@ -108,7 +110,7 @@ class PluginSettings extends BaseModel
         return $this->version;
     }
 
-    protected function setVersion(string $version)
+    protected function setVersion(string $version): void
     {
         $this->version = $version;
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
@@ -15,7 +17,7 @@ class LocalizeScripts
 
     /**
      * Localized array to pass from PHP to JS.
-     * @var array $vars
+     * @var string[] $vars
      */
     protected static array $vars = [];
 
@@ -24,7 +26,7 @@ class LocalizeScripts
      * @param string $key
      * @param string $value
      */
-    public function add(string $key, string $value)
+    public function add(string $key, string $value): void
     {
         self::$vars[$key] = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
     }
