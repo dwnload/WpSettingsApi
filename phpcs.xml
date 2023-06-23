@@ -40,7 +40,7 @@
 
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="crain"/>
+            <property name="text_domain" type="array" value="wp-settings-api"/>
         </properties>
         <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
     </rule>
