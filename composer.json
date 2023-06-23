@@ -40,7 +40,7 @@
     "slevomat/coding-standard": "~8.12",
     "squizlabs/php_codesniffer": "^3.2",
     "wp-phpunit/wp-phpunit": "~6.2",
-    "yoast/phpunit-polyfills": "^1.0.2"
+    "yoast/phpunit-polyfills": "^1.0.2 || ^2.0"
   },
   "suggest": {
     "frontpack/composer-assets-plugin": "Composer plugin for copying of frontend assets into public directory."
