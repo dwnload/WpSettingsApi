@@ -325,7 +325,7 @@ class SettingField extends BaseModel
      * Repeater fields array
      * @var SettingField[] $fields
      */
-    private ?array $fields;
+    private ?array $fields = null;
 
     /**
      * Set the Fields input type (defaults to 'text').
