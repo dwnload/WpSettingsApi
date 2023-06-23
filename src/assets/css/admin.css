@@ -252,14 +252,14 @@ p.style-pack-img-wrapper img {
     display: block;
 }
 
-.Dwnload_WP_Settings_Api__body div[data-repeater] {
+.FieldType_repeater > div[data-repeatable] {
     background: rgba(0, 0, 0, 0.05);
     padding: calc(1.75%);
     border: 1px solid rgba(0, 0, 0, 0.05);
     margin: 0 0 15px 0;
 }
 
-.Dwnload_WP_Settings_Api__body div[data-repeater]:first-of-type a.alignright {
+.FieldType_repeater > div[data-repeatable]:first-of-type a[data-remove] {
     display: none;
     visibility: hidden;
 }
