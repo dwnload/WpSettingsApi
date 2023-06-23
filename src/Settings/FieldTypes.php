@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Settings;
 
@@ -24,6 +26,8 @@ class FieldTypes
 
     public const FIELD_TYPE_TEXT = 'text';
     public const FIELD_TYPE_URL = 'url';
+    public const FIELD_TYPE_DATE = 'date';
+    public const FIELD_TYPE_DATETIME = 'datetime-local';
     public const FIELD_TYPE_EMAIL = 'email';
     public const FIELD_TYPE_COLOR = 'color';
     public const FIELD_TYPE_COLOR_ALPHA = 'coloralpha';
@@ -105,6 +109,42 @@ class FieldTypes
     }
 
     /**
+     * Renders an input date field.
+     * @param array $args Array of Field object parameters
+     */
+    public function date(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATE;
+        $field->setAttributes(
+            array_merge(
+                $field->getAttributes(),
+                ['pattern' => '\d{4}-\d{2}-\d{2}']
+            )
+        );
+        $this->text($args);
+    }
+
+    /**
+     * Renders an input datetime-local field.
+     * @param array $args Array of Field object parameters
+     */
+    public function datetimeLocal(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATETIME;
+        $field->setAttributes(
+            array_merge(
+                $field->getAttributes(),
+                ['pattern' => '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}']
+            )
+        );
+        \ob_start();
+        $this->text($args);
+        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, \ob_get_clean());
+    }
+
+    /**
      * Renders an input email field.
      * @param array $args Array of Field object parameters
      */
@@ -115,16 +155,18 @@ class FieldTypes
     }
 
     /**
-     * Renders a ninput color field.
+     * Renders an input color field.
      * @param array $args Array of Field object parameters
      */
     public function color(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $field->setAttributes(array_merge(
-            $field->getAttributes(),
-            ['class' => ['color-picker']]
-        ));
+        $field->setAttributes(
+            array_merge(
+                $field->getAttributes(),
+                ['class' => ['color-picker']]
+            )
+        );
         $field->setType(FieldTypes::FIELD_TYPE_TEXT);
         $this->text($args);
     }
@@ -136,10 +178,12 @@ class FieldTypes
     public function coloralpha(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $field->setAttributes(array_merge(
-            $field->getAttributes(),
-            ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
-        ));
+        $field->setAttributes(
+            array_merge(
+                $field->getAttributes(),
+                ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
+            )
+        );
         $field->setType(FieldTypes::FIELD_TYPE_TEXT);
         $this->text($args);
     }
@@ -467,7 +511,8 @@ value="%5$s"%6$s></div>',
             $field->getId(),
             esc_attr($value),
             $this->getExtraFieldParams($args),
-            implode(' ',
+            implode(
+                ' ',
                 array_map('\sanitize_html_class', $field->getAttributes()['class'] ?? [])
             )
         );

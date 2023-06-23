@@ -23,7 +23,7 @@ class ExampleSettings implements WpHooksInterface
      * `WpSettingsApi::ACTION_PREFIX . 'init'`. This custom action passes three parameters (two prior to version 2.7)
      * so you have to register a priority and the parameter count.
      */
-    public function addHooks()
+    public function addHooks(): void
     {
         \add_action(WpSettingsApi::ACTION_PREFIX . 'init', [$this, 'init'], 10, 3);
     }
