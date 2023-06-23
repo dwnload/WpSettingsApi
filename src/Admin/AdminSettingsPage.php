@@ -79,7 +79,7 @@ class AdminSettingsPage
 
             return sprintf(
                 'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s',
-                WpSettingsApi::VERSION,
+                apply_filters(WpSettingsApi::FILTER_PREFIX . 'scripts_version', WpSettingsApi::VERSION),
                 $debug === true ? $path : str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
             );
         };
