@@ -87,7 +87,7 @@
     repeaterFieldsListener: function () {
       const $repeater = $('.FieldType_repeater')
 
-      $repeater.on('click', 'a.button[data-add]', function (e) {
+      $repeater.on('click', '[data-add]', function (e) {
         e.preventDefault()
 
         const $group = $(this).
@@ -109,7 +109,7 @@
         $clone.insertBefore($(this))
       })
 
-      $repeater.on('click', 'a.button[data-remove]', function (e) {
+      $repeater.on('click', '[data-remove]', function (e) {
         e.preventDefault()
 
         $(this).closest('[data-repeatable]').remove()
