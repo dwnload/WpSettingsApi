@@ -228,7 +228,7 @@ class WpSettingsApi extends AbstractHookProvider
      * @return array
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
-    private function sanitizeOptionsArray($options): array
+    private function sanitizeOptionsArray(mixed $options): array
     {
         if (empty($options)) {
             return (array)$options;
@@ -273,11 +273,11 @@ class WpSettingsApi extends AbstractHookProvider
     /**
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
-     * @return bool|callable Boolean if no callback exists or Callable method
+     * @return callable|bool|string Boolean if no callback exists or Callable method
      * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
-    private function getSanitizeCallback(string $option_slug = '')
+    private function getSanitizeCallback(string $option_slug = ''): callable|bool|string
     {
         if (empty($option_slug)) {
             return false;
