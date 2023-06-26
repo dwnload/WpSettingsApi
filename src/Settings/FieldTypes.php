@@ -68,10 +68,11 @@ class FieldTypes
     /**
      * Renders an input text field.
      * @param array $args Array of Field object parameters
+     * @param array|null $_args The repeater group Array
      */
-    public function text(array $args): void
+    public function text(array $args, ?array $_args = null): void
     {
-        $output = $this->getInputField($args);
+        $output = $this->getInputField($args, $_args);
         $output .= $this->getFieldDescription($args);
 
         echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
@@ -494,17 +495,14 @@ value="%3$s"%4$s>',
             '<p class="FieldType_repeater__header"><a href="javascript:;" class="alignright button-secondary" data-remove>%s</a></p>',
             \esc_html__('Remove', 'wp-settings-api')
         );
-        foreach ($fields as $key => $repeaterField) {
+        foreach ($fields as $repeaterField) {
             if (!$repeaterField instanceof SettingField) {
                 continue;
             }
 
             $output .= '<div class="repeater-wrap">';
             \ob_start();
-            $_args = $repeaterField->toArray();
-            $_args[SettingField::NAME] = \sprintf('%s[%d]', $repeaterField->getId(), $key);
-            $_args[SettingField::SECTION_ID] = \sprintf('%s[%s]', $field->getSectionId(), $field->getId());
-            $this->{$repeaterField->getType()}($_args);
+            $this->{$repeaterField->getType()}($repeaterField->toArray(), $args);
             $output .= \ob_get_clean();
             $output .= '</div>';
         }
@@ -539,14 +537,20 @@ value="%3$s"%4$s>',
     /**
      * Renders an input field.
      * @param array $args Array of Field object parameters
+     * @param array|null $_args
      * @return string
      */
-    protected function getInputField(array $args): string
+    protected function getInputField(array $args, ?array $_args = null): string
     {
         $field = $this->getSettingFieldObject($args);
+        $group = $_args === null ? null : $this->getSettingFieldObject($_args);
         $value = !$field->isObfuscated() ?
             Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault()) :
             Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
+
+        if ($group) {
+            return '<!-- Repeater Groups Not Supported Yet -->';
+        }
 
         return sprintf(
             '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text %7$s" id="%3$s[%4$s]" name="%3$s[%4$s]"
