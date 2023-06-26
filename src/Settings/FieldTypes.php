@@ -480,6 +480,7 @@ value="%3$s"%4$s>',
      * Renders a repeater field.
      * @param array $args Array of Field object parameters
      * @throws \Exception
+     * phpcs:disable SlevomatCodingStandard.Classes.MethodSpacing.IncorrectLinesCountBetweenMethods
      */
     public function repeater(array $args): void
     {
