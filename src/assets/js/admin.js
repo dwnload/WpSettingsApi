@@ -40,8 +40,13 @@
      * @param {string} activeTab
      */
     showActiveMenuItem: function (activeTab) {
-      if (activeTab !== '' && WpSettingsApi.objects.menu.find('[data-tab-id="' + activeTab + '"]').length) {
-        WpSettingsApi.objects.menu.find('[data-tab-id="' + activeTab + '"]').addClass('active')
+      if (
+        activeTab !== '' &&
+        WpSettingsApi.objects.menu.find(
+          '[data-tab-id="' + activeTab + '"]').length
+      ) {
+        WpSettingsApi.objects.menu.find('[data-tab-id="' + activeTab + '"]').
+          addClass('active')
       } else {
         WpSettingsApi.objects.menu.find('a').first().addClass('active')
       }
@@ -68,17 +73,18 @@
      * localStorage events.
      */
     menuItemListener: function () {
-      WpSettingsApi.objects.menu.find('a[data-tab-id]').on('click', function (e) {
-        const clickedGroup = $(this).data('tab-id')
+      WpSettingsApi.objects.menu.find('a[data-tab-id]').
+        on('click', function (e) {
+          const clickedGroup = $(this).data('tab-id')
 
-        WpSettingsApi.objects.menu.find('a').removeClass('active')
-        $(this).addClass('active').trigger('blur')
+          WpSettingsApi.objects.menu.find('a').removeClass('active')
+          $(this).addClass('active').trigger('blur')
 
-        WpSettingsApi.setActiveTab(clickedGroup)
-        WpSettingsApi.objects.group.hide()
-        WpSettingsApi.getActiveFormObject(clickedGroup).fadeIn('fast')
-        e.preventDefault()
-      })
+          WpSettingsApi.setActiveTab(clickedGroup)
+          WpSettingsApi.objects.group.hide()
+          WpSettingsApi.getActiveFormObject(clickedGroup).fadeIn('fast')
+          e.preventDefault()
+        })
     },
 
     /**
@@ -91,10 +97,10 @@
         e.preventDefault()
 
         const $group = $(this).
-            closest('.FieldType_repeater').
-            find('[data-repeatable]'),
-          count = $group.length,
-          $clone = $group.first().clone()
+          closest('.FieldType_repeater').
+          find('[data-repeatable]')
+        const count = $group.length
+        const $clone = $group.first().clone()
 
         $clone.find('[id]').each(function () {
           this.id = this.id + '_' + count
