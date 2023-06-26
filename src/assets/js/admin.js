@@ -100,7 +100,7 @@
           this.id = this.id + '_' + count
         })
         $clone.find('[name]').each(function () {
-          this.name = this.name + '[' + count + ']'
+          this.name = this.name.replace(/\d/g, count)
         })
         $clone.find('[value]').each(function () {
           this.value = ''
