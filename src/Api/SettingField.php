@@ -31,6 +31,7 @@ class SettingField extends BaseModel
     public const SECTION_ID = 'section_id';
     public const SIZE = 'size';
     public const TYPE = 'type';
+    public const REPEATER_FIELDS = 'fields';
     public const FIELD_OBJECT = SettingField::class;
 
     /**
@@ -64,7 +65,7 @@ class SettingField extends BaseModel
      * The Fields default value.
      * @var mixed $default
      */
-    private mixed $default;
+    private mixed $default = '';
 
     /**
      * Sets the Fields default value.
@@ -156,7 +157,7 @@ class SettingField extends BaseModel
      * - if null the Field type name needs to have a method in the FieldTypes class.
      * @var mixed $class_object
      */
-    private mixed $class_object;
+    private mixed $class_object = null;
 
     /**
      * Set the Fields output object.
@@ -212,7 +213,7 @@ class SettingField extends BaseModel
      * The Fields sanitize method callback.
      * @var mixed $sanitize_callback
      */
-    private mixed $sanitize_callback;
+    private mixed $sanitize_callback = null;
 
     /**
      * Set the Fields sanitize callback.
@@ -321,6 +322,33 @@ class SettingField extends BaseModel
     }
 
     /**
+     * Repeater fields array
+     * @var SettingField[] $fields
+     */
+    private ?array $fields = null;
+
+    /**
+     * Set the Fields input type (defaults to 'text').
+     * @param SettingField[] $fields
+     * @return self
+     */
+    public function setFields(array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Get the Fields type.
+     * @return array|null
+     */
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    /**
      * The Fields name.
      * @var bool $obfuscated
      */
@@ -374,5 +402,29 @@ class SettingField extends BaseModel
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * Get all serializable fields for toArray().
+     * @return string[]
+     */
+    public function getSerializableFields(): array
+    {
+        return [
+            self::ID,
+            self::ATTRIBUTES,
+            self::CLASS_OBJECT,
+            self::DEFAULT,
+            self::DESC,
+            self::LABEL,
+            self::NAME,
+            self::OPTIONS,
+            self::SANITIZE,
+            self::SECTION_ID,
+            self::SIZE,
+            self::TYPE,
+            self::REPEATER_FIELDS,
+            self::FIELD_OBJECT,
+        ];
     }
 }

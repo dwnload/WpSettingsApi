@@ -1,6 +1,6 @@
 {
   "name": "wp-settings-api",
-  "version": "3.7.0",
+  "version": "3.9.0",
   "private": true,
   "author": "Austin Passy <thefrosty@users.noreply.github.com>",
   "scripts": {
@@ -13,6 +13,7 @@
     "globals": [
       "_",
       "jQuery",
+      "localStorage",
       "wp"
     ]
   },
@@ -20,6 +21,6 @@
     "eslint": "~8.10.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-no-jquery": "^2.7.0",
-    "standard": "^16.0.4"
+    "standard": "^17.0"
   }
 }

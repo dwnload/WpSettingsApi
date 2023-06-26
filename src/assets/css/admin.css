@@ -188,7 +188,6 @@
 .Dwnload_WP_Settings_Api__body .form-table th {
     font-weight: 400;
     min-width: 150px; /* Set a minimum */
-    width: inherit; /* Overwrite the 200px width */
 }
 
 .Dwnload_WP_Settings_Api__body .form-table th h4 {
@@ -251,6 +250,27 @@ p.style-pack-img-wrapper img {
 
 .Dwnload_WP_Settings_Api__body .img-wrapper a {
     display: block;
+}
+
+.FieldType_repeater > div[data-repeatable] {
+    background: rgba(0, 0, 0, 0.05);
+    padding: calc(1.75%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin: 0 0 15px 0;
+}
+
+.FieldType_repeater__header {
+    clear: both;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.FieldType_repeater__header a[data-remove] {
+    color: darkred;
+}
+
+.FieldType_repeater > div[data-repeatable]:first-of-type a[data-remove] {
+    display: none;
+    visibility: hidden;
 }
 
 @media screen and (max-width: 600px) {

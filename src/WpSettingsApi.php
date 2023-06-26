@@ -30,7 +30,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_INIT_SLUG__S = self::HOOK_INIT . '-%s';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.6.1';
+    public const VERSION = '3.9.0';
 
     /**
      * The current plugin instance.
@@ -159,11 +159,11 @@ class WpSettingsApi extends AbstractHookProvider
 
         // Register settings fields.
         foreach (FieldManager::getFields() as $section_id => $fields) {
+            /**
+             * Field object.
+             * @var SettingField[] $fields
+             */
             foreach ($fields as $field) {
-                /**
-                 * Field object.
-                 * @var SettingField $field
-                 */
                 $args = [
                     SettingField::ID => $field->getId(),
                     SettingField::DEFAULT => $field->getDefault(),
@@ -173,6 +173,7 @@ class WpSettingsApi extends AbstractHookProvider
                     SettingField::SANITIZE => $field->getSanitizeCallback(),
                     SettingField::SECTION_ID => $field->getSectionId(),
                     SettingField::SIZE => $field->getSize(),
+                    SettingField::REPEATER_FIELDS => $field->getFields(),
                     SettingField::FIELD_OBJECT => $field,
                 ];
 
@@ -189,8 +190,6 @@ class WpSettingsApi extends AbstractHookProvider
                         $callback_array = $getCallbackArray();
                     }
                 }
-
-                // @todo double check `$callback_array` fallback is callable.
 
                 \add_settings_field(
                     $section_id . '[' . $field->getName() . ']',

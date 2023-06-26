@@ -17,6 +17,7 @@ use function sprintf;
 /**
  * Class FieldTypes
  * @package Dwnload\WpSettingsApi\Settings
+ * phpcs:disable Generic.Files.LineLength.TooLong
  */
 class FieldTypes
 {
@@ -43,6 +44,7 @@ class FieldTypes
     public const FIELD_TYPE_FILE = 'file';
     public const FIELD_TYPE_IMAGE = 'image';
     public const FIELD_TYPE_PASSWORD = 'password';
+    public const FIELD_TYPE_REPEATER = 'repeater';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -52,7 +54,7 @@ class FieldTypes
     public function getSettingFieldObject(array $args): SettingField
     {
         if (
-            isset($args[SettingField::FIELD_OBJECT]) && // phpcs:ignore PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine
+            isset($args[SettingField::FIELD_OBJECT]) &&
             $args[SettingField::FIELD_OBJECT] instanceof SettingField
         ) {
             return $args[SettingField::FIELD_OBJECT];
@@ -66,10 +68,11 @@ class FieldTypes
     /**
      * Renders an input text field.
      * @param array $args Array of Field object parameters
+     * @param array|null $_args The repeater group Array
      */
-    public function text(array $args): void
+    public function text(array $args, ?array $_args = null): void
     {
-        $output = $this->getInputField($args);
+        $output = $this->getInputField($args, $_args);
         $output .= $this->getFieldDescription($args);
 
         echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
@@ -210,8 +213,8 @@ class FieldTypes
             '</div>',
             sprintf(
                 '<button class="button secondary wpMediaUploader" type="button" value="%s">%s</button></div>',
-                \esc_attr__('Browse media', 'custom-login'),
-                \esc_html__('Browse media', 'custom-login')
+                \esc_attr__('Browse media', 'wp-settings-api'),
+                \esc_html__('Browse media', 'wp-settings-api')
             ),
             $output
         );
@@ -359,7 +362,7 @@ value="%3$s"%4$s>',
         );
 
         foreach ($field->getOptions() as $key => $label) {
-            $view = isset($args['show_key_value']) && true === $args['show_key_value'] ? $key : $label;
+            $view = isset($args['show_key_value']) && $args['show_key_value'] === true ? $key : $label;
             $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
                 esc_attr($key),
@@ -474,6 +477,48 @@ value="%3$s"%4$s>',
     }
 
     /**
+     * Renders a repeater field.
+     * @param array $args Array of Field object parameters
+     * @throws \Exception
+     * phpcs:disable SlevomatCodingStandard.Classes.MethodSpacing.IncorrectLinesCountBetweenMethods
+     */
+    public function repeater(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $fields = $field->getFields();
+        if (!\is_array($fields)) {
+            return;
+        }
+
+        $output = '<div class="FieldType_repeater">';
+        $output .= '<div data-repeatable>';
+        $output .= \sprintf(
+            '<p class="FieldType_repeater__header"><a href="javascript:;" class="alignright button-secondary" data-remove>%s</a></p>',
+            \esc_html__('Remove', 'wp-settings-api')
+        );
+        foreach ($fields as $repeaterField) {
+            if (!$repeaterField instanceof SettingField) {
+                continue;
+            }
+
+            $output .= '<div class="repeater-wrap">';
+            \ob_start();
+            $this->{$repeaterField->getType()}($repeaterField->toArray(), $args);
+            $output .= \ob_get_clean();
+            $output .= '</div>';
+        }
+        $output .= '</div><!-- [data-repeatable] -->';
+        $output .= \sprintf(
+            '<a href="javascript:;" class="button button-primary" data-add>%s</a>',
+            \esc_html__('Add', 'wp-settings-api')
+        );
+        $output .= '</div>';
+
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
+
+    /**
      * Renders a html field.
      * @param array $args Array of Field object parameters
      */
@@ -493,14 +538,20 @@ value="%3$s"%4$s>',
     /**
      * Renders an input field.
      * @param array $args Array of Field object parameters
+     * @param array|null $_args
      * @return string
      */
-    protected function getInputField(array $args): string
+    protected function getInputField(array $args, ?array $_args = null): string
     {
         $field = $this->getSettingFieldObject($args);
+        $group = $_args === null ? null : $this->getSettingFieldObject($_args);
         $value = !$field->isObfuscated() ?
             Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault()) :
             Options::getObfuscatedOption($field->getId(), $field->getSectionId(), $field->getDefault());
+
+        if ($group) {
+            return '<!-- Repeater Groups Not Supported Yet -->';
+        }
 
         return sprintf(
             '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text %7$s" id="%3$s[%4$s]" name="%3$s[%4$s]"

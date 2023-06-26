@@ -79,7 +79,7 @@ class AdminSettingsPage
 
             return sprintf(
                 'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s',
-                WpSettingsApi::VERSION,
+                apply_filters(WpSettingsApi::FILTER_PREFIX . 'scripts_version', WpSettingsApi::VERSION),
                 $debug === true ? $path : str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
             );
         };
@@ -120,7 +120,7 @@ class AdminSettingsPage
         $default_styles = [
             new Style([
                 Style::HANDLE => WpSettingsApi::ADMIN_STYLE_HANDLE,
-                Style::SRC => $get_src('src/assets/css/admin.min.css'),
+                Style::SRC => $get_src('src/assets/css/admin.css'),
                 Style::DEPENDENCIES => ['wp-color-picker'],
                 Style::VERSION => $this->wp_settings_api->getPluginInfo()->getVersion(),
                 Style::MEDIA => 'screen',
