@@ -1,4 +1,4 @@
-/** global jQuery **/
+/** global jQuery, localStorage **/
 (function ($) {
   'use strict'
 
@@ -45,8 +45,8 @@
         WpSettingsApi.objects.menu.find(
           '[data-tab-id="' + activeTab + '"]').length
       ) {
-        WpSettingsApi.objects.menu.find('[data-tab-id="' + activeTab + '"]').
-          addClass('active')
+        WpSettingsApi.objects.menu.find('[data-tab-id="' + activeTab + '"]')
+          .addClass('active')
       } else {
         WpSettingsApi.objects.menu.find('a').first().addClass('active')
       }
@@ -73,8 +73,8 @@
      * localStorage events.
      */
     menuItemListener: function () {
-      WpSettingsApi.objects.menu.find('a[data-tab-id]').
-        on('click', function (e) {
+      WpSettingsApi.objects.menu.find('a[data-tab-id]')
+        .on('click', function (e) {
           const clickedGroup = $(this).data('tab-id')
 
           WpSettingsApi.objects.menu.find('a').removeClass('active')
@@ -96,9 +96,9 @@
       $repeater.on('click', '[data-add]', function (e) {
         e.preventDefault()
 
-        const $group = $(this).
-          closest('.FieldType_repeater').
-          find('[data-repeatable]')
+        const $group = $(this)
+          .closest('.FieldType_repeater')
+          .find('[data-repeatable]')
         const count = $group.length
         const $clone = $group.first().clone()
 
@@ -118,9 +118,9 @@
       $repeater.on('click', '[data-remove]', function (e) {
         e.preventDefault()
 
-        const $group = $(this).
-          closest('.FieldType_repeater').
-          find('[data-repeatable]')
+        const $group = $(this)
+          .closest('.FieldType_repeater')
+          .find('[data-repeatable]')
 
         if ($group.length > 1) {
           $(this).closest('[data-repeatable]').remove()
