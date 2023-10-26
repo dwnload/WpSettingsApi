@@ -467,7 +467,7 @@ value="%3$s"%4$s>',
         $editor_settings = array_merge($editor_settings, $field->getOptions());
 
         \ob_start();
-        \wp_editor($value, $field->getSectionId() . '-' . $field->getId(), $editor_settings);
+        \wp_editor($value ?? '', $field->getSectionId() . '-' . $field->getId(), $editor_settings);
 
         $output .= \ob_get_clean();
         $output .= '</div>';
@@ -528,7 +528,7 @@ value="%3$s"%4$s>',
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         $output = '<div class="FieldType_html">';
-        $output .= \wp_kses_post($value);
+        $output .= \wp_kses_post($value ?? '');
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
