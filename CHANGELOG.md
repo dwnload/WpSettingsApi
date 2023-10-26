@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.9.0 - 2023-10-26
+- Update roots/wordpress requirement from ~6.1.1 to ~6.2.2.
+- Update wp-phpunit/wp-phpunit requirement from ~6.1.1 to ~6.2.0.
+- Update slevomat/coding-standard requirement from ~7.2 to ~8.12
+- A little code + dependencies + Action cleanup (#73).
+- PHP 8.0 enhancements (#74)
+- New Repeater Field Type (WIP) - Part I
+- PHP 8.1 compat: Don't pass null values to wp_editor or wp_kses_post (#77)
+- Bump word-wrap from 1.2.3 to 1.2.4 (#76)
+
+## 3.8.2 - 2023-05-19
+- Resolve issue with new instance objects and defined type (edge case) in datetimelocal field.
+
+## 3.8.1 - 2023-05-19
+- Allow dashed id's in field types, and sanitize the type on getter.
+
+## 3.8.0 - 2023-05-19
+- Add new date fields.
+
 ## 3.7.0 - 2023-02-16
 - Set minimum PHP version to 8.0.
 
