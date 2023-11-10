@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.10.0 - 2023-11-10
+- Add new Text Array field type.
+
 ## 3.9.0 - 2023-10-26
 - Update roots/wordpress requirement from ~6.1.1 to ~6.2.2.
 - Update wp-phpunit/wp-phpunit requirement from ~6.1.1 to ~6.2.0.

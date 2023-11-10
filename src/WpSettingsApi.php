@@ -30,7 +30,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_INIT_SLUG__S = self::HOOK_INIT . '-%s';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.9.0';
+    public const VERSION = '3.10.0';
 
     /**
      * The current plugin instance.
