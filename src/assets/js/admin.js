@@ -27,6 +27,7 @@
       this.showActiveMenuItem(WpSettingsApi.getActiveTab())
       this.showActiveForm(WpSettingsApi.getActiveTab())
       this.menuItemListener()
+      this.inputArrayListener()
       this.repeaterFieldsListener()
       $(function () {
         $('input.color-picker').wpColorPicker()
@@ -85,6 +86,30 @@
           WpSettingsApi.getActiveFormObject(clickedGroup).fadeIn('fast')
           e.preventDefault()
         })
+    },
+
+    inputArrayListener: function () {
+      WpSettingsApi.objects.container.on('click', 'a[class^="button docopy-"]', function (e) {
+        e.preventDefault()
+
+        const element = $(this).prev().find('li:last')
+        const newKey = parseInt(element.data('repeatable')) + 1
+
+        const clone = element.clone()
+        clone.attr('data-repeatable', newKey)
+        clone.find('input').val('')
+        clone.find('a.button').attr('data-key', newKey)
+        clone.insertAfter(element)
+        return true
+      })
+
+      WpSettingsApi.objects.container.on('click', 'a[class^="button dodelete-"]', function (e) {
+        e.preventDefault()
+
+        const $key = $(this).data('key')
+
+        $('li[data-repeatable="' + $key + '"]').remove()
+      })
     },
 
     /**

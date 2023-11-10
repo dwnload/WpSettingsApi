@@ -26,6 +26,7 @@ class FieldTypes
     public const DEFAULT_TYPE = 'text';
 
     public const FIELD_TYPE_TEXT = 'text';
+    public const FIELD_TYPE_TEXT_ARRAY = 'text_array';
     public const FIELD_TYPE_URL = 'url';
     public const FIELD_TYPE_DATE = 'date';
     public const FIELD_TYPE_DATETIME = 'datetime-local';
@@ -76,6 +77,54 @@ class FieldTypes
         $output .= $this->getFieldDescription($args);
 
         echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+    }
+
+    /**
+     * Renders an input text array field.
+     * @param array $args Array of Field object parameters
+     */
+    public function textArray(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+        $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
+        $getInputField = fn(mixed $value, int $key): string => sprintf(
+            '<div class="FieldType_%1$s"><input type="%1$s" class="%2$s-text %7$s" id="%3$s[%4$s]" name="%3$s[%4$s][]"
+value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data-key="%8$s">Remove</a></div>',
+            $field->getType(),
+            $field->getSize(),
+            $field->getSectionId(),
+            $field->getId(),
+            esc_attr($value),
+            $this->getExtraFieldParams($args),
+            implode(
+                ' ',
+                array_map('\sanitize_html_class', $field->getAttributes()['class'] ?? [])
+            ),
+            $key
+        );
+
+        $output = '<ul>';
+        if (is_array($value)) {
+            foreach ($value as $key => $val) {
+                $output .= "<li data-repeatable='$key'>";
+                $output .= $getInputField($val, $key);
+                $output .= '</li>';
+            }
+        } else {
+            $output .= "<li data-repeatable='0'>";
+            $output .= $getInputField($value, 0);
+            $output .= '</li>';
+        }
+        $output .= '</ul>';
+
+        $output .= sprintf(
+            '<a href="javascript:;" class="button docopy-%1$s[%2$s]">Add</a>',
+            $field->getSectionId(),
+            $field->getId()
+        );
+        $output .= $this->getFieldDescription($args);
+
+        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_TEXT, $output);
     }
 
     /**
@@ -486,7 +535,7 @@ value="%3$s"%4$s>',
     {
         $field = $this->getSettingFieldObject($args);
         $fields = $field->getFields();
-        if (!\is_array($fields)) {
+        if (!is_array($fields)) {
             return;
         }
 
