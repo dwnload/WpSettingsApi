@@ -92,7 +92,7 @@ class AdminSettingsPage
                 Script::HANDLE => 'wp-color-picker-alpha',
                 Script::SRC => $get_src('src/assets/js/wp-color-picker-alpha.js'),
                 Script::DEPENDENCIES => ['jquery', 'wp-color-picker'],
-                Script::VERSION => '3.0.2',
+                Script::VERSION => '3.0.3',
                 Script::IN_FOOTER => true,
             ]),
             new Script([
