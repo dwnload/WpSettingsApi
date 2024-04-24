@@ -96,26 +96,27 @@ class Script extends BaseModel
 
     /**
      * Script version.
-     * @var string $version
+     * @var int|string $version
      */
-    protected string $version;
+    protected int|string $version;
 
     /**
      * Set the Script version.
-     * @param string $version
+     * @param int|string $version
      */
-    public function setVersion(string $version = '0.0.1'): void
+    public function setVersion(int|string $version = ''): void
     {
         $this->version = $version;
     }
 
     /**
      * Get the Script version.
-     * @return string
+     * @return int|string
      */
-    public function getVersion(): string
+    public function getVersion(): int|string
     {
-        return $this->version ?? '0.0.1';
+        global $wp_version;
+        return $this->version === '' ? $wp_version : $this->version;
     }
 
     /**
