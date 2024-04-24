@@ -9,7 +9,7 @@ on:
 # Cancels all previous workflow runs for the same branch that have not yet completed.
 concurrency:
   # The concurrency group contains the workflow name and the branch name.
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]
-        php-versions: [ "8.0", "8.1", "8.2" ]
+        php-versions: [ "8.1", "8.2", "8.3" ]
         wp-versions: [ 'latest' ]
         coverage: [ true ]
     services:
