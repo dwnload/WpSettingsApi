@@ -30,7 +30,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const HOOK_INIT = self::ACTION_PREFIX . 'init';
     public const HOOK_INIT_SLUG__S = self::HOOK_INIT . '-%s';
     public const HOOK_PRIORITY = 999;
-    public const VERSION = '3.10.0';
+    public const VERSION = '3.11.0';
 
     /**
      * The current plugin instance.
@@ -226,6 +226,7 @@ class WpSettingsApi extends AbstractHookProvider
      * Sanitize callback for Settings API
      * @param mixed $options
      * @return array
+     *
      * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     private function sanitizeOptionsArray(mixed $options): array
@@ -274,6 +275,7 @@ class WpSettingsApi extends AbstractHookProvider
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
      * @return callable|bool|string Boolean if no callback exists or Callable method
+     *
      * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */

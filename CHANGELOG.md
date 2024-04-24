@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
-## 4.0.0 - 2024-04-24
 - Require PHP >= 8.1
+
+## 3.11.0 - 2024-04-24
+- Update admin CSS with a slight design change.
+- Allow int values in Script/Style models version property.
+- Prepare tests for PHP 8.3, and ready code for PHP 8.0 deprecation.
+- Update wp-color-picker-alpha to v3.0.3.
 
 ## 3.10.0 - 2023-11-10
 - Add new Text Array field type.
