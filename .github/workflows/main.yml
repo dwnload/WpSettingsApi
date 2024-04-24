@@ -74,8 +74,6 @@ jobs:
         run: composer phpunit
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        with:
-          fail_ci_if_error: false
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
