@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 4.0.0 - 2024-04-24
+- Require PHP >= 8.1
+
 ## 3.10.0 - 2023-11-10
 - Add new Text Array field type.
 
