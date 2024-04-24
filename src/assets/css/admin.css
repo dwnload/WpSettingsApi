@@ -1,13 +1,18 @@
+.wrap:has(.Dwnload_WP_Settings_Api__container) {
+    margin: 0;
+}
+
 .Dwnload_WP_Settings_Api__container {
-    background-color: #f5f5f5;
-    border: 1px solid #dedede;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-    margin-top: 1rem;
+    background-color: #f0f0f1;
+    margin: 0 0 0 -20px;
+    min-height: 100vh;
 }
 
 .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__header {
+    background-color: #fff;
     box-sizing: border-box;
     float: none !important;
+    padding: .9rem 1.5rem 1rem;
     position: relative !important;
     width: 100% !important;
 }
@@ -23,13 +28,22 @@
     text-decoration: none;
 }
 
-.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__header {
-    padding: .4rem .9rem .8rem;
+/************ NOTICES *************/
+div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    visibility: hidden;
 }
 
-/************ NOTICES *************/
-.Dwnload_WP_Settings_Api__notices > div {
+.Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__notices {
+    background-color: #fff;
+    padding: 10px 20px;
+}
+
+.Dwnload_WP_Settings_Api__notices > div.notice {
     margin: 0;
+    opacity: 1;
+    visibility: visible;
 }
 
 .Dwnload_WP_Settings_Api__notices h2 {
@@ -54,7 +68,7 @@
 
 .Dwnload_WP_Settings_Api__sticky .wrap {
     margin: 0;
-    padding: .5rem .8rem;
+    padding: .5rem calc(.8rem + 20px);
 }
 
 .is-sticky > .Dwnload_WP_Settings_Api__sticky {
@@ -99,8 +113,12 @@
 
 /************ SIDEBAR ************/
 .Dwnload_WP_Settings_Api__sidebar {
+    border-left: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
     float: left;
-    width: 222px;
+    margin-left: 20px;
+    padding-bottom: 1.5rem;
+    width: calc(222px - 1.15rem);
 }
 
 #wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder {
@@ -127,20 +145,17 @@
     display: block;
     padding: .8rem 1.15rem;
     text-decoration: none;
-    -webkit-transition: border-bottom 190ms;
-    -moz-transition: border-bottom 190ms;
-    transition: border-bottom 190ms;;
+    transition: background-color 400ms;
 }
 
 .Dwnload_WP_Settings_Api__menu li > a[data-tab-id]:hover {
+    background-color: #F5F5F5FF;
     color: #222;
-    border-bottom-color: #00426d;
 }
 
 .Dwnload_WP_Settings_Api__menu li > a[data-tab-id].active {
-    background-color: #0074a2;
-    border-bottom: 2px solid #00426d;
-    color: #efefef;
+    background-color: #fcfcfc;
+    font-weight: bold;
 }
 
 .Dwnload_WP_Settings_Api__sidebar li {
@@ -157,10 +172,11 @@
 /************ MAIN ***************/
 .Dwnload_WP_Settings_Api__body {
     background: none repeat scroll 0 0 #fcfcfc;
-    border-top: 1px solid #dedede;
-    border-left: 1px solid #d8d8d8;
+    border: 1px solid #dedede;
+    border-left: none;
+    border-right-color: #d8d8d8;
     box-shadow: 0 1px 0 #fff inset;
-    margin-left: 221px;
+    margin: 0 20px 0 221px;
     padding: .8rem 1.5rem;
     position: relative;
     z-index: 1;
