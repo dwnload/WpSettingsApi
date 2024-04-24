@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]
-        php-versions: [ "8.1", "8.2", "8.3" ]
+        php-versions: [ "8.0",  "8.1", "8.2", "8.3" ]
         wp-versions: [ 'latest' ]
         coverage: [ true ]
     services:
@@ -61,13 +61,21 @@ jobs:
       - name: Create all branches
         run: source ./vendor/thefrosty/wp-utilities/bin/create-all-branches.sh
 
-      - name: Run composer tests
-        run: composer tests
-        env:
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      - name: PHPCS
+        run: composer phpcs
 
       - name: Show PHPCS results in PR
         run: cs2pr ./phpcs-report.xml
+
+      - name: PHPMD
+        run: composer phpmd
+
+      - name: PHPUnit
+        run: composer phpunit
+        env:
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+        with:
+          fail_ci_if_error: false
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
