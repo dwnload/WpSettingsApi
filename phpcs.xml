@@ -24,8 +24,8 @@
     <config name="ignore_warnings_on_exit" value="1"/>
     <!-- Sets the minimum supported WP version -->
     <config name="minimum_supported_wp_version" value="6.4"/>
-    <!-- Check for cross-version support for PHP 8.1 and higher. -->
-    <config name="testVersion" value="8.1-"/>
+    <!-- Check for cross-version support for PHP 8.0 and higher. -->
+    <config name="testVersion" value="8.0-"/>
 
     <rule ref="WordPress-Docs">
         <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags"/>
