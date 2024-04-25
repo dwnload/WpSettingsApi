@@ -12,7 +12,7 @@
     background-color: #fff;
     box-sizing: border-box;
     float: none !important;
-    padding: .9rem 1.5rem 1rem;
+    padding: .9rem 1.5rem 2.5rem;
     position: relative !important;
     width: 100% !important;
 }
@@ -30,31 +30,22 @@
 
 /************ NOTICES *************/
 div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
-    opacity: 0;
     transition: opacity 0.5s ease-in-out;
     visibility: hidden;
 }
 
 .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__notices {
-    background-color: #fff;
+    background: #f0f0f1 linear-gradient(180deg, rgba(240, 240, 241, 0.7) 85%, rgba(255, 255, 255, 1) 100%);
     padding: 10px 20px;
 }
 
 .Dwnload_WP_Settings_Api__notices > div.notice {
-    margin: 0;
     opacity: 1;
     visibility: visible;
 }
 
 .Dwnload_WP_Settings_Api__notices h2 {
     display: none;
-}
-
-.Dwnload_WP_Settings_Api__notices div.error,
-.Dwnload_WP_Settings_Api__notices div.updated {
-    background-color: transparent;
-    margin: 0;
-    border-right: 0;
 }
 
 /************ STICKY *************/
@@ -69,6 +60,10 @@ div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
 .Dwnload_WP_Settings_Api__sticky .wrap {
     margin: 0;
     padding: .5rem calc(.8rem + 20px);
+}
+
+.Dwnload_WP_Settings_Api__sticky .wrap .alignright input:disabled {
+    visibility: hidden;
 }
 
 .is-sticky > .Dwnload_WP_Settings_Api__sticky {
@@ -105,7 +100,7 @@ div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
     text-decoration: underline;
 }
 
-/*******SIDEBAR/MAIN *************/
+/****** SIDEBAR/MAIN *************/
 .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__sidebar,
 .Dwnload_WP_Settings_Api__container .Dwnload_WP_Settings_Api__body {
     min-height: 950px;
@@ -113,20 +108,31 @@ div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
 
 /************ SIDEBAR ************/
 .Dwnload_WP_Settings_Api__sidebar {
-    border-left: 1px solid #dedede;
-    border-bottom: 1px solid #dedede;
     float: left;
     margin-left: 20px;
     padding-bottom: 1.5rem;
     width: calc(222px - 1.15rem);
 }
 
-#wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder {
-    padding-top: 10px;
+.Dwnload_WP_Settings_Api__sidebar li {
+    list-style: none;
 }
 
-#wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder ~ .metabox-holder {
-    padding-top: 0;
+.Dwnload_WP_Settings_Api__sidebar .postbox {
+    border: 1px solid #bdbdbd;
+    box-shadow: 3px 3px 1px #cacaca7a;
+    margin: 0 10px 2px 0;
+    min-width: calc(100% - 34px);
+    transition: all 400ms;
+}
+.Dwnload_WP_Settings_Api__sidebar .postbox:hover {
+    border: 1px solid #bdbdbd;
+    box-shadow: 3px 3px 2px #cacaca;
+}
+
+/******* SIDEBAR MENU ************/
+#wpbody-content .Dwnload_WP_Settings_Api__menu > .metabox-holder {
+    padding-top: 12px;
 }
 
 .Dwnload_WP_Settings_Api__menu {
@@ -134,7 +140,9 @@ div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
     margin-top: 0;
 }
 
-.Dwnload_WP_Settings_Api__menu li {
+.Dwnload_WP_Settings_Api__menu > li {
+    border-left: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
     margin-bottom: 2px;
 }
 
@@ -156,17 +164,6 @@ div.notice:not(.Dwnload_WP_Settings_Api__notices > div.notice) {
 .Dwnload_WP_Settings_Api__menu li > a[data-tab-id].active {
     background-color: #fcfcfc;
     font-weight: bold;
-}
-
-.Dwnload_WP_Settings_Api__sidebar li {
-    list-style: none;
-}
-
-.Dwnload_WP_Settings_Api__sidebar .postbox {
-    border-right: none;
-    border-left: none;
-    margin-bottom: 1px;
-    min-width: 100%;
 }
 
 /************ MAIN ***************/
