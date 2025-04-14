@@ -30,7 +30,6 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-    "inpsyde/php-coding-standards": "dev-development",
     "phpunit/php-code-coverage": "^9",
     "phpcompatibility/php-compatibility": "*",
     "phpunit/phpunit": "^9",
