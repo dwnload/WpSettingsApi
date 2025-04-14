@@ -44,6 +44,9 @@ jobs:
         with:
           fetch-depth: 0 # No shallow clone, we need all history!
 
+      - name: Install SVN
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
       - name: Setup PHP ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
         with:
