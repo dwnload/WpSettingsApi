@@ -41,7 +41,7 @@ class AdminSettingsPage
      * AdminSettingsPage constructor.
      * @param WpSettingsApi $wp_settings_api
      */
-    public function __construct(private WpSettingsApi $wp_settings_api)
+    public function __construct(private readonly WpSettingsApi $wp_settings_api)
     {
     }
 

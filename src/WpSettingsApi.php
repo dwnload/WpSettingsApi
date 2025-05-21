@@ -53,7 +53,7 @@ class WpSettingsApi extends AbstractHookProvider
      * WpSettingsApi constructor.
      * @param PluginSettings $plugin_info
      */
-    public function __construct(private PluginSettings $plugin_info)
+    public function __construct(private readonly PluginSettings $plugin_info)
     {
     }
 
