@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi;
 
 use Dwnload\WpSettingsApi\Api\PluginSettings;
+use TheFrosty\WpUtilities\Api\Hash;
 use function json_encode;
-use function md5;
 
 /**
  * Class SettingsApiFactory
@@ -44,6 +44,8 @@ class SettingsApiFactory
      */
     private static function getId(array $fields): string
     {
-        return md5(json_encode($fields));
+        return (new class {
+            use Hash;
+        })->getHashedKey(json_encode($fields));
     }
 }
