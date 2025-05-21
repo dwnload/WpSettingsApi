@@ -7,5 +7,4 @@
 package.json export-ignore
 package-lock.json export-ignore
 phpcs-ruleset.xml export-ignore
-phpmd-ruleset.xml export-ignore
 phpunit.xml export-ignore

@@ -23,13 +23,16 @@
     <!-- For CI, don't fail on warnings -->
     <config name="ignore_warnings_on_exit" value="1"/>
     <!-- Sets the minimum supported WP version -->
-    <config name="minimum_supported_wp_version" value="6.4"/>
-    <!-- Check for cross-version support for PHP 8.0 and higher. -->
-    <config name="testVersion" value="8.0-"/>
+    <config name="minimum_supported_wp_version" value="6.7"/>
+    <!-- Check for cross-version support for PHP 8.1 and higher. -->
+    <config name="testVersion" value="8.1-"/>
 
     <rule ref="WordPress-Docs">
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
         <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags"/>
         <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
         <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
         <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
         <exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>
@@ -40,33 +43,12 @@
 
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="wp-settings-api"/>
+            <property name="text_domain" type="array">
+                <element value="wp-settings-api"/>
+            </property>
         </properties>
         <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
     </rule>
-
-    <!--    DISABLED UNTIL THEY SUPPORT squizlabs/php_codesniffer > 3.6.0-->
-    <!--    <rule ref="Inpsyde">-->
-    <!--        <exclude name="Generic.Metrics.NestingLevel.TooHigh"/>-->
-    <!--        <exclude name="Inpsyde.CodeQuality.FunctionBodyStart.WrongForMultiLineDeclaration"/>-->
-    <!--        <exclude name="Inpsyde.CodeQuality.LineLength.TooLong"/>-->
-    <!--        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoGetter"/>-->
-    <!--        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoSetter"/>-->
-    <!--        <exclude name="Inpsyde.CodeQuality.VariablesName.SnakeCaseVar"/>-->
-    <!--        <exclude name="NeutronStandard.Functions.DisallowCallUserFunc.CallUserFunc"/>-->
-    <!--        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>-->
-    <!--    </rule>-->
-    <!--    <rule ref="Inpsyde.CodeQuality.NestingLevel">-->
-    <!--        <properties>-->
-    <!--            <property name="errorLimit" value="10"/>-->
-    <!--            <property name="warningLimit" value="5"/>-->
-    <!--        </properties>-->
-    <!--    </rule>-->
-    <!--    <rule ref="Inpsyde.CodeQuality.PropertyPerClassLimit">-->
-    <!--        <properties>-->
-    <!--            <property name="maxCount" value="20"/>-->
-    <!--        </properties>-->
-    <!--    </rule>-->
 
     <rule ref="PSR12">
         <exclude name="PSR12.Classes.OpeningBraceSpace.Found"/>
@@ -76,6 +58,7 @@
         <exclude name="PSR12.Traits.UseDeclaration.MultipleImport"/>
         <exclude name="PSR12.Traits.UseDeclaration.UseAfterBrace"/>
     </rule>
+
 
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <rule ref="Squiz.Arrays.ArrayDeclaration.KeyNotAligned">
@@ -105,17 +88,24 @@
     <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.UselessIfConditionWithReturn"/>
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
+    <rule ref="SlevomatCodingStandard.Functions.ArrowFunctionDeclaration">
+        <properties>
+            <property name="spacesCountAfterKeyword" value="0"/>
+        </properties>
+    </rule>
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
     <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
