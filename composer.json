@@ -35,8 +35,9 @@
     "phpunit/phpunit": "^9",
     "roave/security-advisories": "dev-latest",
     "roots/wordpress": "~6.5",
-    "slevomat/coding-standard": "~8.12",
+    "slevomat/coding-standard": "~8.18",
     "squizlabs/php_codesniffer": "^3.2",
+    "wp-coding-standards/wpcs": "^3.1",
     "wp-phpunit/wp-phpunit": "~6.5",
     "yoast/phpunit-polyfills": "^4.0"
   },
