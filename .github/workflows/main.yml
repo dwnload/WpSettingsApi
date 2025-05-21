@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]
-        php-versions: [ "8.1", "8.2", "8.3" ]
+        php-versions: [ "8.3", "8.4" ]
         wp-versions: [ 'latest' ]
         coverage: [ true ]
     services:
@@ -69,7 +69,7 @@ jobs:
         run: composer phpcs
 
       - name: Show PHPCS results in PR
-        if: ${{ always() && steps.phpcs.outcome == 'failure' && matrix.php-version == '8.1' }}
+        if: ${{ always() && steps.phpcs.outcome == 'failure' && matrix.php-version == '8.3' }}
         run: cs2pr ./phpcs-report.xml
 
       - name: PHPUnit
