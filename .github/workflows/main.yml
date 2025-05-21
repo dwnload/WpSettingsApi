@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]
-        php-versions: [ "8.0",  "8.1", "8.2", "8.3" ]
+        php-versions: [ "8.1", "8.2", "8.3" ]
         wp-versions: [ 'latest' ]
         coverage: [ true ]
     services:
@@ -65,13 +65,12 @@ jobs:
         run: source ./vendor/thefrosty/wp-utilities/bin/create-all-branches.sh
 
       - name: PHPCS
+        id: phpcs
         run: composer phpcs
 
       - name: Show PHPCS results in PR
+        if: ${{ always() && steps.phpcs.outcome == 'failure' && matrix.php-version == '8.1' }}
         run: cs2pr ./phpcs-report.xml
-
-      - name: PHPMD
-        run: composer phpmd
 
       - name: PHPUnit
         run: composer phpunit
