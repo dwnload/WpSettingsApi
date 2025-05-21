@@ -38,7 +38,7 @@ class SettingField extends BaseModel
      * The Fields description.
      * @var string|null $description
      */
-    private ?string $description;
+    private ?string $description = null;
 
     /**
      * Sets the Fields description.

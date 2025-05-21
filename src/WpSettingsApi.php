@@ -33,18 +33,11 @@ class WpSettingsApi extends AbstractHookProvider
     public const VERSION = '3.11.1';
 
     /**
-     * The current plugin instance.
-     * @var PluginSettings $plugin_info
-     */
-    private PluginSettings $plugin_info;
-
-    /**
      * WpSettingsApi constructor.
-     * @param PluginSettings $info
+     * @param PluginSettings $plugin_info
      */
-    public function __construct(PluginSettings $info)
+    public function __construct(private PluginSettings $plugin_info)
     {
-        $this->plugin_info = $info;
     }
 
     /**
@@ -286,7 +279,7 @@ class WpSettingsApi extends AbstractHookProvider
         }
 
         // Iterate over registered fields and see if we can find proper callback.
-        foreach (FieldManager::getFields() as $section_id => $fields) {
+        foreach (FieldManager::getFields() as $fields) {
             /**
              * Field object.
              * @var SettingField $field

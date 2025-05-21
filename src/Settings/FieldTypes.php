@@ -271,7 +271,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
         if (!empty($value)) {
             $output .= '<div id="' . $_id . '_preview" class="FieldType__file_preview">';
-            if (\preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', $value) !== false) {
+            if (\preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', (string) $value) !== false) {
                 $output .= '<div class="FieldType__file_image">';
                 $output .= \wp_get_attachment_image(\attachment_url_to_postid($value), 'medium');
                 $output .= '</div>';
@@ -488,7 +488,7 @@ value="%3$s"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
-            \stripslashes($value),
+            \stripslashes((string) $value),
             $this->getExtraFieldParams($args)
         );
         $output .= '</div>';
