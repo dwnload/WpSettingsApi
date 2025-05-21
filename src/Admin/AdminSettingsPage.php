@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Admin;
 
@@ -15,6 +17,7 @@ use function do_action;
 use function sprintf;
 use function str_replace;
 use function wp_add_inline_script;
+use function wp_create_nonce;
 use function wp_enqueue_media;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
@@ -35,18 +38,11 @@ class AdminSettingsPage
     use HooksTrait;
 
     /**
-     * WpSettingsApi object.
-     * @var WpSettingsApi $wp_settings_api
-     */
-    private WpSettingsApi $wp_settings_api;
-
-    /**
      * AdminSettingsPage constructor.
      * @param WpSettingsApi $wp_settings_api
      */
-    public function __construct(WpSettingsApi $wp_settings_api)
+    public function __construct(private readonly WpSettingsApi $wp_settings_api)
     {
-        $this->wp_settings_api = $wp_settings_api;
     }
 
     /**
@@ -139,11 +135,11 @@ class AdminSettingsPage
         $localize = new LocalizeScripts();
 
         $localize->add('prefix', $this->wp_settings_api->getPluginInfo()->getPrefix());
-        $localize->add('nonce', \wp_create_nonce($this->wp_settings_api->getPluginInfo()->getNonce()));
+        $localize->add('nonce', wp_create_nonce($this->wp_settings_api->getPluginInfo()->getNonce()));
 
         /**
          * Use this action hook to pass new objects into the script output.
-         * @var string Empty string value.
+         * @var string $value Empty string value.
          * @var LocalizeScripts $localize Use this object to add new localized values to the registered output.
          */
         do_action(ActionHookName::ADMIN_SETTINGS_LOCALIZE_SCRIPT, '', $localize);

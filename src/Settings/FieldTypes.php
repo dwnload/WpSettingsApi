@@ -8,44 +8,58 @@ use Dwnload\WpSettingsApi\Api\Options;
 use Dwnload\WpSettingsApi\Api\SettingField;
 use function array_map;
 use function array_merge;
+use function attachment_url_to_postid;
+use function checked;
 use function esc_attr;
+use function esc_attr__;
 use function esc_html;
+use function esc_html__;
+use function implode;
 use function in_array;
 use function is_array;
+use function ob_get_clean;
+use function ob_start;
+use function preg_match;
+use function selected;
 use function sprintf;
+use function str_replace;
+use function stripslashes;
+use function wp_editor;
+use function wp_get_attachment_image;
+use function wp_kses_post;
 
 /**
  * Class FieldTypes
- * @package Dwnload\WpSettingsApi\Settings
  * phpcs:disable Generic.Files.LineLength.TooLong
+ * @package Dwnload\WpSettingsApi\Settings
  */
 class FieldTypes
 {
 
-    public const DEFAULT_SIZE = 'regular';
-    public const DEFAULT_TYPE = 'text';
+    public const string DEFAULT_SIZE = 'regular';
+    public const string DEFAULT_TYPE = 'text';
 
-    public const FIELD_TYPE_TEXT = 'text';
-    public const FIELD_TYPE_TEXT_ARRAY = 'text_array';
-    public const FIELD_TYPE_URL = 'url';
-    public const FIELD_TYPE_DATE = 'date';
-    public const FIELD_TYPE_DATETIME = 'datetime-local';
-    public const FIELD_TYPE_EMAIL = 'email';
-    public const FIELD_TYPE_COLOR = 'color';
-    public const FIELD_TYPE_COLOR_ALPHA = 'coloralpha';
-    public const FIELD_TYPE_NUMBER = 'number';
-    public const FIELD_TYPE_CHECKBOX = 'checkbox';
-    public const FIELD_TYPE_MULTICHECK = 'multicheck';
-    public const FIELD_TYPE_RADIO = 'radio';
-    public const FIELD_TYPE_SELECT = 'select';
-    public const FIELD_TYPE_MULTISELECT = 'multiselect';
-    public const FIELD_TYPE_TEXTAREA = 'textarea';
-    public const FIELD_TYPE_HTML = 'html';
-    public const FIELD_TYPE_WYSIWYG = 'wysiwyg';
-    public const FIELD_TYPE_FILE = 'file';
-    public const FIELD_TYPE_IMAGE = 'image';
-    public const FIELD_TYPE_PASSWORD = 'password';
-    public const FIELD_TYPE_REPEATER = 'repeater';
+    public const string FIELD_TYPE_TEXT = 'text';
+    public const string FIELD_TYPE_TEXT_ARRAY = 'text_array';
+    public const string FIELD_TYPE_URL = 'url';
+    public const string FIELD_TYPE_DATE = 'date';
+    public const string FIELD_TYPE_DATETIME = 'datetime-local';
+    public const string FIELD_TYPE_EMAIL = 'email';
+    public const string FIELD_TYPE_COLOR = 'color';
+    public const string FIELD_TYPE_COLOR_ALPHA = 'coloralpha';
+    public const string FIELD_TYPE_NUMBER = 'number';
+    public const string FIELD_TYPE_CHECKBOX = 'checkbox';
+    public const string FIELD_TYPE_MULTICHECK = 'multicheck';
+    public const string FIELD_TYPE_RADIO = 'radio';
+    public const string FIELD_TYPE_SELECT = 'select';
+    public const string FIELD_TYPE_MULTISELECT = 'multiselect';
+    public const string FIELD_TYPE_TEXTAREA = 'textarea';
+    public const string FIELD_TYPE_HTML = 'html';
+    public const string FIELD_TYPE_WYSIWYG = 'wysiwyg';
+    public const string FIELD_TYPE_FILE = 'file';
+    public const string FIELD_TYPE_IMAGE = 'image';
+    public const string FIELD_TYPE_PASSWORD = 'password';
+    public const string FIELD_TYPE_REPEATER = 'repeater';
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
@@ -98,7 +112,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
             $this->getExtraFieldParams($args),
             implode(
                 ' ',
-                array_map('\sanitize_html_class', $field->getAttributes()['class'] ?? [])
+                array_map('sanitize_html_class', $field->getAttributes()['class'] ?? [])
             ),
             $key
         );
@@ -124,7 +138,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
         );
         $output .= $this->getFieldDescription($args);
 
-        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_TEXT, $output);
+        echo str_replace($field->getType(), FieldTypes::FIELD_TYPE_TEXT, $output);
     }
 
     /**
@@ -191,9 +205,9 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
                 ['pattern' => '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}']
             )
         );
-        \ob_start();
+        ob_start();
         $this->text($args);
-        echo \str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, \ob_get_clean());
+        echo str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, ob_get_clean());
     }
 
     /**
@@ -251,19 +265,19 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
         $_id = sprintf('%s[%s]', $field->getSectionId(), $field->getId());
 
         $field->setType(self::FIELD_TYPE_TEXT);
-        \ob_start();
+        ob_start();
         echo $this->getInputField($args); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-        $output = \str_replace(
+        $output = str_replace(
             sprintf('class="FieldType_%s"', self::FIELD_TYPE_TEXT),
             sprintf('class="FieldType_%s"', self::FIELD_TYPE_FILE),
-            \ob_get_clean()
+            ob_get_clean()
         );
-        $output = \str_replace(
+        $output = str_replace(
             '</div>',
             sprintf(
                 '<button class="button secondary wpMediaUploader" type="button" value="%s">%s</button></div>',
-                \esc_attr__('Browse media', 'wp-settings-api'),
-                \esc_html__('Browse media', 'wp-settings-api')
+                esc_attr__('Browse media', 'wp-settings-api'),
+                esc_html__('Browse media', 'wp-settings-api')
             ),
             $output
         );
@@ -271,9 +285,9 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
         if (!empty($value)) {
             $output .= '<div id="' . $_id . '_preview" class="FieldType__file_preview">';
-            if (\preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', $value) !== false) {
+            if (preg_match('/(^.*\.jpg|jpeg|png|gif|ico*)/i', (string) $value) !== false) {
                 $output .= '<div class="FieldType__file_image">';
-                $output .= \wp_get_attachment_image(\attachment_url_to_postid($value), 'medium');
+                $output .= wp_get_attachment_image(attachment_url_to_postid($value), 'medium');
                 $output .= '</div>';
             }
             $output .= '</div>';
@@ -308,7 +322,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
             '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%3$s>',
             $field->getSectionId(),
             $field->getId(),
-            \checked($value, 'on', false)
+            checked($value, 'on', false)
         );
         $output .= sprintf('<label for="%1$s"></label>', $_id);
         $output .= '</div>';
@@ -338,7 +352,7 @@ value="%3$s"%4$s>',
                 $field->getSectionId(),
                 $field->getId(),
                 $key,
-                \checked($checked, $key, false)
+                checked($checked, $key, false)
             );
             $output .= sprintf(
                 '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label>',
@@ -374,7 +388,7 @@ value="%3$s"%4$s>',
                 $field->getSectionId(),
                 $field->getId(),
                 $key,
-                \checked($value, $key, false)
+                checked($value, $key, false)
             );
             $output .= sprintf(
                 '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label><br>',
@@ -415,7 +429,7 @@ value="%3$s"%4$s>',
             $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
                 esc_attr($key),
-                is_array($value) && in_array($key, $value, true) ? ' selected' : \selected($value, $key, false),
+                is_array($value) && in_array($key, $value, true) ? ' selected' : selected($value, $key, false),
                 esc_html($view)
             );
         }
@@ -435,7 +449,7 @@ value="%3$s"%4$s>',
     {
         $field = $this->getSettingFieldObject($args);
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
-        $value = is_array($value) ? array_map('\esc_attr', $value) : esc_attr($value);
+        $value = is_array($value) ? array_map('esc_attr', $value) : esc_attr($value);
 
         $output = '<div class="FieldType_multiselect">';
         $output .= sprintf(
@@ -488,7 +502,7 @@ value="%3$s"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
-            \stripslashes($value),
+            stripslashes((string) $value),
             $this->getExtraFieldParams($args)
         );
         $output .= '</div>';
@@ -515,10 +529,10 @@ value="%3$s"%4$s>',
         ];
         $editor_settings = array_merge($editor_settings, $field->getOptions());
 
-        \ob_start();
-        \wp_editor($value ?? '', $field->getSectionId() . '-' . $field->getId(), $editor_settings);
+        ob_start();
+        wp_editor($value ?? '', $field->getSectionId() . '-' . $field->getId(), $editor_settings);
 
-        $output .= \ob_get_clean();
+        $output .= ob_get_clean();
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
@@ -527,9 +541,9 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a repeater field.
+     * phpcs:disable SlevomatCodingStandard.Classes.MethodSpacing.IncorrectLinesCountBetweenMethods
      * @param array $args Array of Field object parameters
      * @throws \Exception
-     * phpcs:disable SlevomatCodingStandard.Classes.MethodSpacing.IncorrectLinesCountBetweenMethods
      */
     public function repeater(array $args): void
     {
@@ -541,9 +555,9 @@ value="%3$s"%4$s>',
 
         $output = '<div class="FieldType_repeater">';
         $output .= '<div data-repeatable>';
-        $output .= \sprintf(
+        $output .= sprintf(
             '<p class="FieldType_repeater__header"><a href="javascript:;" class="alignright button-secondary" data-remove>%s</a></p>',
-            \esc_html__('Remove', 'wp-settings-api')
+            esc_html__('Remove', 'wp-settings-api')
         );
         foreach ($fields as $repeaterField) {
             if (!$repeaterField instanceof SettingField) {
@@ -551,15 +565,15 @@ value="%3$s"%4$s>',
             }
 
             $output .= '<div class="repeater-wrap">';
-            \ob_start();
+            ob_start();
             $this->{$repeaterField->getType()}($repeaterField->toArray(), $args);
-            $output .= \ob_get_clean();
+            $output .= ob_get_clean();
             $output .= '</div>';
         }
         $output .= '</div><!-- [data-repeatable] -->';
-        $output .= \sprintf(
+        $output .= sprintf(
             '<a href="javascript:;" class="button button-primary" data-add>%s</a>',
-            \esc_html__('Add', 'wp-settings-api')
+            esc_html__('Add', 'wp-settings-api')
         );
         $output .= '</div>';
 
@@ -577,7 +591,7 @@ value="%3$s"%4$s>',
         $value = Options::getOption($field->getId(), $field->getSectionId(), $field->getDefault());
 
         $output = '<div class="FieldType_html">';
-        $output .= \wp_kses_post($value ?? '');
+        $output .= wp_kses_post($value ?? '');
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
 
@@ -613,7 +627,7 @@ value="%5$s"%6$s></div>',
             $this->getExtraFieldParams($args),
             implode(
                 ' ',
-                array_map('\sanitize_html_class', $field->getAttributes()['class'] ?? [])
+                array_map('sanitize_html_class', $field->getAttributes()['class'] ?? [])
             )
         );
     }
@@ -626,7 +640,7 @@ value="%5$s"%6$s></div>',
     protected function getFieldDescription(array $args): string
     {
         if (!empty($args[SettingField::DESC])) {
-            return sprintf('<p class="description">%s</p>', \wp_kses_post($args[SettingField::DESC]));
+            return sprintf('<p class="description">%s</p>', wp_kses_post($args[SettingField::DESC]));
         }
 
         return '';
