@@ -6,11 +6,13 @@ namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use TheFrosty\WpUtilities\Models\BaseModel;
+use function lcfirst;
+use function str_replace;
+use function ucwords;
 
 /**
  * Class SettingField
  * @package Dwnload\WpSettingsApi\Api
- * phpcs:disable SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification
  */
 class SettingField extends BaseModel
 {

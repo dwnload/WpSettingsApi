@@ -15,6 +15,7 @@ use function do_action;
 use function sprintf;
 use function str_replace;
 use function wp_add_inline_script;
+use function wp_create_nonce;
 use function wp_enqueue_media;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
@@ -132,11 +133,11 @@ class AdminSettingsPage
         $localize = new LocalizeScripts();
 
         $localize->add('prefix', $this->wp_settings_api->getPluginInfo()->getPrefix());
-        $localize->add('nonce', \wp_create_nonce($this->wp_settings_api->getPluginInfo()->getNonce()));
+        $localize->add('nonce', wp_create_nonce($this->wp_settings_api->getPluginInfo()->getNonce()));
 
         /**
          * Use this action hook to pass new objects into the script output.
-         * @var string Empty string value.
+         * @var string $value Empty string value.
          * @var LocalizeScripts $localize Use this object to add new localized values to the registered output.
          */
         do_action(ActionHookName::ADMIN_SETTINGS_LOCALIZE_SCRIPT, '', $localize);
