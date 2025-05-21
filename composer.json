@@ -33,6 +33,7 @@
     "phpunit/php-code-coverage": "^9",
     "phpcompatibility/php-compatibility": "*",
     "phpunit/phpunit": "^9",
+    "rector/rector": "^2.0",
     "roave/security-advisories": "dev-latest",
     "roots/wordpress": "^6.8",
     "slevomat/coding-standard": "~8.18",
