@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
-- Require PHP >= 8.1
+## 3.12.0 - 2025-05-21
+
+- Require PHP >= 8.3
+
+## 3.11.1 - 2024-04-25
+
+- Update admin styles to resolve some postbox style issues (#87)
 
 ## 3.11.0 - 2024-04-24
 - Update admin CSS with a slight design change.
