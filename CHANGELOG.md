@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+## 3.12.1 - 2025-06-11
+
+- Replace Hash class protected method call with PHP hash function.
+
 ## 3.12.0 - 2025-05-21
 
 - Require PHP >= 8.3
