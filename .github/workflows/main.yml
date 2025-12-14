@@ -85,7 +85,7 @@ jobs:
 
       - name: Setup PHP ${{ matrix.php-version }}
         id: ci-setup
-        uses: thefrosty/wp-utilities/.github/actions/ci-setup/action.yml@develop
+        uses: ./wp-utilities/.github/actions/ci-setup
         with:
           extensions: 'curl, mysql, mysqli, zip'
           extensions-cache-key: run-phpunit-${{ matrix.wp-version }}-${{ matrix.php-version }}
