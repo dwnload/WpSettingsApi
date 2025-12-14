@@ -40,9 +40,7 @@ jobs:
       WORDPRESS_DB_USER: wp
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # No shallow clone, we need all history!
+        uses: actions/checkout@v6
 
       - name: Install SVN
         run: sudo apt-get update && sudo apt-get install -y subversion
@@ -79,6 +77,6 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: false
