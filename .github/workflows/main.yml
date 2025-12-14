@@ -68,12 +68,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Checkout WP Utilities
-        uses: actions/checkout@v6
-        with:
-          path: 'wp-utilities'
-          repository: 'thefrosty/wp-utilities'
-
       - name: Install SVN
         run: sudo apt-get update && sudo apt-get install -y subversion
 
@@ -89,7 +83,8 @@ jobs:
 
       - name: Setup WordPress ${{ matrix.wp-version }}
         run: |
-          bash ./wp-utilities/bin/install-wp-tests.sh ${{ env.WORDPRESS_DB_NAME }} ${{ env.WORDPRESS_DB_USER }} ${{ env.WORDPRESS_DB_PASS }} 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp-version }} true
+          chmod u+x vendor/thefrosty/wp-utilities/bin/install-wp-tests.sh
+          ./vendor/thefrosty/wp-utilities/bin/install-wp-tests.sh ${{ env.WORDPRESS_DB_NAME }} ${{ env.WORDPRESS_DB_USER }} ${{ env.WORDPRESS_DB_PASS }} 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp-version }} true
 
       - name: Run PHPUnit
         continue-on-error: false
