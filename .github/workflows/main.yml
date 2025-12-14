@@ -20,9 +20,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Checkout WP Utilities
+        uses: actions/checkout@v6
+        with:
+          path: 'wp-utilities'
+          repository: 'thefrosty/wp-utilities'
+
       - name: Setup
         id: ci-setup
-        uses: thefrosty/wp-utilities/.github/actions/ci-setup/action.yml@develop
+        uses: ./wp-utilities/.github/actions/ci-setup
         with:
           extensions: 'curl'
           extensions-cache-key: run-phpcs-${{ matrix.php-version }}
@@ -67,6 +73,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Checkout WP Utilities
+        uses: actions/checkout@v6
+        with:
+          path: 'wp-utilities'
+          repository: 'thefrosty/wp-utilities'
 
       - name: Install SVN
         run: sudo apt-get update && sudo apt-get install -y subversion
