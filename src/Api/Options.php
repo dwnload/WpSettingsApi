@@ -34,7 +34,7 @@ class Options
         if (empty($section_id)) {
             $section_id = self::getSectionId($option_key);
         }
-        $options = Options::getOptions($section_id);
+        $options = self::getOptions($section_id);
 
         return $options[$option_key] ?? $default;
     }

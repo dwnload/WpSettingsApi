@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\Settings\FieldManager;
+use function sanitize_text_field;
 
 /**
  * Class Sanitize
@@ -31,7 +32,7 @@ class Sanitize
             return Options::getOption($option_slug, $section_id, $value);
         }
 
-        return \sanitize_text_field($value);
+        return sanitize_text_field($value);
     }
 
     /**

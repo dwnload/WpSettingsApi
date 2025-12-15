@@ -14,13 +14,13 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 class Script extends BaseModel
 {
 
-    public const OBJECT_NAME = 'dwnload_wp_settings_api';
-    public const HANDLE = 'handle';
-    public const SRC = 'src';
-    public const DEPENDENCIES = 'dependencies';
-    public const VERSION = 'version';
-    public const IN_FOOTER = 'inFooter';
-    public const INLINE_SCRIPT = 'inline_script';
+    public const string OBJECT_NAME = 'dwnload_wp_settings_api';
+    public const string HANDLE = 'handle';
+    public const string SRC = 'src';
+    public const string DEPENDENCIES = 'dependencies';
+    public const string VERSION = 'version';
+    public const string IN_FOOTER = 'inFooter';
+    public const string INLINE_SCRIPT = 'inline_script';
 
     /**
      * Script handle (name).

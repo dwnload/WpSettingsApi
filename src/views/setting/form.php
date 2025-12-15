@@ -1,14 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Dwnload\WpSettingsApi\ActionHookName;
-use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
-use Dwnload\WpSettingsApi\WpSettingsApi;
 
 $scheme = defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin';
 $action = admin_url('options.php', $scheme);
 
-/** @var $this WpSettingsApi */
+/** @var $this Dwnload\WpSettingsApi\WpSettingsApi */
 foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $section) {
     ?>
     <div id="Dwnload_WP_Settings_Api__<?php echo esc_attr($section->getId()); ?>"
@@ -17,7 +17,7 @@ foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $s
             <?php
             /**
              * Action hook before settings section loads.
-             * @param SettingSection $section
+             * @param Dwnload\WpSettingsApi\Api\SettingSection $section
              */
             do_action(ActionHookName::FORM_TOP, $section, $this);
 
@@ -26,12 +26,12 @@ foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $s
 
             /**
              * Action hook after settings section loads (before submit button).
-             * @param SettingSection $section
+             * @param Dwnload\WpSettingsApi\Api\SettingSection $section
              */
             do_action(ActionHookName::FORM_BOTTOM, $section, $this);
 
             submit_button(
-                sprintf(esc_attr__('Save &ldquo;%s&rdquo;', 'dwnload-wp-settings-api'), $section->getTitle()),
+                sprintf(esc_attr__('Save &ldquo;%s&rdquo;', 'wp-settings-api'), $section->getTitle()),
                 'secondary'
             );
             ?>

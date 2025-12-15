@@ -6,12 +6,12 @@ namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Models\BaseModel;
+use function plugin_basename;
+use function sprintf;
 
 /**
  * Class PluginInfo
  * @package Dwnload\WpSettingsApi\Api
- * phpcs:disable Generic.Commenting.DocComment.MissingShort
- * phpcs:disable Squiz.Commenting.FunctionComment.Missing
  */
 class PluginSettings extends BaseModel
 {
@@ -62,7 +62,7 @@ class PluginSettings extends BaseModel
 
     public function getNonce(): string
     {
-        return \sprintf($this->nonce_s, \plugin_basename($this->getFile()));
+        return sprintf($this->nonce_s, plugin_basename($this->getFile()));
     }
 
     public function getMenuSlug(): string

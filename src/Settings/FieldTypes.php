@@ -138,7 +138,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
         );
         $output .= $this->getFieldDescription($args);
 
-        echo str_replace($field->getType(), FieldTypes::FIELD_TYPE_TEXT, $output);
+        echo str_replace($field->getType(), self::FIELD_TYPE_TEXT, $output);
     }
 
     /**
@@ -147,7 +147,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
      */
     public function number(array $args): void
     {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_NUMBER;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_NUMBER;
         if (!isset($args[SettingField::ATTRIBUTES]['step'])) {
             $args[SettingField::ATTRIBUTES]['step'] = 'any';
         }
@@ -160,7 +160,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
      */
     public function password(array $args): void
     {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_PASSWORD;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_PASSWORD;
         $this->text($args);
     }
 
@@ -170,7 +170,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
      */
     public function url(array $args): void
     {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_URL;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_URL;
         $this->text($args);
     }
 
@@ -181,7 +181,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
     public function date(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATE;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_DATE;
         $field->setAttributes(
             array_merge(
                 $field->getAttributes(),
@@ -198,7 +198,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
     public function datetimeLocal(array $args): void
     {
         $field = $this->getSettingFieldObject($args);
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_DATETIME;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_DATETIME;
         $field->setAttributes(
             array_merge(
                 $field->getAttributes(),
@@ -207,7 +207,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
         );
         ob_start();
         $this->text($args);
-        echo str_replace($field->getType(), FieldTypes::FIELD_TYPE_DATETIME, ob_get_clean());
+        echo str_replace($field->getType(), self::FIELD_TYPE_DATETIME, ob_get_clean());
     }
 
     /**
@@ -216,7 +216,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
      */
     public function email(array $args): void
     {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_EMAIL;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_EMAIL;
         $this->text($args);
     }
 
@@ -233,7 +233,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
                 ['class' => ['color-picker']]
             )
         );
-        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
+        $field->setType(self::FIELD_TYPE_TEXT);
         $this->text($args);
     }
 
@@ -250,7 +250,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
                 ['class' => ['color-picker'], 'data-alpha-enabled' => 'true']
             )
         );
-        $field->setType(FieldTypes::FIELD_TYPE_TEXT);
+        $field->setType(self::FIELD_TYPE_TEXT);
         $this->text($args);
     }
 
@@ -302,7 +302,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
      */
     public function image(array $args): void
     {
-        $args[SettingField::TYPE] = FieldTypes::FIELD_TYPE_FILE;
+        $args[SettingField::TYPE] = self::FIELD_TYPE_FILE;
         $this->file($args);
     }
 

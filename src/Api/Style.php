@@ -14,11 +14,11 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 class Style extends BaseModel
 {
 
-    public const HANDLE = 'handle';
-    public const SRC = 'src';
-    public const DEPENDENCIES = 'dependencies';
-    public const VERSION = 'version';
-    public const MEDIA = 'media';
+    public const string HANDLE = 'handle';
+    public const string SRC = 'src';
+    public const string DEPENDENCIES = 'dependencies';
+    public const string VERSION = 'version';
+    public const string MEDIA = 'media';
 
     /**
      * Style handle (name).

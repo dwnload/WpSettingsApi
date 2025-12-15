@@ -13,8 +13,8 @@ use TheFrosty\WpUtilities\Models\BaseModel;
 class SettingSection extends BaseModel
 {
 
-    public const SECTION_ID = 'id';
-    public const SECTION_TITLE = 'title';
+    public const string SECTION_ID = 'id';
+    public const string SECTION_TITLE = 'title';
 
     /**
      * The Section ID.
