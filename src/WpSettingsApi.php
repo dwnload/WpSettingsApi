@@ -135,7 +135,7 @@ class WpSettingsApi extends AbstractHookProvider
     }
 
     /**
-     * Render the settings html.
+     * Render the settings HTML.
      */
     protected function settingsHtml(): void
     {
@@ -148,8 +148,6 @@ class WpSettingsApi extends AbstractHookProvider
 
     /**
      * Initialize and registers the settings sections and fields to WordPress.
-     * phpcs:disable Inpsyde.CodeQuality.FunctionLength.TooLong
-     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
      */
     protected function adminInit(): void
     {
@@ -236,8 +234,6 @@ class WpSettingsApi extends AbstractHookProvider
      * Sanitize callback for Settings API
      * @param mixed $options
      * @return array
-     *
-     * phpcs:disable Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType
      */
     private function sanitizeOptionsArray(mixed $options): array
     {
@@ -285,9 +281,6 @@ class WpSettingsApi extends AbstractHookProvider
      * Get sanitation callback for given option slug
      * @param string $option_slug option slug
      * @return callable|bool|string Boolean if no callback exists or Callable method
-     *
-     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.High
-     * phpcs:disable Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType
      */
     private function getSanitizeCallback(string $option_slug = ''): callable|bool|string
     {
