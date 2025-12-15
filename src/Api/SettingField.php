@@ -19,22 +19,21 @@ class SettingField extends BaseModel
 
     /**
      * Array key values.
-     * phpcs:disable Inpsyde.CodeQuality.PropertyPerClassLimit.TooMuchProperties
      */
-    public const ID = 'id';
-    public const ATTRIBUTES = 'attributes';
-    public const CLASS_OBJECT = 'class_object';
-    public const DEFAULT = 'default';
-    public const DESC = 'description';
-    public const LABEL = 'label';
-    public const NAME = 'name';
-    public const OPTIONS = 'options';
-    public const SANITIZE = 'sanitize_callback';
-    public const SECTION_ID = 'section_id';
-    public const SIZE = 'size';
-    public const TYPE = 'type';
-    public const REPEATER_FIELDS = 'fields';
-    public const FIELD_OBJECT = SettingField::class;
+    public const string ID = 'id';
+    public const string ATTRIBUTES = 'attributes';
+    public const string CLASS_OBJECT = 'class_object';
+    public const string DEFAULT = 'default';
+    public const string DESC = 'description';
+    public const string LABEL = 'label';
+    public const string NAME = 'name';
+    public const string OPTIONS = 'options';
+    public const string SANITIZE = 'sanitize_callback';
+    public const string SECTION_ID = 'section_id';
+    public const string SIZE = 'size';
+    public const string TYPE = 'type';
+    public const string REPEATER_FIELDS = 'fields';
+    public const string FIELD_OBJECT = SettingField::class;
 
     /**
      * The Fields description.
