@@ -99,3 +99,27 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: false
+
+  run-eslint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get Changed Files
+        id: files
+        uses: masesgroup/retrieve-changed-files@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Run ESLint
+        id: eslint
+        run: |
+          npm install
+          npm run eslint
+        env:
+          CHANGED_FILES: ${{ steps.ci-setup.outputs.files }}
