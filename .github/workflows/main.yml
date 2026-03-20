@@ -99,3 +99,33 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: false
+
+  run-eslint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        id: ci-setup
+        uses: thefrosty/ci-setup@main
+        with:
+          extensions: 'curl'
+          extensions-cache-key: run-eslint-php83
+          php-version: '8.3'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tools: 'composer'
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Run ESLint
+        id: eslint
+        run: |
+          npm install
+          npm run eslint
+        env:
+          CHANGED_FILES: ${{ steps.ci-setup.outputs.files }}
