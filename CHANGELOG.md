@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Require PHP >= 8.4.
 - Require thefrosty/wp-utilities ^4.0.
+- Update PHPUnit from 9 to 11.
 
 ## 3.12.1 - 2025-06-11
 
