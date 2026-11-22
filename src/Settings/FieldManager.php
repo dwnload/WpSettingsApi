@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi\Settings;
 
 use Dwnload\WpSettingsApi\Api\SettingField;
-use function array_push;
 
 /**
  * Class FieldManager
@@ -26,7 +25,9 @@ class FieldManager
      */
     public function setFields(array $fields): void
     {
-        array_push(self::$settings_fields, ...$fields);
+        foreach ($fields as $field) {
+            $this->addField($field);
+        }
     }
 
     /**
