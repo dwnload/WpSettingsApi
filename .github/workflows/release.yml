@@ -1,0 +1,130 @@
+name: Release
+
+# 1. Run "Release" manually (Actions → Release → Run workflow) with the new version.
+#    It bumps WpSettingsApi::VERSION + CHANGELOG on a release/<version> branch and opens a PR.
+# 2. Merging that PR tags v<version> on the merge commit and publishes the GitHub release.
+# 3. Releases published by hand are checked: the job fails if VERSION doesn't match the tag.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, without the "v" (e.g. 4.0.0 or 4.0-RC2)'
+        required: true
+        type: string
+  pull_request:
+    types: [ closed ]
+    branches: [ develop ]
+  release:
+    types: [ published ]
+
+permissions:
+  contents: read
+
+env:
+  VERSION_FILE: src/WpSettingsApi.php
+  VERSION_REGEX: '^[0-9]+\.[0-9]+(\.[0-9]+)?(-[0-9A-Za-z.]+)?$'
+
+jobs:
+  prepare:
+    name: Open release PR
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      VERSION: ${{ inputs.version }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Validate version
+        run: |
+          VERSION="${VERSION#v}"
+          if [[ ! "$VERSION" =~ $VERSION_REGEX ]]; then
+            echo "::error::Invalid version '$VERSION'."
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+
+      - name: Bump VERSION and CHANGELOG
+        run: |
+          sed -i -E "s/(public const string VERSION = ')[^']+(';)/\1${VERSION}\2/" "$VERSION_FILE"
+          grep -qF "public const string VERSION = '${VERSION}';" "$VERSION_FILE"
+          sed -i "0,/^# UNRELEASED$/s//# UNRELEASED\n\n## ${VERSION} - $(date -u +%Y-%m-%d)/" CHANGELOG.md
+          git diff
+
+      - name: Push branch and open PR
+        run: |
+          branch="release/${VERSION}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b "$branch"
+          git commit -am "Release ${VERSION}"
+          git push origin "$branch"
+          gh pr create --base develop --head "$branch" --title "Release ${VERSION}" \
+            --body "Bumps \`WpSettingsApi::VERSION\` and the CHANGELOG to \`${VERSION}\`. Merging tags \`v${VERSION}\` and publishes the GitHub release."
+
+  publish:
+    name: Tag and publish release
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      BRANCH: ${{ github.event.pull_request.head.ref }}
+      SHA: ${{ github.event.pull_request.merge_commit_sha }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Verify VERSION
+        run: |
+          VERSION="${BRANCH#release/}"
+          VERSION="${VERSION#v}"
+          if [[ ! "$VERSION" =~ $VERSION_REGEX ]]; then
+            echo "::error::Branch '$BRANCH' doesn't name a valid version."
+            exit 1
+          fi
+          if ! grep -qF "public const string VERSION = '${VERSION}';" "$VERSION_FILE"; then
+            echo "::error::WpSettingsApi::VERSION doesn't match ${VERSION}."
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Create release
+        run: |
+          prerelease=()
+          if [[ "$VERSION" == *-* ]]; then prerelease=(--prerelease); fi
+          gh release create "v${VERSION}" --target "$SHA" --title "v${VERSION}" --generate-notes "${prerelease[@]}"
+
+  check:
+    name: Check VERSION matches tag
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Compare
+        run: |
+          VERSION="${TAG#v}"
+          if ! grep -qF "public const string VERSION = '${VERSION}';" "$VERSION_FILE"; then
+            current=$(grep -oP "public const string VERSION = '\K[^']+" "$VERSION_FILE")
+            echo "::error::Release ${TAG} has WpSettingsApi::VERSION '${current}'. CDN assets load from @${current}. Use the Release workflow to bump VERSION before tagging."
+            exit 1
+          fi
