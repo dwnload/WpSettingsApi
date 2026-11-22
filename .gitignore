@@ -8,3 +8,4 @@ tests/clover.xml
 composer.lock
 package-lock.json
 phpcs-report.xml
+tests/.phpunit.cache
