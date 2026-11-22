@@ -23,10 +23,11 @@
     "sort-packages": true
   },
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": "^8.4",
     "ext-json": "*",
-    "thefrosty/wp-utilities": "^3.8"
+    "thefrosty/wp-utilities": "^4.0"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
