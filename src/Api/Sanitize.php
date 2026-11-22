@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\Settings\FieldManager;
+use function is_string;
 use function sanitize_text_field;
 
 /**
@@ -28,7 +29,7 @@ class Sanitize
     {
         $section_id = self::getSectionId($option_slug);
 
-        if (!empty($section_id) && Options::isObfuscated($value)) {
+        if (!empty($section_id) && is_string($value) && Options::isObfuscated($value)) {
             return Options::getOption($option_slug, $section_id, $value);
         }
 
