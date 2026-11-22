@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ "8.3", "8.4" ]
+        php-version: [ "8.4", "8.5" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -39,7 +39,7 @@ jobs:
           PHP_VERSION: ${{ matrix.php-version }}
 
       - name: Show PHPCS results in PR
-        if: ${{ always() && steps.phpcs.outcome == 'failure' && matrix.php-version == '8.3' }}
+        if: ${{ always() && steps.phpcs.outcome == 'failure' && matrix.php-version == '8.4' }}
         run: cs2pr ./phpcs-report.xml
 
   run-phpunit:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ "8.3" ]
+        php-version: [ "8.4" ]
         wp-version: [ 'latest' ]
         coverage: [ true ]
     services:
@@ -112,8 +112,8 @@ jobs:
         uses: thefrosty/ci-setup@main
         with:
           extensions: 'curl'
-          extensions-cache-key: run-eslint-php83
-          php-version: '8.3'
+          extensions-cache-key: run-eslint-php84
+          php-version: '8.4'
           token: ${{ secrets.GITHUB_TOKEN }}
           tools: 'composer'
 
