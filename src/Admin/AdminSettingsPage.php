@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi\Admin;
 
 use Dwnload\WpSettingsApi\ActionHookName;
+use Dwnload\WpSettingsApi\Api\AssetIntegrity;
 use Dwnload\WpSettingsApi\Api\LocalizeScripts;
 use Dwnload\WpSettingsApi\Api\Script;
 use Dwnload\WpSettingsApi\Api\Style;
@@ -14,8 +15,13 @@ use function apply_filters;
 use function defined;
 use function did_action;
 use function do_action;
+use function esc_attr;
+use function is_string;
+use function preg_quote;
+use function preg_replace;
 use function sprintf;
 use function str_replace;
+use function strtok;
 use function wp_add_inline_script;
 use function wp_create_nonce;
 use function wp_enqueue_media;
@@ -38,6 +44,12 @@ class AdminSettingsPage
     use HooksTrait;
 
     /**
+     * SRI hashes keyed by CDN asset URL.
+     * @var array<string, string> $integrity
+     */
+    private array $integrity = [];
+
+    /**
      * AdminSettingsPage constructor.
      * @param WpSettingsApi $wp_settings_api
      */
@@ -53,6 +65,8 @@ class AdminSettingsPage
         do_action(WpSettingsApi::ACTION_PREFIX . 'settings_page_loaded');
         $this->addAction('admin_enqueue_scripts', [$this, 'adminEnqueueScripts'], 99);
         $this->addAction('admin_footer', [$this, 'localizeScripts'], 99);
+        $this->addFilter('script_loader_tag', [$this, 'addIntegrityAttributes'], 10, 3);
+        $this->addFilter('style_loader_tag', [$this, 'addIntegrityAttributes'], 10, 3);
     }
 
     /**
@@ -66,18 +80,32 @@ class AdminSettingsPage
         }
 
         $use_local = apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_local_scripts', false);
-        $get_src = function (string $path) use ($use_local): string {
+        $version = (string)apply_filters(WpSettingsApi::FILTER_PREFIX . 'scripts_version', WpSettingsApi::VERSION);
+        /**
+         * Add Subresource Integrity to CDN assets. Only possible when the installed package is the
+         * same version as the CDN tag, because the hash is taken from the local copy of each file.
+         * @param bool $use_integrity Defaults to true.
+         */
+        $use_integrity = !$use_local &&
+            apply_filters(WpSettingsApi::FILTER_PREFIX . 'asset_integrity', true) === true &&
+            AssetIntegrity::matchesInstalledVersion($version);
+        $get_src = function (string $path) use ($use_local, $use_integrity, $version): string {
             if ($use_local) {
                 return $this->wp_settings_api->getPlugin()->getUrl($path);
             }
 
+            $hash = $use_integrity ? AssetIntegrity::getHash($path) : null;
             $debug = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG;
+            // jsDelivr generates the .min files, so they can't be hashed locally: serve the exact file instead.
+            $file = $debug === true || $hash !== null ?
+                $path :
+                str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path);
+            $src = sprintf('https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s', $version, $file);
+            if ($hash !== null) {
+                $this->integrity[$src] = $hash;
+            }
 
-            return sprintf(
-                'https://cdn.jsdelivr.net/gh/dwnload/wpSettingsApi@%s/%s',
-                apply_filters(WpSettingsApi::FILTER_PREFIX . 'scripts_version', WpSettingsApi::VERSION),
-                $debug === true ? $path : str_replace(['.css', '.js'], ['.min.css', '.min.js'], $path)
-            );
+            return $src;
         };
 
         /**
@@ -196,6 +224,32 @@ class AdminSettingsPage
             }
             wp_enqueue_style($style->getHandle());
         }
+    }
+
+    /**
+     * Add `integrity` and `crossorigin` attributes to the CDN script/style tags we enqueued.
+     * @param string $tag The HTML tag.
+     * @param string $handle The asset handle.
+     * @param string $src The asset URL (the `href` for styles).
+     * @return string
+     */
+    protected function addIntegrityAttributes(string $tag, string $handle, string $src): string
+    {
+        $src_without_query = strtok($src, '?');
+        if (!is_string($src_without_query) || !isset($this->integrity[$src_without_query])) {
+            return $tag;
+        }
+
+        // Target the asset's own tag (id="{handle}-js" / id='{handle}-css'), not any inline scripts in $tag.
+        return (string)preg_replace(
+            sprintf('/(\\sid=([\'"])%s-(?:js|css)\\2)/', preg_quote($handle, '/')),
+            sprintf(
+                '$1 integrity="%s" crossorigin="anonymous"',
+                esc_attr($this->integrity[$src_without_query])
+            ),
+            $tag,
+            1
+        );
     }
 
     /**
