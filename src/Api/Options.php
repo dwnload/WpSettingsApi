@@ -90,21 +90,17 @@ class Options
      */
     protected static function getSectionId(string $option_key): string
     {
-        foreach (SectionManager::getSections() as $section) {
-            if (!($section instanceof SettingSection) && is_array($section)) {
-                foreach ($section as $setting) {
-                    if (!($setting instanceof SettingSection)) {
-                        continue;
-                    }
-                    $options = self::getOptions($setting->getId());
-                    if (array_key_exists($option_key, $options)) {
-                        return $setting->getId();
-                    }
+        // Sections are stored per menu slug: [menu_slug => SettingSection[]].
+        foreach (SectionManager::getSections() as $sections) {
+            $sections = $sections instanceof SettingSection ? [$sections] : (array)$sections;
+            foreach ($sections as $section) {
+                if (!$section instanceof SettingSection) {
+                    continue;
                 }
-            }
-            $options = self::getOptions($section->getId());
-            if (array_key_exists($option_key, $options)) {
-                return $section->getId();
+                $options = self::getOptions($section->getId());
+                if (is_array($options) && array_key_exists($option_key, $options)) {
+                    return $section->getId();
+                }
             }
         }
 
