@@ -25,6 +25,7 @@ use function esc_html__;
 use function is_array;
 use function is_callable;
 use function is_string;
+use function map_deep;
 use function method_exists;
 use function register_setting;
 use function sanitize_text_field;
@@ -262,10 +263,10 @@ class WpSettingsApi extends AbstractHookProvider
                 continue;
             }
 
-            // Treat everything that's not an array as a string.
-            if (!is_array($option_value)) {
-                $options[$option_slug] = sanitize_text_field($option_value);
-            }
+            // Treat everything as a string; sanitize array values (multicheck, multiselect, text_array) deeply.
+            $options[$option_slug] = is_array($option_value) ?
+                map_deep($option_value, 'sanitize_text_field') :
+                sanitize_text_field($option_value);
         }
 
         /**
