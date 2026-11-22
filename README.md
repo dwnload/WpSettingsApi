@@ -37,6 +37,12 @@ Usage Example
 **As of v3.2.1**, this shouldn't be needed any more (unless you are filtering local assets only). Assets will now
 be loaded via the jsdelivr CDN. 
 
+**As of v4.0**, CDN assets get a [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
+`integrity` attribute when the installed package version matches `WpSettingsApi::VERSION`. The hash is taken from the
+installed copy of each file, so the browser refuses a CDN file that doesn't match it. In that case the unminified file
+is served, because jsDelivr generates the `.min` files itself. To turn it off:
+`add_filter('dwnload/wp_settings_api/asset_integrity', '__return_false');`
+
 **Otherwise**, since this is a PHP package and not a WordPress plugin the assets included can't be loaded properly.
 In order to have the settings page inherit the styles and use the proper JS, you've got to copy the
 `/assets` directory to your plugin or theme. Then add the following to filter the asset src to your
