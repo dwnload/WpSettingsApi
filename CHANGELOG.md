@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 # UNRELEASED
 
 - Require PHP >= 8.4.
+- Require thefrosty/wp-utilities ^4.0.
 
 ## 3.12.1 - 2025-06-11
 
