@@ -14,6 +14,7 @@ use function esc_attr;
 use function esc_attr__;
 use function esc_html;
 use function esc_html__;
+use function esc_textarea;
 use function implode;
 use function in_array;
 use function is_array;
@@ -351,15 +352,16 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 value="%3$s"%4$s>',
                 $field->getSectionId(),
                 $field->getId(),
-                $key,
+                esc_attr($key),
                 checked($checked, $key, false)
             );
             $output .= sprintf(
-                '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label>',
+                '<label for="%1$s[%2$s][%4$s]" title="%3$s">%5$s</label>',
                 $field->getSectionId(),
                 $field->getId(),
-                $label,
-                $key
+                esc_attr($label),
+                esc_attr($key),
+                esc_html($label)
             );
             $output .= '</li>';
         }
@@ -387,15 +389,16 @@ value="%3$s"%4$s>',
                 '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s >',
                 $field->getSectionId(),
                 $field->getId(),
-                $key,
+                esc_attr($key),
                 checked($value, $key, false)
             );
             $output .= sprintf(
-                '<label for="%1$s[%2$s][%4$s]" title="%3$s">%3$s</label><br>',
+                '<label for="%1$s[%2$s][%4$s]" title="%3$s">%5$s</label><br>',
                 $field->getSectionId(),
                 $field->getId(),
-                $label,
-                $key
+                esc_attr($label),
+                esc_attr($key),
+                esc_html($label)
             );
             $output .= '</li>';
         }
@@ -461,7 +464,7 @@ value="%3$s"%4$s>',
         );
         foreach ($field->getOptions() as $key => $label) {
             if (is_array($label)) {
-                $output .= sprintf('<optgroup label="%s">', $key);
+                $output .= sprintf('<optgroup label="%s">', esc_attr($key));
                 foreach ($label as $index => $val) {
                     $output .= sprintf(
                         '<option value="%1$s"%2$s>%3$s</option>',
@@ -502,7 +505,7 @@ value="%3$s"%4$s>',
             $field->getSize(),
             $field->getSectionId(),
             $field->getId(),
-            stripslashes((string) $value),
+            esc_textarea(stripslashes((string) $value)),
             $this->getExtraFieldParams($args)
         );
         $output .= '</div>';
