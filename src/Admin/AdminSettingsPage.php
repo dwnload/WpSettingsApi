@@ -197,6 +197,7 @@ class AdminSettingsPage
                 $this->addInlineScript($script);
                 continue;
             }
+
             wp_enqueue_script($script->getHandle());
             $this->addInlineScript($script);
         }
@@ -222,6 +223,7 @@ class AdminSettingsPage
                 wp_enqueue_style($style->getHandle());
                 continue;
             }
+
             wp_enqueue_style($style->getHandle());
         }
     }

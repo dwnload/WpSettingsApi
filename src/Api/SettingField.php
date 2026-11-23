@@ -409,7 +409,7 @@ class SettingField extends BaseModel
      * Get all serializable fields for toArray().
      * @return string[]
      */
-    public function getSerializableFields(): array
+    protected function getSerializableFields(): array
     {
         return [
             self::ID,

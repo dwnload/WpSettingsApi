@@ -5,7 +5,7 @@ use Dwnload\WpSettingsApi\WpSettingsApi;
 
 /** @var $this WpSettingsApi */
 if (!($this instanceof WpSettingsApi)) {
-    wp_die('Please don\'t load this file outside the WpSettingsApi object.');
+    wp_die("Please don't load this file outside the WpSettingsApi object.");
 }
 
 ?>

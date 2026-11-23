@@ -85,7 +85,7 @@ class Style extends BaseModel
 
     /**
      * Get Style dependencies array.
-     * @return array
+     * @return string[]
      */
     public function getDependencies(): array
     {

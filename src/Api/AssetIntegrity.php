@@ -58,7 +58,7 @@ class AssetIntegrity
         $file = dirname(__DIR__, 2) . '/' . ltrim($path, '/');
 
         if (!array_key_exists($file, self::$hashes)) {
-            $raw = is_readable($file) ? hash_file('sha384', $file, true) : false;
+            $raw = is_readable($file) ? hash_file('sha384', $file, binary: true) : false;
             self::$hashes[$file] = $raw === false ? null : 'sha384-' . base64_encode($raw);
         }
 
