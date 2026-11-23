@@ -16,6 +16,9 @@ use function is_wp_error;
 use function method_exists;
 use function sprintf;
 use function str_starts_with;
+use function wp_delete_secret;
+use function wp_get_secret;
+use function wp_set_secret;
 
 /**
  * Class SecretsApi
@@ -119,7 +122,7 @@ class SecretsApi
             return self::unavailableError();
         }
 
-        $result = \wp_set_secret($name, $value);
+        $result = wp_set_secret($name, $value);
         if (is_wp_error($result)) {
             return $result;
         }
@@ -140,7 +143,7 @@ class SecretsApi
             return self::unavailableError();
         }
 
-        $result = \wp_delete_secret($name);
+        $result = wp_delete_secret($name);
         if (is_wp_error($result)) {
             return $result;
         }
@@ -190,7 +193,7 @@ class SecretsApi
             return null;
         }
 
-        $secret = \wp_get_secret($name);
+        $secret = wp_get_secret($name);
         if ($secret === null || is_wp_error($secret)) {
             return $secret;
         }
