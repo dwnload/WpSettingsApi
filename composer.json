@@ -56,18 +56,12 @@
     }
   },
   "scripts": {
-    "install-codestandards": [
-      "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
-    ],
-    "phpcs": [
-      "bash ./vendor/thefrosty/wp-utilities/bin/phpcs.sh --standard=phpcs-ruleset.xml"
-    ],
-    "phpunit": [
-      "./vendor/bin/phpunit"
-    ],
-    "eslint": [
-      "npm run eslint"
-    ],
+    "install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+    "phpcs": "bash ./vendor/thefrosty/wp-utilities/bin/phpcs.sh --standard=phpcs-ruleset.xml",
+    "phpunit": "./vendor/bin/phpunit",
+    "eslint": "npm run eslint",
+    "refactor": "rector --ansi",
+    "test:refactor": "rector --dry-run --debug --ansi",
     "tests": [
       "@phpcs",
       "@phpunit",
