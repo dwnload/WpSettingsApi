@@ -34,6 +34,7 @@ class Options
         if (empty($section_id)) {
             $section_id = self::getSectionId($option_key);
         }
+
         $options = self::getOptions($section_id);
 
         return $options[$option_key] ?? $default;
@@ -97,6 +98,7 @@ class Options
                 if (!$section instanceof SettingSection) {
                     continue;
                 }
+
                 $options = self::getOptions($section->getId());
                 if (is_array($options) && array_key_exists($option_key, $options)) {
                     return $section->getId();

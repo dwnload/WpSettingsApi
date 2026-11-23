@@ -87,7 +87,7 @@ class Script extends BaseModel
 
     /**
      * Get the Script dependencies array.
-     * @return array
+     * @return string[]
      */
     public function getDependencies(): array
     {

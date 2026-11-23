@@ -64,7 +64,7 @@ class FieldTypes
 
     /**
      * Rebuilds the SettingField object from the incoming `add_settings_field` $args Array.
-     * @param array $args Array of SettingField object parameters
+     * @param array<string, mixed> $args Array of SettingField object parameters
      * @return SettingField
      */
     public function getSettingFieldObject(array $args): SettingField
@@ -130,6 +130,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
             $output .= $getInputField($value, 0);
             $output .= '</li>';
         }
+
         $output .= '</ul>';
 
         $output .= sprintf(
@@ -144,20 +145,19 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input number field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function number(array $args): void
     {
         $args[SettingField::TYPE] = self::FIELD_TYPE_NUMBER;
-        if (!isset($args[SettingField::ATTRIBUTES]['step'])) {
-            $args[SettingField::ATTRIBUTES]['step'] = 'any';
-        }
+        $args[SettingField::ATTRIBUTES]['step'] ??= 'any';
+
         $this->text($args);
     }
 
     /**
      * Renders an input password field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function password(array $args): void
     {
@@ -167,7 +167,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input url field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function url(array $args): void
     {
@@ -177,7 +177,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input date field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function date(array $args): void
     {
@@ -194,7 +194,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input datetime-local field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function datetimeLocal(array $args): void
     {
@@ -213,7 +213,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input email field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function email(array $args): void
     {
@@ -291,6 +291,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
                 $output .= wp_get_attachment_image(attachment_url_to_postid($value), 'medium');
                 $output .= '</div>';
             }
+
             $output .= '</div>';
         }
 
@@ -299,7 +300,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
 
     /**
      * Renders an input image (file) field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function image(array $args): void
     {
@@ -365,6 +366,7 @@ value="%3$s"%4$s>',
             );
             $output .= '</li>';
         }
+
         $output .= '</ul>';
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
@@ -402,6 +404,7 @@ value="%3$s"%4$s>',
             );
             $output .= '</li>';
         }
+
         $output .= '</ul>';
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
@@ -411,7 +414,7 @@ value="%3$s"%4$s>',
 
     /**
      * Renders a select field.
-     * @param array $args Array of Field object parameters
+     * @param array<string, mixed> $args Array of Field object parameters
      */
     public function select(array $args): void
     {
@@ -432,10 +435,11 @@ value="%3$s"%4$s>',
             $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
                 esc_attr($key),
-                is_array($value) && in_array($key, $value, true) ? ' selected' : selected($value, $key, false),
+                is_array($value) && in_array($key, $value, strict: true) ? ' selected' : selected($value, $key, false),
                 esc_html($view)
             );
         }
+
         $output .= '</select>';
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
@@ -469,20 +473,23 @@ value="%3$s"%4$s>',
                     $output .= sprintf(
                         '<option value="%1$s"%2$s>%3$s</option>',
                         esc_attr($index),
-                        is_array($value) && in_array((string)$index, $value, true) ? ' selected' : '',
+                        is_array($value) && in_array((string)$index, $value, strict: true) ? ' selected' : '',
                         esc_html($val)
                     );
                 }
+
                 $output .= '</optgroup>';
                 continue;
             }
+
             $output .= sprintf(
                 '<option value="%1$s"%2$s>%3$s</option>',
                 esc_attr($key),
-                is_array($value) && in_array((string)$key, $value, true) ? ' selected' : '',
+                is_array($value) && in_array((string)$key, $value, strict: true) ? ' selected' : '',
                 esc_html($label)
             );
         }
+
         $output .= '</select>';
         $output .= '</div>';
         $output .= $this->getFieldDescription($args);
@@ -573,6 +580,7 @@ value="%3$s"%4$s>',
             $output .= ob_get_clean();
             $output .= '</div>';
         }
+
         $output .= '</div><!-- [data-repeatable] -->';
         $output .= sprintf(
             '<a href="javascript:;" class="button button-primary" data-add>%s</a>',
@@ -637,7 +645,7 @@ value="%5$s"%6$s></div>',
 
     /**
      * Get field description for display.
-     * @param array $args settings field args
+     * @param array<string, mixed> $args settings field args
      * @return string
      */
     protected function getFieldDescription(array $args): string
@@ -651,7 +659,7 @@ value="%5$s"%6$s></div>',
 
     /**
      * Helper to return extra parameters as a string.
-     * @param array $args settings field args
+     * @param array<string, mixed> $args settings field args
      * @return string
      */
     protected function getExtraFieldParams(array $args): string
@@ -660,10 +668,8 @@ value="%5$s"%6$s></div>',
         $attributes = $this->getSettingFieldObject($args)->getAttributes() ?? [];
         unset($attributes['class']); // Remove the `class` attribute from the list of attributes (since it requires an array value).
 
-        if (!empty($attributes)) {
-            foreach ($attributes as $key => $value) {
-                $return .= sprintf(' %s="%s"', esc_attr($key), esc_attr($value));
-            }
+        foreach ($attributes as $key => $value) {
+            $return .= sprintf(' %s="%s"', esc_attr($key), esc_attr($value));
         }
 
         return $return;
