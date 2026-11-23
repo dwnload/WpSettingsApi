@@ -300,6 +300,11 @@ class WpSettingsApi extends AbstractHookProvider
                     continue;
                 }
 
+                // Secret fields are stored with the WordPress Secrets API when available (7.2+).
+                if ($field->getType() === FieldTypes::FIELD_TYPE_SECRET) {
+                    return Sanitize::class . '::sanitizeSecret';
+                }
+
                 // Call our obfuscated setting sanitizer so stars (****) don't get saved.
                 if (
                     $field->isObfuscated() &&

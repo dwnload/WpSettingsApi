@@ -9,6 +9,7 @@ use function absint;
 use function array_key_exists;
 use function get_option;
 use function is_array;
+use function is_string;
 use function str_contains;
 use function str_repeat;
 use function strlen;
@@ -48,6 +49,28 @@ class Options
     public static function getOptions(string $section_id): mixed
     {
         return get_option($section_id, []);
+    }
+
+    /**
+     * Get the plaintext value of a "secret" field.
+     * Reads from the WordPress Secrets API (7.2+) when available, falling back to the option value
+     * (pre-7.2, or a plaintext value not yet migrated). Returns null when there is no usable value.
+     * @param string $option_key Settings field key name in the section option array.
+     * @param string $section_id The Section object ID the option belongs too.
+     * @return string|null
+     */
+    public static function getSecret(string $option_key, string $section_id): ?string
+    {
+        if (SecretsApi::isAvailable()) {
+            $secret = SecretsApi::reveal(SecretsApi::getSecretName($section_id, $option_key));
+            if ($secret !== null) {
+                return $secret;
+            }
+        }
+
+        $value = self::getOption($option_key, $section_id, '');
+
+        return is_string($value) && $value !== '' && !SecretsApi::isMarker($value) ? $value : null;
     }
 
     /**

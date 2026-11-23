@@ -6,6 +6,7 @@ use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\SettingsApiFactory;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
+use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Plugin\PluginFactory;
@@ -72,6 +73,17 @@ class ExampleSettings implements WpHooksInterface
                 SettingField::LABEL => \esc_html__('I\'m a label, bro!', 'text-domain'),
                 SettingField::DESC => \esc_html__('An example text field', 'text-domain'),
                 SettingField::TYPE => 'text',
+                SettingField::SECTION_ID => $section_id,
+            ])
+        );
+
+        // A secret field: stored with the WordPress Secrets API on 7.2+ (falls back to an obfuscated option).
+        // Read it with Options::getSecret('api_key', $section_id).
+        $field_manager->addField(
+            new SettingField([
+                SettingField::NAME => 'api_key',
+                SettingField::LABEL => \esc_html__('API key', 'text-domain'),
+                SettingField::TYPE => FieldTypes::FIELD_TYPE_SECRET,
                 SettingField::SECTION_ID => $section_id,
             ])
         );

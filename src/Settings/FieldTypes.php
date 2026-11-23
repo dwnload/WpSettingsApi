@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dwnload\WpSettingsApi\Settings;
 
 use Dwnload\WpSettingsApi\Api\Options;
+use Dwnload\WpSettingsApi\Api\SecretsApi;
 use Dwnload\WpSettingsApi\Api\SettingField;
 use function array_map;
 use function array_merge;
@@ -18,6 +19,8 @@ use function esc_textarea;
 use function implode;
 use function in_array;
 use function is_array;
+use function is_string;
+use function is_wp_error;
 use function ob_get_clean;
 use function ob_start;
 use function preg_match;
@@ -60,6 +63,7 @@ class FieldTypes
     public const string FIELD_TYPE_FILE = 'file';
     public const string FIELD_TYPE_IMAGE = 'image';
     public const string FIELD_TYPE_PASSWORD = 'password';
+    public const string FIELD_TYPE_SECRET = 'secret';
     public const string FIELD_TYPE_REPEATER = 'repeater';
 
     /**
@@ -163,6 +167,83 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
     {
         $args[SettingField::TYPE] = self::FIELD_TYPE_PASSWORD;
         $this->text($args);
+    }
+
+    /**
+     * Renders a secret field.
+     * On WordPress 7.2+ the value is stored with the Secrets API (encrypted, never sent back to the browser).
+     * On older versions it falls back to an obfuscated password field stored in the option.
+     * @param array $args Array of Field object parameters
+     */
+    public function secret(array $args): void
+    {
+        $field = $this->getSettingFieldObject($args);
+
+        if (!SecretsApi::isAvailable()) {
+            // Don't mutate the registered field object.
+            $field = (clone $field)->setObfuscate();
+            $args[SettingField::FIELD_OBJECT] = $field;
+            $args[SettingField::TYPE] = self::FIELD_TYPE_PASSWORD;
+            $output = str_replace(
+                'type="' . self::FIELD_TYPE_SECRET . '"',
+                'type="' . self::FIELD_TYPE_PASSWORD . '" autocomplete="new-password"',
+                $this->getInputField($args)
+            );
+            $output .= $this->getFieldDescription($args);
+
+            echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            return;
+        }
+
+        $name = SecretsApi::getSecretName($field->getSectionId(), $field->getId());
+        $fingerprint = SecretsApi::getFingerprint($name);
+        $can_manage = SecretsApi::canManage();
+
+        $output = sprintf(
+            '<div class="FieldType_%1$s"><input type="password" class="%2$s-text" id="%3$s[%4$s][value]"
+name="%3$s[%4$s][value]" value="" autocomplete="new-password" placeholder="%5$s"%6$s%7$s></div>',
+            esc_attr(self::FIELD_TYPE_SECRET),
+            esc_attr($field->getSize()),
+            esc_attr($field->getSectionId()),
+            esc_attr($field->getId()),
+            is_string($fingerprint) ?
+                esc_attr__('Stored. Leave blank to keep the current value.', 'wp-settings-api') :
+                esc_attr__('Not set', 'wp-settings-api'),
+            $this->getExtraFieldParams($args),
+            $can_manage ? '' : ' disabled'
+        );
+
+        if (is_string($fingerprint) && $can_manage) {
+            $output .= sprintf(
+                '<label for="%1$s[%2$s][delete]"><input type="checkbox" id="%1$s[%2$s][delete]"
+name="%1$s[%2$s][delete]" value="1"> %3$s</label>',
+                esc_attr($field->getSectionId()),
+                esc_attr($field->getId()),
+                esc_html__('Delete the stored secret', 'wp-settings-api')
+            );
+        }
+
+        $status = match (true) {
+            is_wp_error($fingerprint) => sprintf(
+                /* translators: %s: Error message. */
+                esc_html__('The stored secret can\'t be read: %s', 'wp-settings-api'),
+                esc_html($fingerprint->get_error_message())
+            ),
+            is_string($fingerprint) => sprintf(
+                /* translators: %s: Secret fingerprint. */
+                esc_html__('Stored encrypted with the WordPress Secrets API (fingerprint: %s).', 'wp-settings-api'),
+                '<code>' . esc_html($fingerprint) . '</code>'
+            ),
+            default => esc_html__('Stored encrypted with the WordPress Secrets API once saved.', 'wp-settings-api'),
+        };
+        if (!$can_manage) {
+            $status .= ' ' . esc_html__('You do not have permission to change it.', 'wp-settings-api');
+        }
+
+        $output .= sprintf('<p class="description">%s</p>', $status);
+        $output .= $this->getFieldDescription($args);
+
+        echo $output; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     /**
