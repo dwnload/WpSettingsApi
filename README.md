@@ -30,6 +30,30 @@ Usage Example
 
 @see [examples/Example.php](https://github.com/dwnload/WpSettingsApi/tree/master/examples/Example.php)
 
+#### Secret fields (WordPress 7.2+ Secrets API)
+
+Use `FieldTypes::FIELD_TYPE_SECRET` (`'secret'`) for API keys and other credentials:
+
+```php
+$field_manager->addField(new SettingField([
+    SettingField::NAME => 'api_key',
+    SettingField::LABEL => 'API key',
+    SettingField::TYPE => FieldTypes::FIELD_TYPE_SECRET,
+    SettingField::SECTION_ID => $section_id,
+]));
+
+$api_key = Options::getSecret('api_key', $section_id); // ?string
+```
+
+- **WordPress 7.2+** (`wp_set_secret()` exists): the value is encrypted with the
+  [Secrets API](https://make.wordpress.org/core/2026/08/25/proposal-a-secrets-api-for-wordpress-7-2/) under the name
+  `{section_id}/{field_id}`, and the option only stores a `wp-secret:` placeholder. The value is never sent back to
+  the browser; a blank submission keeps it, and a "Delete" checkbox removes it. Saving requires the `manage_secrets`
+  capability and a `WP_SECRETS_KEY` in `wp-config.php`. If core returns an error, nothing is saved and the error is
+  shown. A plaintext value saved before the upgrade is moved into the Secrets API on the next save.
+- **Older WordPress**: it behaves like an obfuscated password field stored in the option.
+- Filters: `dwnload/wp_settings_api/use_secrets_api` (bool) and `dwnload/wp_settings_api/secret_name` (string).
+
 #### Suggested package
 
 ⭐️ `frontpack/composer-assets-plugin`
