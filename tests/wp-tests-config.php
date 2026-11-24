@@ -66,3 +66,14 @@ define('WP_TESTS_TITLE', 'Test Blog');
 define('WP_PHP_BINARY', 'php');
 
 define('WPLANG', '');
+
+// Multisite configuration (when testing multisite).
+// Note: WP_TESTS_MULTISITE is defined in bootstrap.php when needed.
+if (defined('WP_TESTS_MULTISITE') && WP_TESTS_MULTISITE) {
+    define('MULTISITE', true);
+    define('SUBDOMAIN_INSTALL', false);
+    define('DOMAIN_CURRENT_SITE', WP_TESTS_DOMAIN);
+    define('PATH_CURRENT_SITE', '/');
+    define('SITE_ID_CURRENT_SITE', 1);
+    define('BLOG_ID_CURRENT_SITE', 1);
+}
