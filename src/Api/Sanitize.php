@@ -61,7 +61,7 @@ class Sanitize
         $section_id = self::getSectionId($option_slug);
         $submitted = is_array($value) ? $value : ['value' => $value];
 
-        if ($section_id === '' || !SecretsApi::isAvailable()) {
+        if ($section_id === '' || !SecretsApi::isAvailableFor($section_id)) {
             return self::sanitizeObfuscated($submitted['value'] ?? '', $options, $option_slug);
         }
 

@@ -81,6 +81,8 @@ $api_key = Options::getSecret('api_key', $section_id); // ?string
   shown. A plaintext value saved before the upgrade is moved into the Secrets API on the next save.
 - **Older WordPress**: it behaves like an obfuscated password field stored in the option.
 - Filters: `dwnload/wp_settings_api/use_secrets_api` (bool) and `dwnload/wp_settings_api/secret_name` (string).
+- On a **network settings page**, secret fields always use the obfuscated network option fallback: core's network
+  secrets use separate functions and the `manage_network_secrets` capability, which aren't supported yet.
 
 #### Suggested package
 

@@ -92,7 +92,7 @@ class Options
      */
     public static function getSecret(string $option_key, string $section_id): ?string
     {
-        if (SecretsApi::isAvailable()) {
+        if (SecretsApi::isAvailableFor($section_id)) {
             $secret = SecretsApi::reveal(SecretsApi::getSecretName($section_id, $option_key));
             if ($secret !== null) {
                 return $secret;
