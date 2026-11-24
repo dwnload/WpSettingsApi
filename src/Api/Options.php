@@ -8,6 +8,7 @@ use Dwnload\WpSettingsApi\Settings\SectionManager;
 use function absint;
 use function array_key_exists;
 use function get_option;
+use function get_site_option;
 use function is_array;
 use function is_string;
 use function str_contains;
@@ -48,7 +49,37 @@ class Options
      */
     public static function getOptions(string $section_id): mixed
     {
+        // Sections on a network settings page are stored as network options (never mixed with site options).
+        if (SectionManager::isNetworkSection($section_id)) {
+            return self::getNetworkOptions($section_id);
+        }
+
         return get_option($section_id, []);
+    }
+
+    /**
+     * Get the value of a field on a network settings page.
+     * Always reads the network option, even when the network page isn't registered in this request.
+     * @param string $option_key Settings field key name in the section option array.
+     * @param string $section_id The Section object ID the option belongs too.
+     * @param mixed $default (Optional) Default value if option is not found.
+     * @return mixed
+     */
+    public static function getNetworkOption(string $option_key, string $section_id, mixed $default = ''): mixed
+    {
+        $options = self::getNetworkOptions($section_id);
+
+        return is_array($options) && array_key_exists($option_key, $options) ? $options[$option_key] : $default;
+    }
+
+    /**
+     * Get all values of a section on a network settings page.
+     * @param string $section_id The Section object ID.
+     * @return mixed
+     */
+    public static function getNetworkOptions(string $section_id): mixed
+    {
+        return get_site_option($section_id, []);
     }
 
     /**
