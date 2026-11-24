@@ -11,6 +11,7 @@ use function get_option;
 use function get_site_option;
 use function is_array;
 use function is_string;
+use function method_exists;
 use function str_contains;
 use function str_repeat;
 use function strlen;
@@ -50,7 +51,8 @@ class Options
     public static function getOptions(string $section_id): mixed
     {
         // Sections on a network settings page are stored as network options (never mixed with site options).
-        if (SectionManager::isNetworkSection($section_id)) {
+        // SectionManager may come from an older copy of this package (bundled by another plugin) without it.
+        if (method_exists(SectionManager::class, 'isNetworkSection') && SectionManager::isNetworkSection($section_id)) {
             return self::getNetworkOptions($section_id);
         }
 

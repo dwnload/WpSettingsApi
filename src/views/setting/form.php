@@ -7,7 +7,10 @@ use Dwnload\WpSettingsApi\Settings\SectionManager;
 
 /** @var $this Dwnload\WpSettingsApi\WpSettingsApi */
 // options.php for site pages, Network Admin edit.php for network pages.
-$action = $this->getFormAction();
+// WpSettingsApi may come from an older copy of this package (bundled by another plugin) without it.
+$action = method_exists($this, 'getFormAction') ?
+    $this->getFormAction() :
+    admin_url('options.php', defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin');
 
 foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $section) {
     ?>

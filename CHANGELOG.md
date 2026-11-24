@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+- Avoid fatal errors when another plugin bundles an older copy of this package (guard calls to 4.0-only methods).
 - Add network (multisite) settings pages: `PluginSettings::NETWORK`, `Options::getNetworkOption()`.
 - Add a `secret` field type backed by the WordPress 7.2 Secrets API (falls back to obfuscated option storage).
 - Require PHP >= 8.4.
