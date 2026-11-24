@@ -69,7 +69,11 @@ class SecretsApi
      */
     public static function isAvailableFor(string $section_id): bool
     {
-        return self::isAvailable() && !SectionManager::isNetworkSection($section_id);
+        // SectionManager may come from an older copy of this package (bundled by another plugin) without it.
+        $is_network = method_exists(SectionManager::class, 'isNetworkSection') &&
+            SectionManager::isNetworkSection($section_id);
+
+        return self::isAvailable() && !$is_network;
     }
 
     /**

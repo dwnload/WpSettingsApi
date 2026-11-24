@@ -32,7 +32,7 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
             <h2></h2>
             <?php
             // Network Admin doesn't print settings errors for us (wp-admin/options-head.php is site-only).
-            if ($this->getPluginInfo()->isNetwork()) {
+            if (method_exists($this, 'isNetworkPage') && $this->isNetworkPage()) {
                 settings_errors();
             }
             ?>

@@ -104,7 +104,7 @@ class WpSettingsApi extends AbstractHookProvider
             do_action(self::HOOK_INIT, (new SectionManager($this)), (new FieldManager()), $this);
         }, self::HOOK_PRIORITY);
         $this->addAction(self::HOOK_INIT, [$this, 'initMenuSlug'], 10, 3);
-        if ($this->plugin_info->isNetwork()) {
+        if ($this->isNetworkPage()) {
             $this->addAction('network_admin_menu', [$this, 'addAdminMenu']);
             $this->addAction('network_admin_edit_' . $this->getNetworkSaveAction(), [$this, 'saveNetworkSettings']);
         } else {
@@ -153,6 +153,17 @@ class WpSettingsApi extends AbstractHookProvider
     }
 
     /**
+     * Whether this is a network settings page.
+     * Other plugins may bundle an older copy of this package whose PluginSettings (loaded first) has no
+     * isNetwork(); treat that as a site page instead of a fatal error.
+     * @return bool
+     */
+    public function isNetworkPage(): bool
+    {
+        return method_exists($this->plugin_info, 'isNetwork') && $this->plugin_info->isNetwork();
+    }
+
+    /**
      * Get the URL the settings forms post to: options.php, or Network Admin edit.php for network pages.
      * @return string
      */
@@ -160,7 +171,7 @@ class WpSettingsApi extends AbstractHookProvider
     {
         $scheme = defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin';
 
-        if ($this->plugin_info->isNetwork()) {
+        if ($this->isNetworkPage()) {
             return add_query_arg(
                 'action',
                 $this->getNetworkSaveAction(),
@@ -194,7 +205,7 @@ class WpSettingsApi extends AbstractHookProvider
                 $this->settingsHtml();
             },
         ];
-        $hook = $this->plugin_info->isNetwork() ?
+        $hook = $this->isNetworkPage() ?
             add_submenu_page(self::NETWORK_PARENT_SLUG, ...$args) :
             add_options_page(...$args);
         if (is_string($hook)) {
@@ -220,13 +231,13 @@ class WpSettingsApi extends AbstractHookProvider
     protected function adminInit(): void
     {
         // Network pages are only registered (and saved) in Network Admin.
-        if ($this->plugin_info->isNetwork() && !is_network_admin()) {
+        if ($this->isNetworkPage() && !is_network_admin()) {
             return;
         }
 
         // Register settings sections.
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
-            if ($this->plugin_info->isNetwork()) {
+            if ($this->isNetworkPage()) {
                 if (get_site_option($section->getId(), false) === false) {
                     add_site_option($section->getId(), []);
                 }
@@ -362,7 +373,7 @@ class WpSettingsApi extends AbstractHookProvider
      */
     private function getAppCap(): string
     {
-        $capability = $this->plugin_info->isNetwork() ? self::NETWORK_CAPABILITY : self::CAPABILITY;
+        $capability = $this->isNetworkPage() ? self::NETWORK_CAPABILITY : self::CAPABILITY;
 
         return (string)apply_filters(self::FILTER_PREFIX . 'capability', $capability, $this->plugin_info);
     }
@@ -437,7 +448,11 @@ class WpSettingsApi extends AbstractHookProvider
                 }
 
                 // Secret fields are stored with the WordPress Secrets API when available (7.2+).
-                if ($field->getType() === FieldTypes::FIELD_TYPE_SECRET) {
+                // FieldTypes may come from an older copy of this package without the secret type.
+                if (
+                    defined(FieldTypes::class . '::FIELD_TYPE_SECRET') &&
+                    $field->getType() === FieldTypes::FIELD_TYPE_SECRET
+                ) {
                     return Sanitize::class . '::sanitizeSecret';
                 }
 

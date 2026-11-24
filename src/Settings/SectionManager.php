@@ -6,6 +6,7 @@ namespace Dwnload\WpSettingsApi\Settings;
 
 use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\WpSettingsApi;
+use function method_exists;
 
 /**
  * Class SectionManager
@@ -96,7 +97,9 @@ class SectionManager
      */
     private function registerNetworkSection(SettingSection $section): void
     {
-        if ($this->wp_settings_api->getPluginInfo()->isNetwork()) {
+        $plugin_info = $this->wp_settings_api->getPluginInfo();
+        // PluginSettings may come from an older copy of this package (bundled by another plugin) without it.
+        if (method_exists($plugin_info, 'isNetwork') && $plugin_info->isNetwork()) {
             self::$network_sections[$section->getId()] = true;
         }
     }
