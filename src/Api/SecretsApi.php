@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dwnload\WpSettingsApi\Api;
 
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use WP_Error;
 use function __;
@@ -57,6 +58,18 @@ class SecretsApi
          * @param bool $available Whether the Secrets API functions exist.
          */
         return (bool)apply_filters(WpSettingsApi::FILTER_PREFIX . 'use_secrets_api', $available) && $available;
+    }
+
+    /**
+     * Whether a section's secret fields use the Secrets API.
+     * Sections on a network settings page don't: core stores network secrets with separate functions and the
+     * `manage_network_secrets` capability, so they fall back to obfuscated network option storage for now.
+     * @param string $section_id
+     * @return bool
+     */
+    public static function isAvailableFor(string $section_id): bool
+    {
+        return self::isAvailable() && !SectionManager::isNetworkSection($section_id);
     }
 
     /**

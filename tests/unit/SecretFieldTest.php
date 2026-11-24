@@ -9,6 +9,7 @@ use Dwnload\WpSettingsApi\Api\SecretsApi;
 use Dwnload\WpSettingsApi\Api\SettingField;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
+use Dwnload\WpSettingsApi\Settings\SectionManager;
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ use ReflectionProperty;
  */
 #[CoversClass(SecretsApi::class)]
 #[CoversClass(Sanitize::class)]
+#[CoversClass(SectionManager::class)]
 class SecretFieldTest extends TestCase
 {
 
@@ -108,6 +110,25 @@ class SecretFieldTest extends TestCase
             Sanitize::sanitizeSecret('**************123456', [], self::FIELD_ID)
         );
         $this->assertSame('sk_live_abcdef123456', Options::getSecret(self::FIELD_ID, self::SECTION_ID));
+    }
+
+    /**
+     * Secret fields on a network settings page never use the (site) Secrets API.
+     */
+    public function testNetworkSectionsFallBackToOptionStorage(): void
+    {
+        $network_sections = new ReflectionProperty(SectionManager::class, 'network_sections');
+        $network_sections->setValue(null, [self::SECTION_ID => true]);
+
+        try {
+            $this->assertFalse(SecretsApi::isAvailableFor(self::SECTION_ID));
+            $this->assertSame(
+                'sk_live_abcdef123456',
+                Sanitize::sanitizeSecret(['value' => 'sk_live_abcdef123456'], [], self::FIELD_ID)
+            );
+        } finally {
+            $network_sections->setValue(null, []);
+        }
     }
 
     /**

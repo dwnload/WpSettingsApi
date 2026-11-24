@@ -179,7 +179,7 @@ value="%5$s"%6$s> <a href="javascript:;" class="button dodelete-%3$s[%4$s]" data
     {
         $field = $this->getSettingFieldObject($args);
 
-        if (!SecretsApi::isAvailable()) {
+        if (!SecretsApi::isAvailableFor($field->getSectionId())) {
             // Don't mutate the registered field object.
             $field = (clone $field)->setObfuscate();
             $args[SettingField::FIELD_OBJECT] = $field;
