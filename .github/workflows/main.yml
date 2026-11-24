@@ -43,13 +43,15 @@ jobs:
         run: cs2pr ./phpcs-report.xml
 
   run-phpunit:
-    name: Run PHPUnit
+    name: Run PHPUnit (PHP ${{ matrix.php-version }}, WP ${{ matrix.wp-version }}${{ matrix.multisite && ', multisite' || '' }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php-version: [ "8.4" ]
         wp-version: [ 'latest' ]
         coverage: [ true ]
+        multisite: [ false, true ]
     services:
       mysql:
         image: mysql:8.0
@@ -93,12 +95,15 @@ jobs:
         env:
           CHANGED_FILES: ${{ steps.ci-setup.outputs.files }}
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          # The WordPress test bootstrap installs a multisite network when WP_MULTISITE is "1".
+          WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
 
       - name: Upload coverage to Codecov
         if: ${{ github.event_name == 'pull_request' }}
         uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: false
+          flags: ${{ matrix.multisite && 'multisite' || 'single-site' }}
 
   run-eslint:
     name: Run ESLint
