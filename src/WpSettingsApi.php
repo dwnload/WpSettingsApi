@@ -47,6 +47,7 @@ use function register_setting;
 use function sanitize_text_field;
 use function set_transient;
 use function sprintf;
+use function TheFrosty\WpUtilities\getRequest;
 use function update_site_option;
 use function wp_die;
 use function wp_get_referer;
@@ -78,6 +79,7 @@ class WpSettingsApi extends AbstractHookProvider
     public const string OPTIONS_PAGE = 'options.php';
     public const string SETTINGS_ERRORS_TRANSIENT = 'settings_errors';
     public const int SETTINGS_ERRORS_EXPIRATION = 30;
+    public const string OPTION_PAGE_FIELD = 'option_page';
 
     /**
      * WpSettingsApi constructor.
@@ -302,8 +304,12 @@ class WpSettingsApi extends AbstractHookProvider
      */
     protected function saveNetworkSettings(): void
     {
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified below for the requested section.
-        $option_page = isset($_POST['option_page']) ? sanitize_text_field(wp_unslash($_POST['option_page'])) : '';
+        // Build the request now (not earlier): WordPress adds slashes to POST data after plugins load.
+        $post = getRequest()->request->all();
+        // The nonce is verified below, for the requested section.
+        $option_page = is_string($post[self::OPTION_PAGE_FIELD] ?? null) ?
+            sanitize_text_field(wp_unslash($post[self::OPTION_PAGE_FIELD])) :
+            '';
         $section_ids = array_map(
             static fn(SettingSection $section): string => $section->getId(),
             SectionManager::getSection($this->plugin_info->getMenuSlug())
@@ -328,8 +334,7 @@ class WpSettingsApi extends AbstractHookProvider
         }
 
         // Sanitized by the register_setting() callback (sanitizeOptionsArray) when update_site_option() runs.
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        $value = isset($_POST[$option_page]) && is_array($_POST[$option_page]) ? wp_unslash($_POST[$option_page]) : [];
+        $value = is_array($post[$option_page] ?? null) ? wp_unslash($post[$option_page]) : [];
         update_site_option($option_page, $value);
 
         if (get_settings_errors() === []) {
