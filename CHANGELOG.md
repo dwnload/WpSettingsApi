@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 # UNRELEASED
 
+- Add network (multisite) settings pages: `PluginSettings::NETWORK`, `Options::getNetworkOption()`.
 - Add a `secret` field type backed by the WordPress 7.2 Secrets API (falls back to obfuscated option storage).
 - Require PHP >= 8.4.
 - Require thefrosty/wp-utilities ^4.0.

@@ -30,6 +30,34 @@ Usage Example
 
 @see [examples/Example.php](https://github.com/dwnload/WpSettingsApi/tree/master/examples/Example.php)
 
+#### Network settings pages (multisite)
+
+Pass `PluginSettings::NETWORK => true` to register the page under **Network Admin → Settings** instead of
+**Settings**. All of its sections are stored as network options (`get_site_option()`), and they never mix with
+per-site options. A plugin that needs both registers two instances: one site page and one network page.
+
+```php
+$network = new WpSettingsApi(SettingsApiFactory::create([
+    'domain' => 'my-plugin',
+    'file' => __FILE__,
+    'menu-slug' => 'my-plugin-network',
+    'menu-title' => 'My Plugin',
+    'page-title' => 'My Plugin Network Settings',
+    'prefix' => 'my_plugin_',
+    'version' => '1.0.0',
+    PluginSettings::NETWORK => true,
+]));
+
+// Read a network value from any site (including the front end):
+$license = Options::getNetworkOption('license', 'my_plugin_network');
+```
+
+- Saving goes through `wp-admin/network/edit.php?action=dwnload_wp_settings_api_{menu-slug}` with the same nonce,
+  sanitizing (`register_setting()` callbacks), and "Settings saved." notice as `options.php`.
+- The default capability is `manage_network_options` (`dwnload/wp_settings_api/capability` filter, which now also
+  receives the `PluginSettings`).
+- On a single site, a network page behaves like a regular site page (network options *are* options there).
+
 #### Secret fields (WordPress 7.2+ Secrets API)
 
 Use `FieldTypes::FIELD_TYPE_SECRET` (`'secret'`) for API keys and other credentials:
