@@ -29,12 +29,23 @@ class SectionManager
     protected static array $settings_sections = [];
 
     /**
+     * IDs of sections registered on a network settings page, stored as network options.
+     * @var array<string, true> $network_sections
+     */
+    protected static array $network_sections = [];
+
+    /**
      * Set settings sections
      * @param SettingSection[] $sections An array of SettingSection objects.
      */
     public function setSections(array $sections): void
     {
         self::$settings_sections[$this->wp_settings_api->getPluginInfo()->getMenuSlug()] = $sections;
+        foreach ($sections as $section) {
+            if ($section instanceof SettingSection) {
+                $this->registerNetworkSection($section);
+            }
+        }
     }
 
     /**
@@ -45,6 +56,7 @@ class SectionManager
     public function addSection(SettingSection $section): string
     {
         self::$settings_sections[$this->wp_settings_api->getPluginInfo()->getMenuSlug()][] = $section;
+        $this->registerNetworkSection($section);
 
         return $section->getId();
     }
@@ -66,5 +78,26 @@ class SectionManager
     public static function getSections(): array
     {
         return self::$settings_sections;
+    }
+
+    /**
+     * Is the section registered on a network settings page (stored as a network option)?
+     * @param string $section_id
+     * @return bool
+     */
+    public static function isNetworkSection(string $section_id): bool
+    {
+        return isset(self::$network_sections[$section_id]);
+    }
+
+    /**
+     * Track sections added from a network settings page.
+     * @param SettingSection $section
+     */
+    private function registerNetworkSection(SettingSection $section): void
+    {
+        if ($this->wp_settings_api->getPluginInfo()->isNetwork()) {
+            self::$network_sections[$section->getId()] = true;
+        }
     }
 }
