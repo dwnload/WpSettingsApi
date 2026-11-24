@@ -30,6 +30,12 @@ title="WP Settings API version &ldquo;%s&rdquo;" target="_blank">dwnload</a></st
 
         <div class="Dwnload_WP_Settings_Api__notices">
             <h2></h2>
+            <?php
+            // Network Admin doesn't print settings errors for us (wp-admin/options-head.php is site-only).
+            if ($this->getPluginInfo()->isNetwork()) {
+                settings_errors();
+            }
+            ?>
         </div><!-- .Dwnload_WP_Settings_Api__notices -->
 
         <div class="Dwnload_WP_Settings_Api__sticky">

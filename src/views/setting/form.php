@@ -5,10 +5,10 @@ declare(strict_types=1);
 use Dwnload\WpSettingsApi\ActionHookName;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 
-$scheme = defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin';
-$action = admin_url('options.php', $scheme);
-
 /** @var $this Dwnload\WpSettingsApi\WpSettingsApi */
+// options.php for site pages, Network Admin edit.php for network pages.
+$action = $this->getFormAction();
+
 foreach (SectionManager::getSection($this->getPluginInfo()->getMenuSlug()) as $section) {
     ?>
     <div id="Dwnload_WP_Settings_Api__<?php echo esc_attr($section->getId()); ?>"

@@ -8,32 +8,51 @@ use Dwnload\WpSettingsApi\Admin\AdminSettingsPage;
 use Dwnload\WpSettingsApi\Api\PluginSettings;
 use Dwnload\WpSettingsApi\Api\Sanitize;
 use Dwnload\WpSettingsApi\Api\SettingField;
+use Dwnload\WpSettingsApi\Api\SettingSection;
 use Dwnload\WpSettingsApi\Settings\FieldManager;
 use Dwnload\WpSettingsApi\Settings\FieldTypes;
 use Dwnload\WpSettingsApi\Settings\SectionManager;
 use TheFrosty\WpUtilities\Plugin\AbstractHookProvider;
 use TheFrosty\WpUtilities\Plugin\HooksTrait;
+use WP_Http;
 use function add_option;
 use function add_options_page;
+use function add_query_arg;
+use function add_settings_error;
 use function add_settings_field;
 use function add_settings_section;
 use function add_site_option;
+use function add_submenu_page;
+use function admin_url;
+use function array_map;
 use function call_user_func;
+use function check_admin_referer;
 use function current_user_can;
+use function defined;
 use function do_action;
 use function esc_html;
 use function esc_html__;
 use function get_option;
+use function get_settings_errors;
 use function get_site_option;
+use function in_array;
 use function is_array;
 use function is_callable;
+use function is_network_admin;
 use function is_string;
 use function map_deep;
 use function method_exists;
+use function network_admin_url;
 use function register_setting;
 use function sanitize_text_field;
+use function set_transient;
 use function sprintf;
+use function TheFrosty\WpUtilities\getRequest;
+use function update_site_option;
 use function wp_die;
+use function wp_get_referer;
+use function wp_safe_redirect;
+use function wp_unslash;
 
 /**
  * Class WpSettingsApi
@@ -52,6 +71,15 @@ class WpSettingsApi extends AbstractHookProvider
     public const string HOOK_INIT_SLUG__S = self::HOOK_INIT . '-%s';
     public const int HOOK_PRIORITY = 999;
     public const string VERSION = '4.0.0';
+    public const string CAPABILITY = 'manage_options';
+    public const string NETWORK_CAPABILITY = 'manage_network_options';
+    public const string NETWORK_PARENT_SLUG = 'settings.php';
+    public const string NETWORK_SAVE_ACTION__S = 'dwnload_wp_settings_api_%s';
+    public const string NETWORK_EDIT_PAGE = 'edit.php';
+    public const string OPTIONS_PAGE = 'options.php';
+    public const string SETTINGS_ERRORS_TRANSIENT = 'settings_errors';
+    public const int SETTINGS_ERRORS_EXPIRATION = 30;
+    public const string OPTION_PAGE_FIELD = 'option_page';
 
     /**
      * WpSettingsApi constructor.
@@ -76,7 +104,12 @@ class WpSettingsApi extends AbstractHookProvider
             do_action(self::HOOK_INIT, (new SectionManager($this)), (new FieldManager()), $this);
         }, self::HOOK_PRIORITY);
         $this->addAction(self::HOOK_INIT, [$this, 'initMenuSlug'], 10, 3);
-        $this->addAction('admin_menu', [$this, 'addAdminMenu']);
+        if ($this->plugin_info->isNetwork()) {
+            $this->addAction('network_admin_menu', [$this, 'addAdminMenu']);
+            $this->addAction('network_admin_edit_' . $this->getNetworkSaveAction(), [$this, 'saveNetworkSettings']);
+        } else {
+            $this->addAction('admin_menu', [$this, 'addAdminMenu']);
+        }
         $this->addAction('admin_init', [$this, 'adminInit']);
     }
 
@@ -120,19 +153,50 @@ class WpSettingsApi extends AbstractHookProvider
     }
 
     /**
+     * Get the URL the settings forms post to: options.php, or Network Admin edit.php for network pages.
+     * @return string
+     */
+    public function getFormAction(): string
+    {
+        $scheme = defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ? 'https' : 'admin';
+
+        if ($this->plugin_info->isNetwork()) {
+            return add_query_arg(
+                'action',
+                $this->getNetworkSaveAction(),
+                network_admin_url(self::NETWORK_EDIT_PAGE, $scheme)
+            );
+        }
+
+        return admin_url(self::OPTIONS_PAGE, $scheme);
+    }
+
+    /**
+     * Get the Network Admin edit.php action used to save a network settings page.
+     * @return string
+     */
+    public function getNetworkSaveAction(): string
+    {
+        return sprintf(self::NETWORK_SAVE_ACTION__S, $this->plugin_info->getMenuSlug());
+    }
+
+    /**
      * Create admin menu and sub-menu items.
      */
     protected function addAdminMenu(): void
     {
-        $hook = add_options_page(
+        $args = [
             esc_html($this->plugin_info->getPageTitle()),
             esc_html($this->plugin_info->getMenuTitle()),
             $this->getAppCap(),
             apply_filters(self::FILTER_PREFIX . 'options_page_slug', $this->plugin_info->getMenuSlug()),
             function (): void {
                 $this->settingsHtml();
-            }
-        );
+            },
+        ];
+        $hook = $this->plugin_info->isNetwork() ?
+            add_submenu_page(self::NETWORK_PARENT_SLUG, ...$args) :
+            add_options_page(...$args);
         if (is_string($hook)) {
             $this->addAction('load-' . $hook, [(new AdminSettingsPage($this)), 'load'], 19);
         }
@@ -155,6 +219,11 @@ class WpSettingsApi extends AbstractHookProvider
      */
     protected function adminInit(): void
     {
+        // Network pages are only registered (and saved) in Network Admin.
+        if ($this->plugin_info->isNetwork() && !is_network_admin()) {
+            return;
+        }
+
         // Register settings sections.
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
             if ($this->plugin_info->isNetwork()) {
@@ -229,13 +298,73 @@ class WpSettingsApi extends AbstractHookProvider
     }
 
     /**
+     * Save a network settings page section (Network Admin `edit.php?action=…`).
+     * Mirrors wp-admin/options.php: the nonce from settings_fields(), the page capability, and
+     * update_site_option(), which runs the register_setting() sanitize callback via sanitize_option().
+     */
+    protected function saveNetworkSettings(): void
+    {
+        // Build the request now (not earlier): WordPress adds slashes to POST data after plugins load.
+        $post = getRequest()->request->all();
+        // The nonce is verified below, for the requested section.
+        $option_page = is_string($post[self::OPTION_PAGE_FIELD] ?? null) ?
+            sanitize_text_field(wp_unslash($post[self::OPTION_PAGE_FIELD])) :
+            '';
+        $section_ids = array_map(
+            static fn(SettingSection $section): string => $section->getId(),
+            SectionManager::getSection($this->plugin_info->getMenuSlug())
+        );
+
+        if (!in_array($option_page, $section_ids, true)) {
+            wp_die(
+                esc_html__('Invalid settings section.', 'wp-settings-api'),
+                '',
+                ['response' => WP_Http::BAD_REQUEST]
+            );
+        }
+
+        check_admin_referer($option_page . '-options');
+
+        if (!current_user_can($this->getAppCap())) {
+            wp_die(
+                esc_html__('You do not have sufficient permissions to access this page.', 'wp-settings-api'),
+                '',
+                ['response' => WP_Http::FORBIDDEN]
+            );
+        }
+
+        // Sanitized by the register_setting() callback (sanitizeOptionsArray) when update_site_option() runs.
+        $value = is_array($post[$option_page] ?? null) ? wp_unslash($post[$option_page]) : [];
+        update_site_option($option_page, $value);
+
+        if (get_settings_errors() === []) {
+            add_settings_error(
+                'general',
+                'settings_updated',
+                esc_html__('Settings saved.', 'wp-settings-api'),
+                'success'
+            );
+        }
+        set_transient(self::SETTINGS_ERRORS_TRANSIENT, get_settings_errors(), self::SETTINGS_ERRORS_EXPIRATION);
+
+        $referer = wp_get_referer();
+        $redirect = is_string($referer) && $referer !== '' ?
+            $referer :
+            add_query_arg('page', $this->plugin_info->getMenuSlug(), network_admin_url(self::NETWORK_PARENT_SLUG));
+        wp_safe_redirect(add_query_arg('settings-updated', 'true', $redirect));
+        exit;
+    }
+
+    /**
      * Returns the allowed admin capability to modify or view settings.
      * @link https://codex.wordpress.org/Roles_and_Capabilities
      * @return string
      */
     private function getAppCap(): string
     {
-        return (string)apply_filters(self::FILTER_PREFIX . 'capability', 'manage_options');
+        $capability = $this->plugin_info->isNetwork() ? self::NETWORK_CAPABILITY : self::CAPABILITY;
+
+        return (string)apply_filters(self::FILTER_PREFIX . 'capability', $capability, $this->plugin_info);
     }
 
     /**
