@@ -21,5 +21,12 @@ tests_add_filter('muplugins_loaded', function () {
     });
 });
 
+// Run as multisite when WP_MULTISITE=1 (CI matrix); wp-tests-config.php then defines the network constants.
+// Defined here, not in wp-tests-config.php: core's install.php loads that config in a separate process,
+// before the network tables exist, and must not boot as multisite.
+if (getenv('WP_MULTISITE') === '1' && !defined('WP_TESTS_MULTISITE')) {
+    define('WP_TESTS_MULTISITE', true);
+}
+
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
