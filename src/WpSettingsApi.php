@@ -17,11 +17,14 @@ use function add_option;
 use function add_options_page;
 use function add_settings_field;
 use function add_settings_section;
+use function add_site_option;
 use function call_user_func;
 use function current_user_can;
 use function do_action;
 use function esc_html;
 use function esc_html__;
+use function get_option;
+use function get_site_option;
 use function is_array;
 use function is_callable;
 use function is_string;
@@ -154,7 +157,11 @@ class WpSettingsApi extends AbstractHookProvider
     {
         // Register settings sections.
         foreach (SectionManager::getSection($this->plugin_info->getMenuSlug()) as $section) {
-            if (get_option($section->getId(), false) === false) {
+            if ($this->plugin_info->isNetwork()) {
+                if (get_site_option($section->getId(), false) === false) {
+                    add_site_option($section->getId(), []);
+                }
+            } elseif (get_option($section->getId(), false) === false) {
                 add_option($section->getId(), []);
             }
 

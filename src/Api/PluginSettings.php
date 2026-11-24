@@ -6,6 +6,7 @@ namespace Dwnload\WpSettingsApi\Api;
 
 use Dwnload\WpSettingsApi\WpSettingsApi;
 use TheFrosty\WpUtilities\Models\BaseModel;
+use function is_multisite;
 use function plugin_basename;
 use function sprintf;
 
@@ -15,6 +16,11 @@ use function sprintf;
  */
 class PluginSettings extends BaseModel
 {
+
+    /**
+     * Field key: register the page in Network Admin and store its sections as network (site) options.
+     */
+    public const string NETWORK = 'network';
 
     /** @var string $nonce_s */
     protected string $nonce_s = WpSettingsApi::FILTER_PREFIX . '%s';
@@ -27,6 +33,9 @@ class PluginSettings extends BaseModel
 
     /** @var string $menu_slug */
     private string $menu_slug;
+
+    /** @var bool $network */
+    private bool $network = false;
 
     /** @var string $menu_title */
     private string $menu_title;
@@ -63,6 +72,17 @@ class PluginSettings extends BaseModel
     public function getNonce(): string
     {
         return sprintf($this->nonce_s, plugin_basename($this->getFile()));
+    }
+
+    public function isNetwork(): bool
+    {
+        // On a single site, network options are regular options: treat the page as a site page.
+        return $this->network && is_multisite();
+    }
+
+    protected function setNetwork(bool $network): void
+    {
+        $this->network = $network;
     }
 
     public function getMenuSlug(): string
